@@ -1,0 +1,11 @@
+
+scratch/
+personal/
+.~lock*
+target/
+.cpcache/
+.idea/
+my4clojure.iml
+.nrepl-port
+lsp/
+
