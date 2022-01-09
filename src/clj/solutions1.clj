@@ -1,5 +1,11 @@
 (ns solutions1)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; NOTE!
+;; If some problem page does not work, try to hard refresh (ctrl + refresh-button), then supply
+;; the answer again!
+
+
 ; P1
 (def P1 true)
 (= P1 true)
@@ -34,5 +40,7 @@
 (= P8 (set '(:a :a :b :c :c :c :c :d :d)))
 (= P8 (clojure.set/union #{:a :b :c} #{:b :c :d}))
 
-
-
+; P9
+(def P9 2)
+(= #{1 2 3 4} (conj #{1 4 3} P9))
+(conj #{1 4 3} 2)
