@@ -119,6 +119,7 @@
 (def P22 (fn [lst] (reduce (fn [acc x] (let [_ #p acc
                                            _ #p x] (+ 1 acc))) 0 (seq lst))))
 (def P22 (fn [lst] (reduce (fn [acc x] (+ 1 acc)) 0 (seq lst))))
+(def P22 (fn [lst] (reduce (fn [acc x] (+ 1 acc)) 0 lst)))
 ; Muiden
 (def P22 #(reduce + (map (constantly 1) %)))
 ;
@@ -132,22 +133,58 @@
 (P22 "abc")
 
 ; P23
-(def P23 )
+(def P23 (fn [lst] (reduce (fn [acc x] (conj acc x)) '() lst)))
+(def P23 #(reduce (fn [acc x] (conj acc x)) '() %))
+; Muiden
+; HYVÄ!
+(def P23 (fn [xs] (into () xs)))
+(def P23 #(into () %))
+(def P23 #(reduce conj () %))
+;
 (= (P23 [1 2 3 4 5]) [5 4 3 2 1])
 (= (P23 (sorted-set 5 7 2 7)) '(7 5 2))
 (= (P23 [[1 2][3 4][5 6]]) [[5 6][3 4][1 2]])
 
 ; P24
-(def P24 )
+(def P24 #(apply + %))
+; Muiden
+(def P24 #(reduce + %))
+;
+(= (P24 [1 2 3]) 6)
+(= (P24 (list 0 -2 5 5)) 8)
+(= (P24 #{4 2 1}) 7)
+(= (P24 '(0 0 -1)) -1)
+(= (P24 '(1 10 3)) 14)
 
 ; P25
-(def P25 )
+(def P25 #(filter odd? %))
+(= (P25 #{1 2 3 4 5}) '(1 3 5))
+(= (P25 [4 2 1 6]) '(1))
+(= (P25 [2 2 4 6]) '())
+(= (P25 [1 1 1 3]) '(1 1 1 3))
 
 ; P26
-(def P26 )
+; Muistin tämän ratkaisun jostain Clojure-kirjasta.
+(def P26 (fn [n] (take n (map first (iterate (fn [[x1 x2]] [x2 (+ x1 x2)]) [1 1])))))
+;(P26 4)
+(= (P26 3) '(1 1 2))
+(= (P26 6) '(1 1 2 3 5 8))
+(= (P26 8) '(1 1 2 3 5 8 13 21))
+; Scratch
+(take 10 (map first (iterate (fn [[x1 x2]] [x2 (+ x1 x2)]) [1 1])))
+((fn [n] (take n (map first (iterate (fn [[x1 x2]] [x2 (+ x1 x2)]) [1 1])))) 5)
 
 ; P27
-(def P27 )
+(def P27 #(= (seq %) (reverse %)))
+(false? (P27 '(1 2 3 4 5)))
+(true? (P27 "racecar"))
+(true? (P27 [:foo :bar :foo]))
+(true? (P27 '(1 1 3 3 1 1)))
+(false? (P27 '(:a :b :c)))
+; Scratch
+(reverse "racecar")
+
+
 
 ; P28
 (def P28 )
