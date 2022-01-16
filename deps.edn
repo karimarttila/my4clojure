@@ -11,7 +11,8 @@
            :common {:extra-paths ["src/cljc"]
                     :extra-deps {}}
            :backend {:extra-paths ["src/clj"]
-                     :extra-deps {nrepl/nrepl {:mvn/version "0.8.2"}}}
+                     :extra-deps {nrepl/nrepl {:mvn/version "0.8.2"}
+                                  hashp/hashp {:mvn/version "0.2.1"}}}
            ;; Test runner in console.
            :test-runner {:extra-paths ["test"]
                          :extra-deps {com.cognitect/test-runner {:git/url "https://github.com/cognitect-labs/test-runner.git"
