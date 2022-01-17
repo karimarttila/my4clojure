@@ -2,10 +2,50 @@
 scratch/
 personal/
 .~lock*
-target/
-.cpcache/
-.idea/
+
 my4clojure.iml
 .nrepl-port
 lsp/
 
+# Temporary directories.
+tmp/
+
+# Emacs backups.
+*~
+
+# Generated directories.
+public-html/
+
+# Log files
+*.log
+*.tex
+
+# IDEA
+.idea/
+*.iml
+
+# cljs-shadow
+dev-resources/public/js/
+dev-resources/public/css/
+target/
+yarn.lock
+package-lock.json
+.shadow-cljs/
+prod-resources/
+
+# Generated directories
+out/
+
+# Cache directory
+.cpcache/
+
+# CLJ errors.
+trace.edn
+
+# clj-kondo cache
+.cache/
+
+# Repl port files
+.nrepl-port
+
+node_modules/
