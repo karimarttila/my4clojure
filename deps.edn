@@ -9,10 +9,29 @@
                                lambdaisland/kaocha-cljs {:mvn/version "0.0-71"}}}
            ;; Let's learn to use a common part already now since in the next exercise we create frontend with re-frame.
            :common {:extra-paths ["src/cljc"]
-                    :extra-deps {}}
+                    :extra-deps {integrant/repl {:mvn/version "0.3.1"}
+                                 aero/aero {:mvn/version "1.1.6"}
+                                 metosin/reitit {:mvn/version "0.5.10"}
+                                 metosin/potpuri {:mvn/version "0.5.2"}}}
            :backend {:extra-paths ["src/clj"]
-                     :extra-deps {nrepl/nrepl {:mvn/version "0.8.2"}
+                     :extra-deps {integrant/integrant {:mvn/version "0.8.0"}
+                                  metosin/ring-http-response {:mvn/version "0.9.1"}
+                                  metosin/jsonista {:mvn/version "0.2.7"}
+                                  ring/ring-core {:mvn/version "1.8.0"}
+                                  ring/ring-jetty-adapter {:mvn/version "1.7.1"}
+                                  ring/ring-json {:mvn/version "0.4.0"}
+                                  ring/ring-defaults {:mvn/version "0.3.2"}
+                                  org.eclipse.jetty/jetty-client {:mvn/version "9.4.26.v20200117"}
+                                  clj-http/clj-http {:mvn/version "3.10.1"}
+                                  nrepl/nrepl {:mvn/version "0.8.2"}
                                   hashp/hashp {:mvn/version "0.2.1"}}}
+           :frontend {:extra-paths ["src/cljs"]
+                      :extra-deps {org.clojure/clojurescript {:mvn/version "1.10.764"}
+                                   thheller/shadow-cljs {:mvn/version "2.11.23"}
+                                   reagent/reagent {:mvn/version "1.0.0"
+                                                    :exclusions [cljsjs.react-dom/cljsjs.react-dom]}
+                                   binaryage/devtools {:mvn/version "1.0.2"}
+                                   }}
            ;; Test runner in console.
            :test-runner {:extra-paths ["test"]
                          :extra-deps {com.cognitect/test-runner {:git/url "https://github.com/cognitect-labs/test-runner.git"
