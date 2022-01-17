@@ -203,12 +203,22 @@
 
 ; P29
 ; Works only with Java
-(def P29 (fn [s] (apply str (filter #(Character/isUpperCase %) s))))
+;(def P29 (fn [s] (apply str (filter #(Character/isUpperCase %) s))))
 ; Javascript
-(def P29 (fn [s] (apply str (filter (fn [c] (= c (.toUpperCase c))) s))))
+;(def P29 (fn [s] (apply str (filter (fn [c] (= c (.toUpperCase c))) s))))
+; Varsinainen ratkaisu:
+(def P29 (fn [s] (apply str (filter (set (map char (range 65 91))) s))))
+(P29 "HeLlO, WoRlD!")
 (= (P29 "HeLlO, WoRlD!") "HLOWRD")
 (empty? (P29 "nothing"))
 (= (P29 "$#A(*&987Zf") "AZ")
+; Scratch
+(char 65)
+(char 90)
+(set (map char (range 65 91)))
+
+
+
 ; P30
 (def P30 )
 
