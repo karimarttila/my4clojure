@@ -9,7 +9,9 @@
 
 ; P29
 ; Javascript
-(def P29 (fn [s] (apply str (filter (fn [c] (= c (.toUpperCase c))) s))))
-(= (P29 "HeLlO, WoRlD!") "HLOWRD")
-(empty? (P29 "nothing"))
-(= (P29 "$#A(*&987Zf") "AZ")
+; Not quite right.
+(def PF29 (fn [s] (apply str (filter (fn [c] (= c (.toUpperCase c))) s))))
+(def PF29 (fn [s] (apply str (filter (set (map char (range 65 91))) s))))
+(= (PF29 "HeLlO, WoRlD!") "HLOWRD")
+(empty? (PF29 "nothing"))
+(= (PF29 "$#A(*&987Zf") "AZ")
