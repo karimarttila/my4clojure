@@ -1,4 +1,5 @@
-(ns solutions1)
+(ns solutions1
+  (:require [hashp.core]))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; NOTE!
@@ -184,14 +185,30 @@
 ; Scratch
 (reverse "racecar")
 
-
-
+; TODO XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 ; P28
-(def P28 )
+
+
+;(P28 '(1 (2 3)))
+; Muiden:
+(def P28 (fn [x] (flatten x))) ; Ei saanut käyttää flatten.
+(def P28 (fn [x] (filter (complement sequential?)
+                         (rest (tree-seq sequential? seq x)))))
+;
+(= (P28 '((1 2) 3 [4 [5 6]])) '(1 2 3 4 5 6))
+(= (P28 ["a" ["b"] "c"]) '("a" "b" "c"))
+(= (P28 '((((:a))))) '(:a))
+; Scratch
+
 
 ; P29
-(def P29 )
-
+; Works only with Java
+(def P29 (fn [s] (apply str (filter #(Character/isUpperCase %) s))))
+; Javascript
+(def P29 (fn [s] (apply str (filter (fn [c] (= c (.toUpperCase c))) s))))
+(= (P29 "HeLlO, WoRlD!") "HLOWRD")
+(empty? (P29 "nothing"))
+(= (P29 "$#A(*&987Zf") "AZ")
 ; P30
 (def P30 )
 
@@ -222,7 +239,21 @@
 (= P37 (apply str (re-seq #"[A-Z]+" "bA1B3Ce ")))
 
 ; P38
-(def P38 )
+(def P38 (fn [& xs] (reduce (fn [acc x] (if (> x acc) x acc)) (first xs) xs)))
+(def P38 (fn [& xs] (-> xs sort reverse first)))
+(def P38 (comp first reverse sort list))
+; Muiden
+(def P38 #(reduce (fn [x y] (if (> x y) x y)) %&))
+(def P38 (fn [& s] (last (sort s))))
+; Tämä toimii, koska partial tekee sort-funktion, jossa ensimmäinen parametri on >
+; clojure.core/sort [coll] [^java.util.Comparator comp coll], eli > on Comparator.
+; List tarvitaan, koska se on ensimmäinen, joka ottaa variadic määrän argumentteja sisään
+; => eli tekee niistä ensin listan. Yllä [& xs] tekee listan jo valmiiksi.
+(def P38 (comp first (partial sort >) list))
+;
+(= (P38 1 8 3 4) 8)
+(= (P38 30 20) 30)
+(= (P38 45 67 11) 67)
 
 ; P39
 (def P39 )
