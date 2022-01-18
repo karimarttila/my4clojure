@@ -263,7 +263,7 @@
 ; P32
 (def P32 (fn [xs] (mapcat (fn [x] [x x]) xs)))
 ; Muiden
-(P32 #(interleave % %))
+(def P32 #(interleave % %))
 (= (P32 [1 2 3]) '(1 1 2 2 3 3))
 (= (P32 [:a :a :b :b]) '(:a :a :a :a :b :b :b :b))
 (= (P32 [[1 2] [3 4]]) '([1 2] [1 2] [3 4] [3 4]))
@@ -274,7 +274,23 @@
 
 
 ; P33
-(def P33 )
+(def P33 (fn [xs n] (apply interleave (for [n (range n)] xs))))
+(P33 [1 2 3] 2)
+; Muiden
+(def P33 #(mapcat (partial repeat %2) %))
+;
+(= (P33 [1 2 3] 2) '(1 1 2 2 3 3))
+(= (P33 [:a :b] 4) '(:a :a :a :a :b :b :b :b))
+(= (P33 [4 5 6] 1) '(4 5 6))
+(= (P33 [[1 2] [3 4]] 2) '([1 2] [1 2] [3 4] [3 4]))
+(= (P33 [44 33] 2) [44 44 33 33])
+; Scratch
+(interleave [1 2 3] [1 2 3])
+(for [n (range 2)]
+  [1 2])
+(interleave [1 2] [1 2])
+((fn [xs n] (apply interleave (for [n (range n)] xs))) [1 2] 2)
+
 
 ; P34
 (def P34 )
