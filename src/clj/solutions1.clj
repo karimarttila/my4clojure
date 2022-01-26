@@ -2,6 +2,9 @@
   (:require [hashp.core]))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; HUOM! Tässä solutions1 namespacessa elementary ja easy tehtävät.
+;;
 ;; NOTE!
 ;; If some problem page does not work, try to hard refresh (ctrl + refresh-button), then supply
 ;; the answer again!
@@ -118,7 +121,7 @@
 ; P22
 (def P22 #(count %)) ; Ei saa käyttää count.
 (def P22 (fn [lst] (reduce (fn [acc x] (let [_ #p acc
-                                           _ #p x] (+ 1 acc))) 0 (seq lst))))
+                                             _ #p x] (+ 1 acc))) 0 (seq lst))))
 (def P22 (fn [lst] (reduce (fn [acc x] (+ 1 acc)) 0 (seq lst))))
 (def P22 (fn [lst] (reduce (fn [acc x] (+ 1 acc)) 0 lst)))
 ; Muiden
@@ -144,7 +147,7 @@
 ;
 (= (P23 [1 2 3 4 5]) [5 4 3 2 1])
 (= (P23 (sorted-set 5 7 2 7)) '(7 5 2))
-(= (P23 [[1 2][3 4][5 6]]) [[5 6][3 4][1 2]])
+(= (P23 [[1 2] [3 4] [5 6]]) [[5 6] [3 4] [1 2]])
 
 ; P24
 (def P24 #(apply + %))
@@ -225,8 +228,8 @@
 
 ; P30
 (def P30 (fn [xs] (let [lst (->> xs
-                        (partition 2 1)
-                        (remove (fn [[a b]] (= a b))))
+                                 (partition 2 1)
+                                 (remove (fn [[a b]] (= a b))))
                         ; We need to add the last item in the right position.
                         [a b] (last lst)
                         ; Convert to vector so that we add to the end.
@@ -293,7 +296,12 @@
 
 
 ; P34
-(def P34 )
+(def P34 (fn [b e] (take (- e b) (iterate inc b))))
+(P34 1 4)
+(= (P34 1 4) '(1 2 3))
+(= (P34 -2 2) '(-2 -1 0 1))
+(= (P34 5 8) '(5 6 7))
+
 
 ; P35
 (def P35 7)
@@ -327,43 +335,105 @@
 (= (P38 45 67 11) 67)
 
 ; P39
-(def P39 )
+(def P39 (fn [xs1 xs2] (interleave xs1 xs2)))
+(def P39 (fn [xs1 xs2] (mapcat (fn [a b] [a b]) xs1 xs2)))
+; Muiden
+(def P39 (fn [c1 c2] (mapcat list c1 c2)))
+(P39 [1 2 3] [:a :b :c])
+(= (P39 [1 2 3] [:a :b :c]) '(1 :a 2 :b 3 :c))
+(= (P39 [1 2] [3 4 5 6]) '(1 3 2 4))
+(= (P39 [1 2 3 4] [5]) [1 5])
+(= (P39 [30 20] [25 15]) [30 25 20 15])
+; Scratch
+
 
 ; P40
-(def P40 )
+(def P40 (fn [sep xs] (interpose sep xs)))
+(def P40 (fn [sep xs] (drop-last (interleave xs (iterate identity sep)))))
+; Muiden
+(def P40 #(drop-last (interleave %2 (repeat %1))))
+;
+(P40 0 [1 2 3])
+(= (P40 0 [1 2 3]) [1 0 2 0 3])
+(= (apply str (P40 ", " ["one" "two" "three"])) "one, two, three")
+(= (P40 :z [:a :b :c :d]) [:a :z :b :z :c :z :d])
+; Scratch
+(take 10 (iterate identity 1))
+(drop 5 (iterate identity 1))
 
 ; P41
-(def P41 )
+; Ei ihan toimi.
+(def P41 (fn [xs n] (apply concat (partition (- n 1) n xs))))
+(def P41 (fn [xs n] (loop [acc [] lst xs n n]
+                      (if (empty? lst)
+                        (vec (apply concat acc))
+                        (let [add (take (- n 1) lst)
+                              xs2 (drop n lst)]
+                          (recur (conj acc add) xs2 n))))))
+; Muiden
+(def P41 #(apply concat (partition-all (dec %2) %2 %)))
+;
+(P41 [1 2 3 4 5 6] 4)
+(P41 [1 2 3 4 5 6 7 8] 3)
+(= (P41 [1 2 3 4 5 6 7 8] 3) [1 2 4 5 7 8])
+(= (P41 [:a :b :c :d :e :f] 2) [:a :c :e])
+(= (P41 [1 2 3 4 5 6] 4) [1 2 3 5 6])
+; Scratch
+"asdf"
 
 ; P42
-(def P42 )
+(def P42 (fn [n] (->> n inc (range 1) (apply *))))
+; Muiden
+(def P42 #(reduce * (range 2 (inc %))))
+;
+(P42 5)
+(= (P42 1) 1)
+(= (P42 3) 6)
+(= (P42 5) 120)
+(= (P42 8) 40320)
 
 ; P43
-(def P43 )
+(def P43)
 
 ; P44
-(def P44 )
+(def P44)
 
 ; P45
-(def P45 )
+(def P45 '(1 4 7 10 13))
+(= P45 (take 5 (iterate #(+ 3 %) 1)))
+
 
 ; P46
-(def P46 )
+(def P46)
 
 ; P47
-(def P47 )
+(def P47 4)
+(contains? #{4 5 6} P47)
+(contains? [1 1 1 1 1] P47)
+(contains? {4 :a 2 :b} P47)
+(not (contains? [1 2 4] P47))
 
 ; P48
-(def P48 )
+(def P48 6)
+(= P48 (some #{2 7 6} [5 6 7 8]))
+(= P48 (some #(when (even? %) %) [5 6 7 8]))
 
 ; P49
-(def P49 )
+(def P49 (fn [n xs] [(take n xs) (drop n xs)]))
+; Muiden
+(def P49 (juxt take drop))
+(P49 3 [1 2 3 4 5 6])
+
+(= (P49 3 [1 2 3 4 5 6]) [[1 2 3] [4 5 6]])
+(= (P49 1 [:a :b :c :d]) [[:a] [:b :c :d]])
+(= (P49 2 [[1 2] [3 4] [5 6]]) [[[1 2] [3 4]] [[5 6]]])
 
 ; P50
-(def P50 )
+(def P50)
 
 ; P51
-(def P51 )
+(def P51 [1 2 3 4 5])
+(= [1 2 [3 4 5] [1 2 3 4 5]] (let [[a b & c :as d] P51] [a b c d]))
 
 ; P52
 (= [2 4] (let [[a b c d e f g] (range)] [c e]))
@@ -371,66 +441,129 @@
 (take 10 (range))
 
 ; P53
-(def P53 )
+(def P53)
 
 ; P54
-(def P54 )
+(def P54)
 
 ; P55
-(def P55 )
+(def P55)
 
 ; P56
-(def P56 )
+(def P56)
 
 ; P57
 (def P57 '(5 4 3 2 1))
 (= P57 ((fn foo [x] (when (> x 0) (conj (foo (dec x)) x))) 5))
 
 ; P58
-(def P58 )
+(def P58)
 
 ; P59
-(def P59 )
+(def P59)
 
 ; P60
-(def P60 )
+(def P60)
 
 ; P61
-(def P61 )
+(def P61 (fn [xs1 xs2] (zipmap xs1 xs2)))
+(def P61 (fn [xs1 xs2] (reduce (fn [acc [k v]] (assoc acc k v)) {} (map (fn [a b] [a b]) xs1 xs2))))
+(def P61 (fn [xs1 xs2] (reduce (fn [acc [k v]] (assoc acc k v)) {} (partition 2 (interleave xs1 xs2)))))
+(P61 [:a :b :c] [1 2 3])
+; Muiden
+(def P61 #(apply hash-map (interleave %1 %2)))
+(def P61 #(into {} (map vector %1 %2)))
+;
+(= (P61 [:a :b :c] [1 2 3]) {:a 1, :b 2, :c 3})
+(= (P61 [1 2 3 4] ["one" "two" "three"]) {1 "one", 2 "two", 3 "three"})
+(= (P61 [:foo :bar] ["foo" "bar" "baz"]) {:foo "foo", :bar "bar"})
+; Scratch
+(reduce (fn [acc [k v]] (assoc acc k v)) {} (map (fn [a b] [a b]) [:a :b :c] [1 2 3]))
+(interleave [:a :b :c] [1 2 3])
+(map vector [:a :b :c] [1 2 3])
+
 
 ; P62
-(def P62 )
+(def P62 (fn [f x] (lazy-seq (cons x (P62 f (f x))))))
+;
+(take 5 (P62 #(* 2 %) 1))
+(= (take 5 (P62 #(* 2 %) 1)) [1 2 4 8 16])
+(= (take 100 (P62 inc 0)) (take 100 (range)))
+(= (take 9 (P62 #(inc (mod % 3)) 1)) (take 9 (cycle [1 2 3])))
 
 ; P63
-(def P63 )
+(def P63 (fn [f xs] (group-by f xs)))
+; First make a sequence of [k v] pairs. Then reduce the pairs to a map.
+(def P63 (fn [f xs] (reduce (fn [acc [k v]] (assoc acc k (conj (or (get-in acc [k]) []) v)))
+                            {}
+                            (map (fn [x] [(f x) x]) xs))))
+; Parannus: get:lle voi antaa arvon, mikä palautetaan, jos key ei löydy.
+(def P63 (fn [f xs] (reduce (fn [acc [k v]] (assoc acc k (conj (get acc k []) v)))
+                            {}
+                            (map (fn [x] [(f x) x]) xs))))
+; Muiden
+; Nerokas. Katso doc:sta merge-with.
+(def P63 (fn [f coll]
+           (reduce #(merge-with concat %1 {(f %2) [%2]}) {} coll)))
+(def P63 (fn [f coll]
+           (reduce (fn [acc x] (merge-with concat acc {(f x) [x]})) {} coll)))
+(P63 #(> % 5) #{1 3 6 8})
+;
+(= (P63 #(> % 5) #{1 3 6 8}) {false [1 3], true [6 8]})
+(= (P63 #(apply / %) [[1 2] [2 4] [4 6] [3 6]])
+   {1/2 [[1 2] [2 4] [3 6]], 2/3 [[4 6]]})
+(= (P63 count [[1] [1 2] [3] [1 2 3] [2 3]])
+   {1 [[1] [3]], 2 [[1 2] [2 3]], 3 [[1 2 3]]})
+; Scratch.
+(assoc {:b 2} :b 5 )
+(merge-with concat {:a [1 2]} {:a [3 4]})
+(merge-with (fn [xs1 xs2] (concat (drop 1 xs1) (drop 1 xs2))) {:a [1 2]} {:a [3 4]})
+
 
 ; P64
 (def P64 +)
 (= 15 (reduce P64 [1 2 3 4 5]))
 
 ; P65
-(def P65 )
+(def P65)
 
 ; P66
-(def P66 )
+; https://brilliant.org/wiki/greatest-common-divisor/
+(def P66 (fn [n1 n2] (apply max (map first (filter (fn [[a b]] (= a b))
+                                                   (for [x1 (range 1 (inc n1))
+                                                         x2 (range 1 (inc n2))
+                                                         :when (and (= (mod n1 x1) 0)
+                                                                    (= (mod n2 x2) 0))]
+                                                     [x1 x2]))))))
+; Muiden
+(def P66 (fn [a b] (if (= b 0) a (recur b (mod a b)))))
+;
+(P66 4488 12240)
+(= (P66 2 4) 2)
+(= (P66 10 5) 5)
+(= (P66 5 7) 1)
+(= (P66 1023 858) 33)
+; Scratch
+(range 1 3)
+
 
 ; P67
-(def P67 )
+(def P67)
 
 ; P68
 (def P68 '[7 6 5 4 3])
 (= P68
-  (loop [x 5
-         result []]
-    (if (> x 0)
-      (recur (dec x) (conj result (+ 2 x)))
-      result)))
+   (loop [x 5
+          result []]
+     (if (> x 0)
+       (recur (dec x) (conj result (+ 2 x)))
+       result)))
 
 ; P69
-(def P69 )
+(def P69)
 
 ; P70
-(def P70 )
+(def P70)
 
 
 
@@ -448,223 +581,469 @@
 
 
 ; P73
-(def P73 )
+(def P73)
 
 ; P74
-(def P74 )
+(def P74)
 
 ; P75
-(def P75 )
+(def P75)
 
 ; P76
-(def P76 )
+(def P76)
 
 ; P77
-(def P77 )
+(def P77)
 
 ; P78
-(def P78 )
+(def P78)
 
 ; P79
-(def P79 )
+(def P79)
 
 ; P80
-(def P80 )
+(def P80)
 
 ; P81
-(def P81 )
+(def P81 (fn [set1 set2] (loop [acc #{} xs set1]
+                           (if (empty? xs)
+                             acc
+                             (let [x (first xs)]
+                               (recur (if (set2 x) (conj acc x) acc)
+                                      (drop 1 xs)))))))
+; Muiden
+(def P81 (comp set filter))
+(def P81 (comp set keep))
+(def P81 #(set (for [x % y %2 :when (= x y)] x)))
+;
+(P81 #{0 1 2 3} #{2 3 4 5})
+(= (P81 #{0 1 2 3} #{2 3 4 5}) #{2 3})
+(= (P81 #{0 1 2} #{3 4 5}) #{})
+(= (P81 #{:a :b :c :d} #{:c :e :a :f :d}) #{:a :c :d})
+; Scratch
+(filter #{0 1 2 3} #{2 3 4 5}) ; => (3 2)
 
 ; P82
-(def P82 )
+(def P82)
 
 ; P83
-(def P83 )
+(def P83 (fn [& lst] (boolean (and (some true? lst) (not-every? true? lst)))))
+; Muiden
+; Eli pitää olla kumpaakin, sekä true että false.
+; Ja koska pitää olla kumpaakin, niin ei voi olla niin, että on vain true tai on vain false.
+(def P83 #(not (apply = %&)))
+(def P83 not=)
+;
+(P83 false true false)
+(= false (P83 false false))
+(= true (P83 true false))
+(= false (P83 true))
+(= true (P83 false true false))
+(= false (P83 true true true))
+(= true (P83 true true true false))
+; Scratch
+(some true? (list true false true))
+(not-every? true? (list true false true))
+(not-every? true? (list true true true))
+(some true? (list false false))
+;
+(apply = (list true false true))
+(apply = (list true true true))
+(apply = (list false false false))
 
 ; P84
-(def P84 )
+(def P84)
 
 ; P85
-(def P85 )
+(def P85)
 
 ; P86
-(def P86 )
+(def P86)
 
 ; P87
-(def P87 )
+(def P87)
 
 ; P88
-(def P88 )
+(def P88 (fn [set1 set2] (let [both (clojure.set/intersection set1 set2)
+                               all (clojure.set/union set1 set2)]
+                           (set (remove both all)))))
+(def P88 (fn [set1 set2] (set (remove (clojure.set/intersection set1 set2)
+                                      (clojure.set/union set1 set2)))))
+; Muiden
+(def P88 (fn [set1 set2] (reduce #((if (% %2) disj conj) % %2) set1 set2)))
+(def P88 (fn [set1 set2] (reduce (fn [acc x] ((if (acc x) disj conj) acc x)) set1 set2)))
+(def P88 (fn [set1 set2] (reduce (fn [acc x] (let [_ #p acc
+                                                   _ #p x
+                                                   f (if (acc x) disj conj)
+                                                   _ #p f] (f acc x))) set1 set2)))
+;
+(P88 #{1 2 3 4 5 6} #{1 3 5 7})
+(= (P88 #{1 2 3 4 5 6} #{1 3 5 7}) #{2 4 6 7})
+(= (P88 #{:a :b :c} #{}) #{:a :b :c})
+(= (P88 #{} #{4 5 6}) #{4 5 6})
+(= (P88 #{[1 2] [2 3]} #{[2 3] [3 4]}) #{[1 2] [3 4]})
+; Scratch
+(clojure.set/intersection #{1 2 3 4 5 6} #{1 3 5 7})
+(clojure.set/union #{1 2 3 4 5 6} #{1 3 5 7})
+
+
 
 ; P89
-(def P89 )
+(def P89)
 
 ; P90
-(def P90 )
+(def P90 (fn [set1 set2] (set (for [x1 set1 x2 set2] [x1 x2]))))
+(P90 #{1 2 3} #{4 5})
+(= (P90 #{"ace" "king" "queen"} #{"♠" "♥" "♦" "♣"})
+   #{["ace"   "♠"] ["ace"   "♥"] ["ace"   "♦"] ["ace"   "♣"]
+     ["king"  "♠"] ["king"  "♥"] ["king"  "♦"] ["king"  "♣"]
+     ["queen" "♠"] ["queen" "♥"] ["queen" "♦"] ["queen" "♣"]})
+(= (P90 #{1 2 3} #{4 5})
+   #{[1 4] [2 4] [3 4] [1 5] [2 5] [3 5]})
+(= 300 (count (P90 (into #{} (range 10))
+                  (into #{} (range 30)))))
 
 ; P91
-(def P91 )
+(def P91)
 
 ; P92
-(def P92 )
+(def P92)
 
 ; P93
-(def P93 )
+(def P93)
 
 ; P94
-(def P94 )
+(def P94)
 
 ; P95
-(def P95 )
+; Mieti ratkaisua: Pitää tarkistaa, että binary-treen jokainen lehti on nil tai binary-tree.
+(def P95 (fn [x]  (or (nil? x) ; Ollaan lehdessä, jonka on oltava nil, tai... pitää olla
+                      (and (sequential? x) ; ... sequence, jonka
+                           (= (count x) 3) ; ... pituus on kolme
+                           (P95 (second x)) ; ... ja jonka eka
+                           (P95 (nth x 2)))))); ... ja toka lehti on myös binary-tree.
+(P95 '(:a (:b nil nil) nil))
+;
+; Muiden
+(def P95 (fn t [x]
+           (or (nil? x) (and (sequential? x) (= 3 (count x)) (t (second x)) (t (nth x 2))) false)))
+(def P95 (fn bin-tree? [s]
+           (or (nil? s)
+               (and (coll? s)
+                    (= 3 (count s))
+                    (every? bin-tree? (rest s))))))
+(P95 '(:a (:b nil nil) nil))
+;
+(= (P95 '(:a (:b nil nil) nil))
+   true)
+(= (P95 '(:a (:b nil nil)))
+   false)
+(= (P95 [1 nil [2 [3 nil nil] [4 nil nil]]])
+   true)
+(= (P95 [1 [2 nil nil] [3 nil nil] [4 nil nil]])
+   false)
+(= (P95 [1 [2 [3 [4 nil nil] nil] nil] nil])
+   true)
+(= (P95 [1 [2 [3 [4 false nil] nil] nil] nil])
+   false)
+(= (P95 '(:a nil ()))
+   false)
+; Scratch
+(count '(:a (:b nil nil) nil))
+(sequential? '(:a (:b nil nil) nil))
+(tree-seq seq? identity '((1 2 (3)) (4)))
+
 
 ; P96
-(def P96 )
+; Eli tehdään kaksi traversal-funktiota: tr1 kulkee vasenta puolta, tr2 oikeaa puolta.
+; Kummankin pitää palauttaa samat alkiot samassa järjestyksessä, jos puut ovat symmetrisiä.
+; HUOM: On tärkeää, että jos nil, niin palautetaan [x] eikä x, koska näin nähdään,
+; että '(:a (:b nil nil) nil) ei ole symmetrinen.
+(def P96 (fn [x] (letfn [(tr1 [x] (if (nil? x) [x] (concat [(first x)] (tr1 (second x)) (tr1 (nth x 2)))))
+                         (tr2 [x] (if (nil? x) [x] (concat [(first x)] (tr2 (nth x 2)) (tr2 (second x)))))]
+                   (= (tr1 x) (tr2 x)))))
+; Muiden:
+; TODO: kannattaa tutkia lisää näitä ratkaisuja.
+;
+(P96 '(:a (:b nil nil) nil))
+(P96 [1 [2 nil [3 [4 [5 nil nil] [6 nil nil]] nil]]
+          [2 [3 nil [4 [6 nil nil] [5 nil nil]]] nil]])
+(P96 '(:a (:b nil nil) (:b nil nil)))
+;
+(= (P96 '(:a (:b nil nil) (:b nil nil))) true)
+(= (P96 '(:a (:b nil nil) nil)) false)
+(= (P96 '(:a (:b nil nil) (:c nil nil))) false)
+(= (P96 [1 [2 nil [3 [4 [5 nil nil] [6 nil nil]] nil]]
+          [2 [3 nil [4 [6 nil nil] [5 nil nil]]] nil]])
+   true)
+(= (P96 [1 [2 nil [3 [4 [5 nil nil] [6 nil nil]] nil]]
+          [2 [3 nil [4 [5 nil nil] [6 nil nil]]] nil]])
+   false)
+(= (P96 [1 [2 nil [3 [4 [5 nil nil] [6 nil nil]] nil]]
+          [2 [3 nil [4 [6 nil nil] nil]] nil]])
+   false)
+; Scratch
+(= '(1 2 3 4 5 (1 1) 2 3 4 6 5) '(1 2 3 4 5 (1 2) 2 3 4 6 5))
+(concat [1] [2])
+(concat [2] nil)
+
 
 ; P97
-(def P97 )
+(def P97 (fn [n] (-> (iterate (fn [xs] (concat [1] (map (fn [[a b]] (+ a b)) (partition 2 1 xs)) [1]))
+                               [1]) ; Iteraattorin alkuarvo on [1]
+                    (nth (dec n)))))
+
+(P97 5)
+;
+
+(= (P97 1) [1])
+(= (map P97 (range 1 6))
+   [     [1]
+        [1 1]
+       [1 2 1]
+      [1 3 3 1]
+     [1 4 6 4 1]])
+(= (P97 11)
+   [1 10 45 120 210 252 210 120 45 10 1])
+; Scratch
+(partition 2 1 [1])
+(partition 2 1 [1 1])
+(partition 2 1 [1 2 1])
+(vec (concat [1] (map (fn [[a b]] (+ a b)) (partition 2 1 [1 3 3 1])) [1]))
+
 
 ; P98
-(def P98 )
+(def P98)
+
+
 
 ; P99
-(def P99 )
+; HUOM! Clojurescript-ratkaisu hieman erilainen, ks. nodesolutions1!
+(def P99 (fn [x1 x2] (mapv (fn [x] (-> x int (- 48))) (seq (str (* x1 x2))))))
+;
+(= (P99 1 1) [1])
+(= (P99 99 9) [8 9 1])
+(= (P99 999 99) [9 8 9 0 1])
+; Scratch
+(char \8)
+(int \0)
+(int \9)
+(mapv (fn [x] (-> x int (- 48))) (seq (str 891)))
+
 
 ; P100
-(def P100 )
+; https://en.wikipedia.org/wiki/Least_common_multiple
+; https://www.calculatorsoup.com/calculators/math/lcm.php
+; https://www.youtube.com/watch?v=5oMdTsfBCYc
+; HUOM! Ei toimi sivustolla, koska ratio? ei ole Javascriptissa. Mutta läpäisee testit.
+; Turha käsitellä fraktioita kuten videossa, koska integerien ja fraktioiden käsittely
+; yhdessä toimii kuten alla olevassa oman ratkaisun geneerisemmässä ratkaisussa.
+(def P100 (fn [& ns] (letfn [(gcd [a b] (if (= b 0) a (recur b (mod a b))))
+                             (hcf [xs] (reduce (fn [acc x] (gcd acc x)) 0 xs))
+                             (min-idx [xs] (->> xs (map-indexed vector) (apply min-key second) first))
+                             (lcm-h [nums cands] (if (apply = cands)
+                                                 cands
+                                                 (let [i (min-idx cands)]
+                                                   (lcm-h nums (assoc cands i (+ (nth cands i) (nth nums i)))))))
+                             (lcm [nums] (first (lcm-h nums nums)))]
+                       (let [rats (filter ratio? ns)
+                             ints1 (filter (complement ratio?) ns)
+                             ints2 (mapv numerator rats)
+                             nums (vec (concat ints1 ints2))
+                             dens (mapv denominator rats)
+                             lcm_n (lcm nums)
+                             hcf_n (let [tmp (hcf dens)]
+                                        (if (= tmp 0) 1 tmp))]
+                         (/ lcm_n hcf_n)))))
+; Muiden
+; HUOM: Paljon parempi!
+(def P100 (fn [& x]
+            (let [y (apply min x)]
+              (loop [z y]
+                (if (every? #(zero? (mod z %)) x)
+                  z
+                  (recur (+ z y)))))))
+; Oman ratkaisun geneerisempi ratkaisu.
+(def P100 (fn [& numbers]
+            (letfn [(gcd [a b] (if (zero? b) a (gcd b (mod a b))))]
+              (/
+                (apply * numbers)
+                (reduce gcd numbers)))))
+; Tämä ratkaisu ei jää jumiin sivulle.
+(def (fn [e & r]
+  ((fn f [p]
+     (if (every? #(= (mod p %) 0) r)
+       p
+       (f (+ p e)))) e)))
+;
+
+
+(P100 2 3)
+(P100 3/4 1/6)
+(P100 7 5/7 2 3/5)
+;
+(== (P100 2 3) 6)
+(== (P100 5 3 7) 105)
+(== (P100 1/3 2/5) 2)
+(== (P100 3/4 1/6) 3/2)
+(== (P100 7 5/7 2 3/5) 210)
+; Scratch
+(* 7 5/7 2 3/5)
+(/ (* 245 25 70 21) 35)
+(/ 7350 35)
+(map numerator '(5/7 3/5))
+(map denominator '(5/6 3/2))
+(rationalize 3)
+(* 5 5/7)
+(/ 90 12)
+(/ 45 6)
+(filter (complement ratio?) '(7 5/7 2 3/5))
+(map denominator (filter ratio? '(7 5/7 2 3/5)))
+(->> [1 2 4 0 5]
+     (map-indexed vector) ; [[0 1] [1 2] [2 4] [3 0] [4 5]]
+     (apply min-key second) ; [3 0]
+     first)
+(/ 32 24)
+(let [gcd (fn [a b] (if (= b 0) a (recur b (mod a b))))]
+  (reduce gcd [342 12 240]))
+
+
+
 
 ; P101
-(def P101 )
+(def P101)
 
 ; P102
-(def P102 )
+(def P102)
 
 ; P103
-(def P103 )
+(def P103)
 
 ; P104
-(def P104 )
+(def P104)
 
 ; P105
-(def P105 )
+(def P105)
 
 ; P106
-(def P106 )
+(def P106)
 
 ; P107
-(def P107 )
+(def P107)
 
 ; P108
-(def P108 )
+(def P108)
 
 ; P109
-(def P109 )
+(def P109)
 
 ; P110
-(def P110 )
+(def P110)
 
 ; P111
-(def P111 )
+(def P111)
 
 ; P112
-(def P112 )
+(def P112)
 
 ; P113
-(def P113 )
+(def P113)
 
 ; P114
-(def P114 )
+(def P114)
 
 ; P115
-(def P115 )
+(def P115)
 
 ; P116
-(def P116 )
+(def P116)
 
 ; P117
-(def P117 )
+(def P117)
 
 ; P118
-(def P118 )
+(def P118)
 
 ; P119
-(def P119 )
+(def P119)
 
 ; P120
-(def P120 )
+(def P120)
 
 ; P121
-(def P121 )
+(def P121)
 
 ; P122
-(def P122 )
+(def P122)
 
 ; P123
-(def P123 )
+(def P123)
 
 ; P124
-(def P124 )
+(def P124)
 
 ; P125
-(def P125 )
+(def P125)
 
 ; P126
-(def P126 )
+(def P126)
 
 ; P127
-(def P127 )
+(def P127)
 
 ; P128
-(def P128 )
+(def P128)
 
 ; P129
-(def P129 )
+(def P129)
 
 ; P130
-(def P130 )
+(def P130)
 
 ; P131
-(def P131 )
+(def P131)
 
 ; P132
-(def P132 )
+(def P132)
 
 ; P133
-(def P133 )
+(def P133)
 
 ; P134
 (def P134 (fn [k m] (and (contains? m k) (nil? (k m)))))
-(true?  (P134 :a {:a nil :b 2}))
+(true? (P134 :a {:a nil :b 2}))
 (false? (P134 :b {:a nil :b 2}))
 (false? (P134 :c {:a nil :b 2}))
 
 ; P135
-(def P135 )
+(def P135)
 
 ; P136
-(def P136 )
+(def P136)
 
 ; P137
-(def P137 )
+(def P137)
 
 ; P138
-(def P138 )
+(def P138)
 
 ; P139
-(def P139 )
+(def P139)
 
 ; P140
-(def P140 )
+(def P140)
 
 ; P141
-(def P141 )
+(def P141)
 
 ; P142
-(def P142 )
+(def P142)
 
 ; P143
-(def P143 )
+(def P143)
 
 ; P144
-(def P144 )
+(def P144)
 
 ; P145
 (def P145 '(1 5 9 13 17 21 25 29 33 37))
@@ -682,34 +1061,34 @@
 (take 10 (partition 2 (range 20)))
 
 ; P146
-(def P146 )
+(def P146)
 
 ; P147
-(def P147 )
+(def P147)
 
 ; P148
-(def P148 )
+(def P148)
 
 ; P149
-(def P149 )
+(def P149)
 
 ; P150
-(def P150 )
+(def P150)
 
 ; P151
-(def P151 )
+(def P151)
 
 ; P152
-(def P152 )
+(def P152)
 
 ; P153
-(def P153 )
+(def P153)
 
 ; P154
-(def P154 )
+(def P154)
 
 ; P155
-(def P155 )
+(def P155)
 
 ; P156
 (def P156 (fn [v keys] (into {} (map (fn [k] {k v}) keys))))
@@ -726,16 +1105,16 @@
 
 
 ; P157
-(def P157 )
+(def P157)
 
 ; P158
-(def P158 )
+(def P158)
 
 ; P159
-(def P159 )
+(def P159)
 
 ; P160
-(def P160 )
+(def P160)
 
 ; P161f
 (def P161 #{1 2})
@@ -755,115 +1134,115 @@
 (= P162 (if 1 1 0))
 
 ; P163
-(def P163 )
+(def P163)
 
 ; P164
-(def P164 )
+(def P164)
 
 ; P165
-(def P165 )
+(def P165)
 
 ; P166
-(def P166 )
+(def P166)
 
 ; P167
-(def P167 )
+(def P167)
 
 ; P168
-(def P168 )
+(def P168)
 
 ; P169
-(def P169 )
+(def P169)
 
 ; P170
-(def P170 )
+(def P170)
 
 ; P171
-(def P171 )
+(def P171)
 
 ; P172
-(def P172 )
+(def P172)
 
 ; P173
-(def P173 )
+(def P173)
 
 ; P174
-(def P174 )
+(def P174)
 
 ; P175
-(def P175 )
+(def P175)
 
 ; P176
-(def P176 )
+(def P176)
 
 ; P177
-(def P177 )
+(def P177)
 
 ; P178
-(def P178 )
+(def P178)
 
 ; P179
-(def P179 )
+(def P179)
 
 ; P180
-(def P180 )
+(def P180)
 
 ; P181
-(def P181 )
+(def P181)
 
 ; P182
-(def P182 )
+(def P182)
 
 ; P183
-(def P183 )
+(def P183)
 
 ; P184
-(def P184 )
+(def P184)
 
 ; P185
-(def P185 )
+(def P185)
 
 ; P186
-(def P186 )
+(def P186)
 
 ; P187
-(def P187 )
+(def P187)
 
 ; P188
-(def P188 )
+(def P188)
 
 ; P189
-(def P189 )
+(def P189)
 
 ; P190
-(def P190 )
+(def P190)
 
 ; P191
-(def P191 )
+(def P191)
 
 ; P192
-(def P192 )
+(def P192)
 
 ; P193
-(def P193 )
+(def P193)
 
 ; P194
-(def P194 )
+(def P194)
 
 ; P195
-(def P195 )
+(def P195)
 
 ; P196
-(def P196 )
+(def P196)
 
 ; P197
-(def P197 )
+(def P197)
 
 ; P198
-(def P198 )
+(def P198)
 
 ; P199
-(def P199 )
+(def P199)
 
 
 

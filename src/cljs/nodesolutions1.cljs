@@ -23,4 +23,17 @@
 (= (P29 "$#A(*&987Zf") "AZ")
 
 
+; P99
+(def P99 (fn [x1 x2] (mapv (fn [x] (-> x int )) (seq (str (* x1 x2))))))
+; Muiden
+
+(= (P99 1 1) [1])
+(= (P99 99 9) [8 9 1])
+(= (P99 999 99) [9 8 9 0 1])
+; Scratch
+(char \8)
+(int \0)
+(int \9)
+(mapv (fn [x] (-> x int )) (seq (str 891)))
+(list 7 5/7 2 3/5)
 
