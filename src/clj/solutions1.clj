@@ -120,7 +120,7 @@
 
 ; P22
 (def P22 #(count %)) ; Ei saa käyttää count.
-(def P22 (fn [lst] (reduce (fn [acc x] (let [ ;_ #p acc
+(def P22 (fn [lst] (reduce (fn [acc x] (let [;_ #p acc
                                              ;_ #p x
                                              ]
                                          (+ 1 acc))) 0 (seq lst))))
@@ -517,7 +517,7 @@
 (= (P63 count [[1] [1 2] [3] [1 2 3] [2 3]])
    {1 [[1] [3]], 2 [[1 2] [2 3]], 3 [[1 2 3]]})
 ; Scratch.
-(assoc {:b 2} :b 5 )
+(assoc {:b 2} :b 5)
 (merge-with concat {:a [1 2]} {:a [3 4]})
 (merge-with (fn [xs1 xs2] (concat (drop 1 xs1) (drop 1 xs2))) {:a [1 2]} {:a [3 4]})
 
@@ -674,7 +674,7 @@
 ; Muiden
 (def P88 (fn [set1 set2] (reduce #((if (% %2) disj conj) % %2) set1 set2)))
 (def P88 (fn [set1 set2] (reduce (fn [acc x] ((if (acc x) disj conj) acc x)) set1 set2)))
-(def P88 (fn [set1 set2] (reduce (fn [acc x] (let [ ;_ #p acc
+(def P88 (fn [set1 set2] (reduce (fn [acc x] (let [;_ #p acc
                                                    ;_ #p x
                                                    f (if (acc x) disj conj)
                                                    ;_ #p f
@@ -698,13 +698,13 @@
 (def P90 (fn [set1 set2] (set (for [x1 set1 x2 set2] [x1 x2]))))
 (P90 #{1 2 3} #{4 5})
 (= (P90 #{"ace" "king" "queen"} #{"♠" "♥" "♦" "♣"})
-   #{["ace"   "♠"] ["ace"   "♥"] ["ace"   "♦"] ["ace"   "♣"]
-     ["king"  "♠"] ["king"  "♥"] ["king"  "♦"] ["king"  "♣"]
+   #{["ace" "♠"] ["ace" "♥"] ["ace" "♦"] ["ace" "♣"]
+     ["king" "♠"] ["king" "♥"] ["king" "♦"] ["king" "♣"]
      ["queen" "♠"] ["queen" "♥"] ["queen" "♦"] ["queen" "♣"]})
 (= (P90 #{1 2 3} #{4 5})
    #{[1 4] [2 4] [3 4] [1 5] [2 5] [3 5]})
 (= 300 (count (P90 (into #{} (range 10))
-                  (into #{} (range 30)))))
+                   (into #{} (range 30)))))
 
 ; P91
 (def P91)
@@ -720,11 +720,11 @@
 
 ; P95
 ; Mieti ratkaisua: Pitää tarkistaa, että binary-treen jokainen lehti on nil tai binary-tree.
-(def P95 (fn [x]  (or (nil? x) ; Ollaan lehdessä, jonka on oltava nil, tai... pitää olla
-                      (and (sequential? x) ; ... sequence, jonka
-                           (= (count x) 3) ; ... pituus on kolme
-                           (P95 (second x)) ; ... ja jonka eka
-                           (P95 (nth x 2)))))); ... ja toka lehti on myös binary-tree.
+(def P95 (fn [x] (or (nil? x) ; Ollaan lehdessä, jonka on oltava nil, tai... pitää olla
+                     (and (sequential? x) ; ... sequence, jonka
+                          (= (count x) 3) ; ... pituus on kolme
+                          (P95 (second x)) ; ... ja jonka eka
+                          (P95 (nth x 2)))))) ; ... ja toka lehti on myös binary-tree.
 (P95 '(:a (:b nil nil) nil))
 ;
 ; Muiden
@@ -770,20 +770,20 @@
 ;
 (P96 '(:a (:b nil nil) nil))
 (P96 [1 [2 nil [3 [4 [5 nil nil] [6 nil nil]] nil]]
-          [2 [3 nil [4 [6 nil nil] [5 nil nil]]] nil]])
+      [2 [3 nil [4 [6 nil nil] [5 nil nil]]] nil]])
 (P96 '(:a (:b nil nil) (:b nil nil)))
 ;
 (= (P96 '(:a (:b nil nil) (:b nil nil))) true)
 (= (P96 '(:a (:b nil nil) nil)) false)
 (= (P96 '(:a (:b nil nil) (:c nil nil))) false)
 (= (P96 [1 [2 nil [3 [4 [5 nil nil] [6 nil nil]] nil]]
-          [2 [3 nil [4 [6 nil nil] [5 nil nil]]] nil]])
+         [2 [3 nil [4 [6 nil nil] [5 nil nil]]] nil]])
    true)
 (= (P96 [1 [2 nil [3 [4 [5 nil nil] [6 nil nil]] nil]]
-          [2 [3 nil [4 [5 nil nil] [6 nil nil]]] nil]])
+         [2 [3 nil [4 [5 nil nil] [6 nil nil]]] nil]])
    false)
 (= (P96 [1 [2 nil [3 [4 [5 nil nil] [6 nil nil]] nil]]
-          [2 [3 nil [4 [6 nil nil] nil]] nil]])
+         [2 [3 nil [4 [6 nil nil] nil]] nil]])
    false)
 ; Scratch
 (= '(1 2 3 4 5 (1 1) 2 3 4 6 5) '(1 2 3 4 5 (1 2) 2 3 4 6 5))
@@ -793,19 +793,19 @@
 
 ; P97
 (def P97 (fn [n] (-> (iterate (fn [xs] (concat [1] (map (fn [[a b]] (+ a b)) (partition 2 1 xs)) [1]))
-                               [1]) ; Iteraattorin alkuarvo on [1]
-                    (nth (dec n)))))
+                              [1]) ; Iteraattorin alkuarvo on [1]
+                     (nth (dec n)))))
 
 (P97 5)
 ;
 
 (= (P97 1) [1])
 (= (map P97 (range 1 6))
-   [     [1]
-        [1 1]
-       [1 2 1]
-      [1 3 3 1]
-     [1 4 6 4 1]])
+   [[1]
+    [1 1]
+    [1 2 1]
+    [1 3 3 1]
+    [1 4 6 4 1]])
 (= (P97 11)
    [1 10 45 120 210 252 210 120 45 10 1])
 ; Scratch
@@ -845,9 +845,9 @@
                              (hcf [xs] (reduce (fn [acc x] (gcd acc x)) 0 xs))
                              (min-idx [xs] (->> xs (map-indexed vector) (apply min-key second) first))
                              (lcm-h [nums cands] (if (apply = cands)
-                                                 cands
-                                                 (let [i (min-idx cands)]
-                                                   (lcm-h nums (assoc cands i (+ (nth cands i) (nth nums i)))))))
+                                                   cands
+                                                   (let [i (min-idx cands)]
+                                                     (lcm-h nums (assoc cands i (+ (nth cands i) (nth nums i)))))))
                              (lcm [nums] (first (lcm-h nums nums)))]
                        (let [rats (filter ratio? ns)
                              ints1 (filter (complement ratio?) ns)
@@ -856,7 +856,7 @@
                              dens (mapv denominator rats)
                              lcm_n (lcm nums)
                              hcf_n (let [tmp (hcf dens)]
-                                        (if (= tmp 0) 1 tmp))]
+                                     (if (= tmp 0) 1 tmp))]
                          (/ lcm_n hcf_n)))))
 ; Muiden
 ; HUOM: Paljon parempi!
@@ -1033,11 +1033,11 @@
 ; Scratch
 "asdf"
 (->> (P118 inc (range))
-        (drop (dec 100))
-        (take 2))
+     (drop (dec 100))
+     (take 2))
 (->> (map inc (range))
-        (drop (dec 100))
-        (take 2))
+     (drop (dec 100))
+     (take 2))
 (take 5 (range))
 (seq [2 3 4 5 6])
 
@@ -1046,12 +1046,26 @@
 (def P119)
 
 ; P120
-(def P120)
-
+(require '[hashp.core])
+; Works in JVM
+(def P120 (fn [xs] (count (filter (fn [x]
+                                    (let [nums (map (comp #(* % %) #(- % 48) int) (seq (str x)))]
+                                      (< x (apply + nums))))
+                                  xs))))
+; Works in Clojurescript.
+#_ (def P120 (fn [xs] (count (filter (fn [x]
+                                    (let [nums (map (comp #(* % %) int) (seq (str x)))]
+                                      (< x (apply + nums))))
+                                  xs))))
+(P120 (range 10))
 (= 8 (P120 (range 10)))
 (= 19 (P120 (range 30)))
 (= 50 (P120 (range 100)))
 (= 50 (P120 (range 1000)))
+; Scratch
+(map (comp #(- % 48) int) (seq "40"))
+(str 9)
+
 
 ; P121
 (def P121)
