@@ -120,8 +120,10 @@
 
 ; P22
 (def P22 #(count %)) ; Ei saa käyttää count.
-(def P22 (fn [lst] (reduce (fn [acc x] (let [_ #p acc
-                                             _ #p x] (+ 1 acc))) 0 (seq lst))))
+(def P22 (fn [lst] (reduce (fn [acc x] (let [ ;_ #p acc
+                                             ;_ #p x
+                                             ]
+                                         (+ 1 acc))) 0 (seq lst))))
 (def P22 (fn [lst] (reduce (fn [acc x] (+ 1 acc)) 0 (seq lst))))
 (def P22 (fn [lst] (reduce (fn [acc x] (+ 1 acc)) 0 lst)))
 ; Muiden
@@ -672,10 +674,11 @@
 ; Muiden
 (def P88 (fn [set1 set2] (reduce #((if (% %2) disj conj) % %2) set1 set2)))
 (def P88 (fn [set1 set2] (reduce (fn [acc x] ((if (acc x) disj conj) acc x)) set1 set2)))
-(def P88 (fn [set1 set2] (reduce (fn [acc x] (let [_ #p acc
-                                                   _ #p x
+(def P88 (fn [set1 set2] (reduce (fn [acc x] (let [ ;_ #p acc
+                                                   ;_ #p x
                                                    f (if (acc x) disj conj)
-                                                   _ #p f] (f acc x))) set1 set2)))
+                                                   ;_ #p f
+                                                   ] (f acc x))) set1 set2)))
 ;
 (P88 #{1 2 3 4 5 6} #{1 3 5 7})
 (= (P88 #{1 2 3 4 5 6} #{1 3 5 7}) #{2 4 6 7})
@@ -870,14 +873,12 @@
                 (apply * numbers)
                 (reduce gcd numbers)))))
 ; Tämä ratkaisu ei jää jumiin sivulle.
-(def (fn [e & r]
-  ((fn f [p]
-     (if (every? #(= (mod p %) 0) r)
-       p
-       (f (+ p e)))) e)))
+(def P100 (fn [e & r]
+            ((fn f [p]
+               (if (every? #(= (mod p %) 0) r)
+                 p
+                 (f (+ p e)))) e)))
 ;
-
-
 (P100 2 3)
 (P100 3/4 1/6)
 (P100 7 5/7 2 3/5)
@@ -929,7 +930,26 @@
 (def P106)
 
 ; P107
-(def P107)
+(def P107 (fn [n] (fn [x] (if (= n 0) 1 (nth (iterate (partial * x) x) (dec n))))))
+; Käytä oletusarvoa 1, jos nth index ei löydy.
+(def P107 (fn [n] (fn [x] (nth (iterate (partial * x) x) (dec n) 1))))
+; Muiden
+(def P107 (fn [n] #(int (Math/pow % n))))
+(def P107 (fn [n] (fn [x] (apply * (repeat n x)))))
+;
+(map (P107 3) [1 2 3 4])
+;
+(= 256 ((P107 2) 16), ((P107 8) 2))
+(= [1 8 27 64] (map (P107 3) [1 2 3 4]))
+(= [1 2 4 8 16] (map #((P107 %) 2) [0 1 2 3 4]))
+; Scratch
+(take 5 (iterate (partial * 5) 5))
+(repeat 5 6)
+(repeatedly 5 #(rand-int 10))
+(def jee (partial * 5))
+(jee 6)
+
+
 
 ; P108
 (def P108)
