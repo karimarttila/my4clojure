@@ -982,13 +982,76 @@
 (def P117)
 
 ; P118
-(def P118)
+(def P118 map)
+; HUOM: Ilmeisesti ei ole mahdollsta tehdä loop:lla. Kysy myöhemmin Metosin slackissa, miksi?
+; Ei toimi: Stack overflow.
+(def P118 (fn [f xs] (reverse (loop [acc '() xs xs]
+                                (if (empty? xs)
+                                  acc
+                                  (recur (cons (f (first xs)) acc) (rest xs)))))))
+; Eikä tämä.
+(def P118 (fn [f xs] (reverse (lazy-seq (loop [acc '() xs xs]
+                                          (if (empty? xs)
+                                            acc
+                                            (recur (cons (f (first xs)) acc) (next xs))))))))
+; Tämäkään ei toimi.
+(def P118 (fn [f xs] (reverse (loop [acc '() xs xs]
+                                (if (empty? xs)
+                                  acc
+                                  (recur (lazy-seq (cons (f (first xs)) acc)) (rest xs)))))))
+; Eikä tämä.
+(def P118 (fn [f xs] (reverse (loop [acc '() xs xs]
+                                (if (empty? xs)
+                                  acc
+                                  (recur (lazy-seq (cons (f (first xs)) acc)) (next xs)))))))
+; Tämäkään ei toimi.
+(def P118 (fn [f xs] (reduce (fn [acc x] (conj acc (f x))) [] xs)))
+; Eikä tämä.
+(def P118 (fn [f xs] (lazy-seq (reduce (fn [acc x] (conj acc (f x))) [] xs))))
+; Eikä tämä.
+(def P118 (fn [f xs] (reduce (fn [acc x] (lazy-seq (conj acc (f x)))) [] xs)))
+; Toimii: https://clojure.org/reference/lazy
+(def P118 (fn [f coll]
+            (lazy-seq
+              (when-let [s (seq coll)]
+                (cons (f (first s)) (P118 f (rest s)))))))
+(def P118 map)
+"asdf"
+(P118 inc [2 3 4 5 6])
+(= [3 4 5 6 7]
+   (P118 inc [2 3 4 5 6]))
+(= (repeat 10 nil)
+   (P118 (fn [_] nil) (range 10)))
+(= [1000000 1000001]
+   (->> (P118 inc (range))
+        (drop (dec 1000000))
+        (take 2)))
+(= [1000000 1000001]
+   (->> (P118 inc (range))
+        (drop (dec 1000000))
+        (take 2)))
+; Scratch
+"asdf"
+(->> (P118 inc (range))
+        (drop (dec 100))
+        (take 2))
+(->> (map inc (range))
+        (drop (dec 100))
+        (take 2))
+(take 5 (range))
+(seq [2 3 4 5 6])
+
 
 ; P119
 (def P119)
 
 ; P120
 (def P120)
+
+(= 8 (P120 (range 10)))
+(= 19 (P120 (range 30)))
+(= 50 (P120 (range 100)))
+(= 50 (P120 (range 1000)))
 
 ; P121
 (def P121)
