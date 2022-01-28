@@ -948,6 +948,8 @@
 (repeatedly 5 #(rand-int 10))
 (def jee (partial * 5))
 (jee 6)
+(def pow2 (P107 2))
+(pow2 3)
 
 
 
@@ -1071,7 +1073,43 @@
 (def P121)
 
 ; P122
-(def P122)
+(require '[hashp.core])
+(def P122 (fn [s] (let [muls (reverse (map (comp #(- % 48) int) (seq s)))
+                        exps (iterate inc 0)]
+                    (apply + (map (fn [mu ex] (int (* mu (Math/pow 2 ex)))) muls exps)))))
+; No Math/pow in Clojurescript. Implement yourself.
+(def P122 (fn [s] (let [mypow (fn [x] (fn [n] (apply * (repeat n x))))
+                        mypow2 (mypow 2)
+                        muls (reverse (map (comp #(- % 48) int) (seq s)))
+                        exps (iterate inc 0)]
+                    (apply + (map (fn [mu ex] (int (* mu (mypow2 ex)))) muls exps)))))
+; Clojurescript versio.
+#_(def P122 (fn [s] (let [mypow (fn [x] (fn [n] (apply * (repeat n x))))
+                        mypow2 (mypow 2)
+                        muls (reverse (map int (seq s)))
+                        exps (iterate inc 0)]
+                    (apply + (map (fn [mu ex] (int (* mu (mypow2 ex)))) muls exps)))))
+; Muiden
+(def P122 #(Integer/parseInt % 2))
+;
+(P122 "101")
+"asdf"
+;
+(= 0     (P122 "0"))
+(= 7     (P122 "111"))
+(= 8     (P122 "1000"))
+(= 9     (P122 "1001"))
+(= 255   (P122 "11111111"))
+(= 1365  (P122 "10101010101"))
+(= 65535 (P122 "1111111111111111"))
+; Scratch
+(map (comp #(- % 48) int) (seq "101"))
+(take 5 (iterate inc 0))
+(map (fn [x y] [x y]) [1 2 3] [5 6 7])
+(apply + '(1.0 0.0 4.0))
+(def mypow (fn [x] (fn [n] (apply * (repeat n x)))))
+(def mypow2 (mypow 2))
+(mypow2 4)
 
 ; P123
 (def P123)
