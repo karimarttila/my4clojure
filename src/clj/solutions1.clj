@@ -1127,7 +1127,22 @@
 (def P127)
 
 ; P128
-(def P128)
+(require '[hashp.core])
+(def P128 (fn [card] (let [[s r] card
+                           ranks {\2 0 \3 1 \4 2 \5 3 \6 4 \7 5 \8 6 \9 7 \T 8 \J 9 \Q 10 \K 11 \A 12 }
+                           suits {\D :diamond \H :heart \C :club \S :spade}]
+                       {:suit (suits s)
+                        :rank (ranks r)})))
+
+(P128 "D2")
+(= {:suit :diamond :rank 10} (P128 "DQ"))
+(= {:suit :heart :rank 3} (P128 "H5"))
+(= {:suit :club :rank 12} (P128 "CA"))
+(= (range 13) (map (comp :rank P128 str)
+                                      '[S2 S3 S4 S5 S6 S7
+                                        S8 S9 ST SJ SQ SK SA]))
+; Scratch
+
 
 ; P129
 (def P129)

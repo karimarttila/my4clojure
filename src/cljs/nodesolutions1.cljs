@@ -87,3 +87,4 @@
 ;(mapv (fn [x] (-> x int )) (seq (str 891)))
 ;(list 7 5/7 2 3/5)
 ;
+"asdf"
