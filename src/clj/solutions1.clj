@@ -1166,7 +1166,45 @@
 (false? (P134 :c {:a nil :b 2}))
 
 ; P135
-(def P135)
+(def P135 (fn [a & xs] (:acc (reduce (fn [acc x]
+                                       (if (#{+ - / *} x)
+                                         (assoc acc :oper x)
+                                         (let [operator (:oper acc)
+                                               operand (:acc acc)
+                                               new-acc (operator operand x)]
+                                           (assoc acc :acc new-acc))))
+                                     {:acc a :oper nil} xs))))
+(def P135 (fn [a & xs] (:acc (reduce (fn [acc x]
+                                       (if (#{+ - / *} x)
+                                         (assoc acc :oper x)
+                                         (assoc acc :acc ((:oper acc) (:acc acc) x))))
+                                     {:acc a :oper nil} xs))))
+; Muiden
+; Tosi nerokas. Eli lasketaan (f x y) ja sitten tämä arvo laitetaan funktiolle,
+; joka on if-lauseen jälkeen joko (fn [z] (apply c z r)) tai +.
+; Eli kun (f x y) on laskettu, niin sen arvo laitetaan sisään z:n arvoksi.
+(def P135 (fn c [x f y & r]
+            ((if r
+               (fn [z] (apply c z r))
+               +)
+             (f x y))))
+(def P135 (fn c [x f y & r]
+            (let [_ #p x
+                  _ #p f
+                  _ #p y
+                  _ #p r])
+            ((if r
+               (fn [z] (let [_ #p z] (apply c z r)))
+               +)
+             (f x y))))
+(P135 10 / 2 - 1 * 2)
+(P135 2 + 5)
+(= 7  (P135 2 + 5))
+(= 42 (P135 38 + 48 - 2 / 2))
+(= 8  (P135 10 / 2 - 1 * 2))
+(= 72 (P135 20 / 2 + 2 + 4 + 8 - 6 - 10 * 9))
+; Scratch
+(assoc {:acc 0 :oper nil} :oper +)
 
 ; P136
 (def P136)
