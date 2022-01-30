@@ -24,7 +24,7 @@
 (= P3 (.toUpperCase "hello world"))
 
 ; P4
-;(= (list ___) '(:a :b :c))
+;(= (list P4) '(:a :b :c))
 (= (list :a :b :c) '(:a :b :c))
 
 ; P5
@@ -1197,7 +1197,31 @@
                (fn [z] (let [_ #p z] (apply c z r)))
                +)
              (f x y))))
+; Tämä myös tosi hyvä.
+(def P135 (fn calc
+            ([x] x)
+            ([x op y & r] (apply calc (conj r (op x y))))))
+; Vesa
+(def P135c (fn [& exprs]
+            (reduce (fn [acc x]
+                      (if (fn? x)
+                        (partial x acc)
+                        (acc x)))
+                    exprs)))
+; Valtteri
+(def P135d
+    (fn calc ([x op y & r]
+              (if op
+                (recur (op x y) (first r) (second r) (drop 2 r))
+                x))))
 (P135 10 / 2 - 1 * 2)
+(P135c 10 / 2 - 1 * 2)
+(P135d 10 / 2 - 1 * 2)
+(apply P135 '(10 / 2 - 1 * 2))
+(apply P135 (list 10 / 2 - 1 * 2))
+(apply P135 [10 / 2 - 1 * 2])
+(apply P135 '(1 + 1))
+(apply P135 '(10 / 2 - 1 * 2))
 (P135 2 + 5)
 (= 7  (P135 2 + 5))
 (= 42 (P135 38 + 48 - 2 / 2))
@@ -1205,6 +1229,25 @@
 (= 72 (P135 20 / 2 + 2 + 4 + 8 - 6 - 10 * 9))
 ; Scratch
 (assoc {:acc 0 :oper nil} :oper +)
+(defn infix-list
+	([] (cons 1 (infix-list + 1)))
+	([o n] (lazy-seq (cons o (cons n (infix-list o n))))))
+(def jee (take 5 (infix-list)))
+(apply P135 jee)
+; Oma reducella tehty ratkaisu toimii.
+; Rekursiolla tehty ratkaisu räjäyttää pinon.
+(def P135b (fn calc
+            ([x] x)
+            ([x op y & r] (apply calc (conj r (op x y))))))
+(time (apply P135b (take 1000000 (infix-list))))
+(time (apply P135c (take 1000000 (infix-list))))
+(time (apply P135d (take 1000000 (infix-list))))
+(time (apply P135 (take 1000000 (infix-list))))
+
+(time (+ 12 2))
+(P135 10 / 2 - 1 * 2)
+(apply P135 '(10 / 2 - 1 * 2))
+(apply P135 (take 10 (infix-list)))
 
 ; P136
 (def P136)
@@ -1228,7 +1271,15 @@
 (def P142)
 
 ; P143
-(def P143)
+(def P143 (fn [xs1 xs2] (reduce + (map (fn [a b] (* a b)) xs1 xs2))))
+; Muiden
+(def P143 #(apply + (map * % %2)))
+;
+(P143 [1 2 3] [4 5 6])
+(= 0 (P143 [0 1 0] [1 0 0]))
+(= 3 (P143 [1 1 1] [1 1 1]))
+(= 32 (P143 [1 2 3] [4 5 6]))
+(= 256 (P143 [2 5 6] [100 10 1]))
 
 ; P144
 (def P144)
@@ -1249,7 +1300,30 @@
 (take 10 (partition 2 (range 20)))
 
 ; P146
-(def P146)
+(def P146 (fn [m] (into {}
+                        (mapcat (fn [[k v]]
+                                  (let [vs (map (fn [[k1 v1]] [[k k1] v1]) v)]
+                                    vs)) m))))
+; Ai niin, piti tehdä for:
+(def P146 (fn [m]
+            (into {}
+                  (for [[k v] m
+                        [k1 v1] v]
+                    [[k k1] v1]))))
+;
+(P146 '{a {p 1, q 2}
+           b {m 3, n 4}})
+(= (P146 '{a {p 1, q 2}
+           b {m 3, n 4}})
+   '{[a p] 1, [a q] 2
+     [b m] 3, [b n] 4})
+(= (P146 '{[1] {a b c d}
+           [2] {q r s t u v w x}})
+   '{[[1] a] b, [[1] c] d,
+     [[2] q] r, [[2] s] t,
+     [[2] u] v, [[2] w] x})
+(= (P146 '{m {1 [a b c] 3 nil}})
+   '{[m 1] [a b c], [m 3] nil})
 
 ; P147
 (def P147)
