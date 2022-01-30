@@ -1326,7 +1326,43 @@
    '{[m 1] [a b c], [m 3] nil})
 
 ; P147
-(def P147)
+(require '[hashp.core])
+; Käytä 4Clojure-sivulla vain + eikä +'
+(def P147 (fn [xs]
+            (lazy-seq (when-let [s (seq xs)]
+                        (let [x1 (first s)
+                              xn (last s)
+                              nxs (map #(apply +' %) (partition 2 1 s))]
+                          (cons xs (P147 (vec (concat [x1] nxs [xn])))))))))
+; Muista: iterate:lla tekee siistin lazy-seq:n!
+(def P147 (fn [s] (iterate (fn [v]
+                             (let [x1 (first v)
+                              xn (last v)
+                              nxs (map #(apply +' %) (partition 2 1 v))]
+                               (vec (concat [x1] nxs [xn])))) s)))
+; Muiden
+; Eli laitetaan alkuun 0 ja loppuun nolla => menee limittäin ja lasketaan yhteen.
+
+(def P147 (fn [coll] (iterate
+                       (fn [xs]
+                         (let [eka #p (conj (vec xs) 0)
+                               toka #p (cons 0 (vec xs))]
+                           (map +' eka toka)))
+                       coll)))
+(def P147 (fn [coll] (iterate #(map +' (conj (vec %) 0) (cons 0 (vec %))) coll)))
+;
+(= (second (P147 [2 3 2])) [2 5 5 2])
+(= (take 5 (P147 [1])) [[1] [1 1] [1 2 1] [1 3 3 1] [1 4 6 4 1]])
+(= (take 2 (P147 [3 1 2])) [[3 1 2] [3 4 3 2]])
+(= (take 100 (P147 [2 4 2])) (rest (take 101 (P147 [2 2]))))
+; Scratch
+(partition 2 1 [2 3 2])
+(def lazy-seq-example (fn [f coll]
+                        (lazy-seq
+                          (when-let [s (seq coll)]
+                            (cons (f (first s)) (lazy-seq-example f (rest s)))))))
+(map #(apply + %) (partition 2 1 [2 3 2]))
+(take 5 (P147 [2 3 2]))
 
 ; P148
 (def P148)
