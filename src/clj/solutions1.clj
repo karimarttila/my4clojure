@@ -1380,7 +1380,69 @@
 (def P152)
 
 ; P153
-(def P153)
+(require '[hashp.core])
+(def P153 (fn [s]
+            ; Eli tarkistetaan, että cs-setin jokainen item ei ole sama kuin
+            ; missään xss seqin sisällä olevien xs-settien item.
+            (let [checkit (fn [cs xss]
+                            (every? false? (for [xs xss
+                                                 x xs
+                                                 c cs]
+                                             (= c x))))]
+              (if (empty? s)
+                true
+                (and (checkit (first s) (rest s)) (recur (rest s)))))))
+; Muiden
+(def P153 #(apply distinct? (mapcat seq %)))
+(def P153 (fn [xs] (apply distinct? (mapcat seq xs))))
+; TODO: Mukana muitakin hyviä ratkaisuja, tutki myöhemmin!
+
+(P153 #{#{\U} #{\s} #{\e \R \E} #{\P \L} #{\.}})
+
+(= (P153 #{#{\U} #{\s} #{\e \R \E} #{\P \L} #{\.}})
+                       true)
+(= (P153 #{#{:a :b :c :d :e}
+                             #{:a :b :c :d}
+                             #{:a :b :c}
+                             #{:a :b}
+                             #{:a}})
+                       false)
+(= (P153 #{#{[1 2 3] [4 5]}
+                             #{[1 2] [3 4 5]}
+                             #{[1] [2] 3 4 5}
+                             #{1 2 [3 4] [5]}})
+                       true)
+(= (P153 #{#{'a 'b}
+                             #{'c 'd 'e}
+                             #{'f 'g 'h 'i}
+                             #{''a ''c ''f}})
+                       true)
+(= (P153 #{#{'(:x :y :z) '(:x :y) '(:z) '()}
+                             #{#{:x :y :z} #{:x :y} #{:z} #{}}
+                             #{'[:x :y :z] [:x :y] [:z] [] {}}})
+                       false)
+(= (P153 #{#{(= "true") false}
+                             #{:yes :no}
+                             #{(class 1) 0}
+                             #{(symbol "true") 'false}
+                             #{(keyword "yes") ::no}
+                             #{(class '1) (int \0)}})
+                       false)
+(= (P153 (set [(set [distinct?])
+                                 (set [#(-> %) #(-> %)])
+                                 (set [#(-> %) #(-> %) #(-> %)])
+                                 (set [#(-> %) #(-> %) #(-> %)])]))
+                       true)
+(= (P153 #{#{(#(-> *)) + (quote mapcat) #_ nil}
+                             #{'+ '* mapcat (comment mapcat)}
+                             #{(do) set contains? nil?}
+                             #{, , , #_, , empty?}})
+                       false)
+; Scratch
+(def P153 (fn [xs] (apply distinct? (mapcat seq xs))))
+(P153 #{#{\U} #{\s} #{\e \R \E} #{\P \L} #{\.}})
+(mapcat seq #{#{\U} #{\s} #{\e \R \E} #{\P \L} #{\.}})
+
 
 ; P154
 (def P154)
