@@ -11,8 +11,12 @@
 ; just run-node
 ; Then start node REPL in Cursive (connect to .shadowin this window
 ; (shadow.cljs.devtools.api/repl :app)
+
 ; HUOM! Älä ota pois tätä main! koska shadow-cljs vaatii sen.
 (defn main! [])
+
+"asdf"
+(+ 1 1)
 
 
 ;; Works only with Java

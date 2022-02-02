@@ -15,7 +15,8 @@
 ;; There is a scratch area after each solution paragraph. If I realized that I need more space
 ;; for scratch I experimented in the myscratch namespace.
 
-
+*ns*
+"asdf"
 (require '[hashp.core])
 
 ; P1
