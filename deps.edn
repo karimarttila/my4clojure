@@ -7,7 +7,6 @@
            :test {:extra-paths ["test/clj"]
                   :extra-deps {lambdaisland/kaocha {:mvn/version "1.0-612"}
                                lambdaisland/kaocha-cljs {:mvn/version "0.0-71"}}}
-           ;; Let's learn to use a common part already now since in the next exercise we create frontend with re-frame.
            :common {:extra-paths ["src/cljc"]
                     :extra-deps {nrepl/nrepl {:mvn/version "0.8.2"}
                                  hashp/hashp {:mvn/version "0.2.1"}}}
@@ -22,10 +21,6 @@
                          :extra-deps {com.cognitect/test-runner {:git/url "https://github.com/cognitect-labs/test-runner.git"
                                                                  :sha "209b64504cb3bd3b99ecfec7937b358a879f55c1"}}
                          :main-opts ["-m" "cognitect.test-runner"]}
-           ;; Depstar for building fat jar.
-           :uberjar {:extra-deps {seancorfield/depstar {:mvn/version "0.5.1"}}
-                     :extra-paths ["prod-resources" "target/shadow/prod/resources"]
-                     :main-opts ["-m" "hf.depstar.uberjar" "target/simpleserver.jar"]}
            :outdated {:extra-deps {olical/depot {:mvn/version "RELEASE"}}
                       :main-opts ["-m" "depot.outdated.main" "-a" "outdated"]}
            :clj-kondo {:extra-deps {clj-kondo/clj-kondo {:mvn/version "2020.10.10"}}

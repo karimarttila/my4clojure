@@ -32,6 +32,7 @@ yarn.lock
 package-lock.json
 .shadow-cljs/
 prod-resources/
+node_modules/
 
 # Generated directories
 out/
@@ -45,7 +46,4 @@ trace.edn
 # clj-kondo cache
 .cache/
 
-# Repl port files
-.nrepl-port
 
-node_modules/

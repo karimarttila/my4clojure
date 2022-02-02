@@ -1,30 +1,3 @@
-;; shadow-cljs configuration
-
-;{:deps {:aliases [:dev :common :node :kari]}
-; :log {:level :debug}
-; :builds {:app {:target :node-script
-;                :main shadow.cljs.npm.create/main
-;                :output-to "target/main.js"
-;                :devtools {:preloads [hashp.core]}
-;                ; :devtools {:enabled false}
-;                }
-;
-;
-;          ;:app {:target :node-script
-;          ;      :output-dir "dev-resources/public/js"
-;          ;      :asset-path "/js"
-;          ;      :modules {:main {:entries [nodesolutions1]}}
-;          ;      :nrepl {:port 5051}
-;          ;      :devtools {:preloads [hashp.core]}
-;          ;      :dev {}
-;          ;      :release {:output-dir "target/shadow/prod/resources/public/js"
-;          ;                :compiler-options {:source-map "target/shadow/prod/resources/public/js/main.js.map"
-;          ;                                   :optimizations :advanced}}}
-;
-;          }
-;
-; ;:source-paths ["src/cljs"]
-; }
 
 {:deps {:aliases [:dev :common :node :kari]}
  :log {:level :debug}

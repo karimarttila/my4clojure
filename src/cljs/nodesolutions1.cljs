@@ -1,5 +1,10 @@
 (ns nodesolutions1)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Node / Clojurescript experimentation.
+;; https://4clojure.oxal.org/ runs solutions using Clojurescript - some Clojure / JVM specific and
+;; Java interop does not work. Test in this namespace that the solution works with Clojurescript.
+
 ; First:
 ; just shadow-node
 ; ... wait till you see "Build completed", then:
@@ -87,4 +92,4 @@
 ;(mapv (fn [x] (-> x int )) (seq (str 891)))
 ;(list 7 5/7 2 3/5)
 ;
-"asdf"
+

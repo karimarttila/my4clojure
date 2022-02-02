@@ -3,11 +3,18 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
-;; HUOM! Tässä solutions1 namespacessa elementary ja easy tehtävät.
+;; NOTE: In this solution1 namespace the elementary and easy solutions.
 ;;
 ;; NOTE!
 ;; If some problem page does not work, try to hard refresh (ctrl + refresh-button), then supply
 ;; the answer again!
+;;
+;; NOTE: There is some Finnish occasionally - this repo is just for my own learning purposes.
+;; E.g. "muiden" = others, i.e. once I finished my own solution, I copy-pasted best
+;; others' solutions and examined those solutions (e.g. using hashp) to learn from them.
+;; There is a scratch area after each solution paragraph. If I realized that I need more space
+;; for scratch I experimented in the myscratch namespace.
+
 
 (require '[hashp.core])
 
@@ -1179,6 +1186,7 @@
                                          (assoc acc :oper x)
                                          (assoc acc :acc ((:oper acc) (:acc acc) x))))
                                      {:acc a :oper nil} xs))))
+"asdf"
 ; Muiden
 ; Tosi nerokas. Eli lasketaan (f x y) ja sitten tämä arvo laitetaan funktiolle,
 ; joka on if-lauseen jälkeen joko (fn [z] (apply c z r)) tai +.
@@ -1201,14 +1209,22 @@
 (def P135 (fn calc
             ([x] x)
             ([x op y & r] (apply calc (conj r (op x y))))))
-; Vesa
+; My Ve colleagues's solution.
 (def P135c (fn [& exprs]
             (reduce (fn [acc x]
                       (if (fn? x)
                         (partial x acc)
                         (acc x)))
                     exprs)))
-; Valtteri
+(def P135cc (fn [& exprs]
+            (reduce (fn [acc x]
+                      (let [_ #p acc
+                            _ #p x])
+                      (if (fn? x)
+                        (partial x acc)
+                        (acc x)))
+                    exprs)))
+; My Va colleagues's solution.
 (def P135d
     (fn calc ([x op y & r]
               (if op
@@ -1216,6 +1232,7 @@
                 x))))
 (P135 10 / 2 - 1 * 2)
 (P135c 10 / 2 - 1 * 2)
+(P135cc 10 / 2 - 1 * 2)
 (P135d 10 / 2 - 1 * 2)
 (apply P135 '(10 / 2 - 1 * 2))
 (apply P135 (list 10 / 2 - 1 * 2))
@@ -1239,10 +1256,10 @@
 (def P135b (fn calc
             ([x] x)
             ([x op y & r] (apply calc (conj r (op x y))))))
-(time (apply P135b (take 1000000 (infix-list))))
-(time (apply P135c (take 1000000 (infix-list))))
-(time (apply P135d (take 1000000 (infix-list))))
-(time (apply P135 (take 1000000 (infix-list))))
+(time (apply P135b (take 1000001 (infix-list))))
+(time (apply P135c (take 1000001 (infix-list))))
+(time (apply P135d (take 1000001 (infix-list))))
+(time (apply P135  (take 1000001 (infix-list))))
 
 (time (+ 12 2))
 (P135 10 / 2 - 1 * 2)
