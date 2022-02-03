@@ -1483,7 +1483,14 @@
 
 
 ; P157
-(def P157)
+(def P157 (fn [xs] (map (fn [a b] [a b]) xs (range))))
+; Muiden
+(def P157 #(map-indexed (fn [a b] [b a]) %))
+;
+(P157 [:a :b :c])
+(= (P157 [:a :b :c]) [[:a 0] [:b 1] [:c 2]])
+(= (P157 [0 1 3]) '((0 0) (1 1) (3 2)))
+(= (P157 [[:foo] {:bar :baz}]) [[[:foo] 0] [{:bar :baz} 1]])
 
 ; P158
 (def P158)
@@ -1521,7 +1528,23 @@
 (def P165)
 
 ; P166
-(def P166)
+; https://stackoverflow.com/questions/18289671/implementing-other-comparison-operators-in-terms-of-operator-in-one-call
+(def P166 (fn [o x y]
+            (cond
+              (o x y) :lt
+              (and (not (o x y)) (not (o y x))) :eq
+              (o y x) :gt
+              :else :panic!)))
+; Muiden
+(def P166 (fn [< x y]
+            (cond (< x y) :lt
+                  (< y x) :gt
+                  :else :eq)))
+(= :gt (P166 < 5 1))
+(= :eq (P166 (fn [x y] (< (count x) (count y))) "pear" "plum"))
+(= :lt (P166 (fn [x y] (< (mod x 5) (mod y 5))) 21 3))
+(= :gt (P166 > 0 2))
+
 
 ; P167
 (def P167)

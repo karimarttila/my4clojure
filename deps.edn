@@ -2,19 +2,19 @@
  :paths ["resources"]
 
  :aliases {:dev {:extra-paths ["dev-resources" "classes"]
-                 :extra-deps {org.clojure/clojure {:mvn/version "1.10.1"}
-                              clj-kondo/clj-kondo {:mvn/version "2020.10.10"}}}
+                 :extra-deps {org.clojure/clojure {:mvn/version "1.10.3"}
+                              clj-kondo/clj-kondo {:mvn/version "2022.01.15"}}}
            :test {:extra-paths ["test/clj"]
-                  :extra-deps {lambdaisland/kaocha {:mvn/version "1.0-612"}
-                               lambdaisland/kaocha-cljs {:mvn/version "0.0-71"}}}
+                  :extra-deps {lambdaisland/kaocha {:mvn/version "1.60.977"}
+                               lambdaisland/kaocha-cljs {:mvn/version "1.0.107"}}}
            :common {:extra-paths ["src/cljc"]
-                    :extra-deps {nrepl/nrepl {:mvn/version "0.8.2"}
+                    :extra-deps {nrepl/nrepl {:mvn/version "0.9.0"}
                                  hashp/hashp {:mvn/version "0.2.1"}}}
            :backend {:extra-paths ["src/clj"]
                      :extra-deps {}}
            :node {:extra-paths ["src/cljs"]
-                     :extra-deps {org.clojure/clojurescript {:mvn/version "1.10.758"}
-                                  thheller/shadow-cljs {:mvn/version "2.11.23"}
+                     :extra-deps {org.clojure/clojurescript {:mvn/version "1.11.4"}
+                                  thheller/shadow-cljs {:mvn/version "2.16.12"}
                                   }}
            ;; Test runner in console.
            :test-runner {:extra-paths ["test"]
