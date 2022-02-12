@@ -2,16 +2,16 @@
 
 My solutions to [4ever-clojure](https://4clojure.oxal.org/) exercises. Also scratch for experimentations and copy-pasted best other developers' solutions and examined them using REPL. 
 
-I have been doing these exercises for learning purposes. I'm no Clojure guru but I'm a productive Clojure full stack developer. While doing these exercises I realized that after my own solution it is really important to study other developers' solutions. While studying other developers' solution I often noticed that there is a one-liner solution which just applies one or two Clojure standard library functions. So, studying other developers' solutions provides two great learning purposes:
+I have been doing these exercises for learning purposes. I'm no Clojure guru but I'm a productive Clojure full stack developer. While doing these exercises I realized that after my own solution it is really important to study other developers' solutions. While studying other developers' solutions I often noticed that there is a one-liner solution which just applies one or two Clojure standard library functions. So, studying other developers' solutions provides two great learning purposes:
 
 1. You get to understand how other developers think while constructing their own solutions.
 2. You get to have good examples how to apply Clojure standard library functions - applying one or more functions with map, filter and reduce often provides a very concise and beautiful solution.
 
 I have added best other developers' solutions after my own solution after comment "; Muiden" ("muiden" is Finnish and means "others", i.e. other developers' solutions). 
 
-There are quite a lot of Finnish comments here and there - I didn't originally to make this a public repo - the solutions are originally meant to just for myself for learning purposes.
+There are quite a lot of Finnish comments here and there - I didn't originally mean to make this a public repo - the solutions are originally written just for myself for learning purposes.
 
-I have often studied in more detail other developers' solutions using the [hashp](https://github.com/weavejester/hashp) library. I strongly recommend it.
+I have often studied in more detail other developers' solutions using the [hashp](https://github.com/weavejester/hashp) library. I strongly recommend hashp tool while learning Clojure.
 
 Example:
 
