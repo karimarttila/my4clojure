@@ -351,10 +351,6 @@
 (= [1 2 [3 4 5] [1 2 3 4 5]] (let [[a b & c :as d] P51] [a b c d]))
 
 
-; P53
-(def P53)
-
-
 ; P61
 (def P61 (fn [xs1 xs2] (zipmap xs1 xs2)))
 (def P61 (fn [xs1 xs2] (reduce (fn [acc [k v]] (assoc acc k v)) {} (map (fn [a b] [a b]) xs1 xs2))))
@@ -430,14 +426,6 @@
 (range 1 3)
 
 
-
-; P73
-(def P73)
-
-; P79
-(def P79)
-
-
 ; P81
 (def P81 (fn [set1 set2] (loop [acc #{} xs set1]
                            (if (empty? xs)
@@ -456,9 +444,6 @@
 (= (P81 #{:a :b :c :d} #{:c :e :a :f :d}) #{:a :c :d})
 ; Scratch
 (filter #{0 1 2 3} #{2 3 4 5}) ; => (3 2)
-
-; P82
-(def P82)
 
 ; P83
 (def P83 (fn [& lst] (boolean (and (some true? lst) (not-every? true? lst)))))
@@ -485,13 +470,6 @@
 (apply = (list true true true))
 (apply = (list false false false))
 
-; P84
-(def P84)
-
-
-; P87
-(def P87)
-
 ; P88
 (def P88 (fn [set1 set2] (let [both (clojure.set/intersection set1 set2)
                                all (clojure.set/union set1 set2)]
@@ -513,10 +491,6 @@
 (clojure.set/union #{1 2 3 4 5 6} #{1 3 5 7})
 
 
-
-; P89
-(def P89)
-
 ; P90
 (def P90 (fn [set1 set2] (set (for [x1 set1 x2 set2] [x1 x2]))))
 (P90 #{1 2 3} #{4 5})
@@ -529,14 +503,6 @@
 (= 300 (count (P90 (into #{} (range 10))
                    (into #{} (range 30)))))
 
-; P91
-(def P91)
-
-; P92
-(def P92)
-
-; P94
-(def P94)
 
 ; P95
 ; Mieti ratkaisua: Pitää tarkistaa, että binary-treen jokainen lehti on nil tai binary-tree.
@@ -726,15 +692,6 @@
   (reduce gcd [342 12 240]))
 
 
-
-
-; P101
-(def P101)
-
-
-; P106
-(def P106)
-
 ; P107
 (def P107 (fn [n] (fn [x] (if (= n 0) 1 (nth (iterate (partial * x) x) (dec n))))))
 ; Käytä oletusarvoa 1, jos nth index ei löydy.
@@ -757,15 +714,6 @@
 (def pow2 (P107 2))
 (pow2 3)
 
-
-
-; P111
-(def P111)
-
-
-
-; P117
-(def P117)
 
 ; P118
 (def P118 map)
@@ -828,9 +776,6 @@
 (seq [2 3 4 5 6])
 
 
-; P119
-(def P119)
-
 ; P120
 (require '[hashp.core])
 ; Works in JVM
@@ -851,8 +796,6 @@
 ; Scratch
 (map (comp #(- % 48) int) (seq "40"))
 (str 9)
-
-
 
 ; P122
 (require '[hashp.core])
@@ -893,20 +836,14 @@
 (def mypow2 (mypow 2))
 (mypow2 4)
 
-; P123
-(def P123)
-
-; P124
-(def P124)
-
-; P125
-(def P125)
 
 ; P126
-(def P126)
+; HUOM: Ei toimi Clojurescriptissa.
+(def P126 Class)
+(let [x P126] (and (= (class x) x) x))
+; Scratch
+(class java.lang.Class)
 
-; P127
-(def P127)
 
 ; P128
 (require '[hashp.core])
@@ -1020,10 +957,6 @@
 (P135 10 / 2 - 1 * 2)
 (apply P135 '(10 / 2 - 1 * 2))
 (apply P135 (take 11 (infix-list)))
-
-
-; P140
-(def P140)
 
 
 ; P143
