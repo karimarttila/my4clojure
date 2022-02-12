@@ -1,4 +1,5 @@
-(ns elementary-solutions)
+(ns elementary-solutions
+  (:require [hashp.core]))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;

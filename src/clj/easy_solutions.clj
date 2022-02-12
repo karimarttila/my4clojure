@@ -318,19 +318,10 @@
 (= (P42 5) 120)
 (= (P42 8) 40320)
 
-; P43
-(def P43)
-
-; P44
-(def P44)
-
 ; P45
 (def P45 '(1 4 7 10 13))
 (= P45 (take 5 (iterate #(+ 3 %) 1)))
 
-
-; P46
-(def P46)
 
 ; P47
 (def P47 4)
@@ -354,8 +345,6 @@
 (= (P49 1 [:a :b :c :d]) [[:a] [:b :c :d]])
 (= (P49 2 [[1 2] [3 4] [5 6]]) [[[1 2] [3 4]] [[5 6]]])
 
-; P50
-(def P50)
 
 ; P51
 (def P51 [1 2 3 4 5])
@@ -365,23 +354,6 @@
 ; P53
 (def P53)
 
-; P54
-(def P54)
-
-; P55
-(def P55)
-
-; P56
-(def P56)
-
-; P58
-(def P58)
-
-; P59
-(def P59)
-
-; P60
-(def P60)
 
 ; P61
 (def P61 (fn [xs1 xs2] (zipmap xs1 xs2)))
@@ -438,9 +410,6 @@
 (merge-with (fn [xs1 xs2] (concat (drop 1 xs1) (drop 1 xs2))) {:a [1 2]} {:a [3 4]})
 
 
-; P65
-(def P65)
-
 ; P66
 ; https://brilliant.org/wiki/greatest-common-divisor/
 (def P66 (fn [n1 n2] (apply max (map first (filter (fn [[a b]] (= a b))
@@ -461,40 +430,13 @@
 (range 1 3)
 
 
-; P67
-(def P67)
-
-
-; P69
-(def P69)
-
-; P70
-(def P70)
-
 
 ; P73
 (def P73)
 
-; P74
-(def P74)
-
-; P75
-(def P75)
-
-; P76
-(def P76)
-
-; P77
-(def P77)
-
-; P78
-(def P78)
-
 ; P79
 (def P79)
 
-; P80
-(def P80)
 
 ; P81
 (def P81 (fn [set1 set2] (loop [acc #{} xs set1]
@@ -546,11 +488,6 @@
 ; P84
 (def P84)
 
-; P85
-(def P85)
-
-; P86
-(def P86)
 
 ; P87
 (def P87)
@@ -597,9 +534,6 @@
 
 ; P92
 (def P92)
-
-; P93
-(def P93)
 
 ; P94
 (def P94)
@@ -701,9 +635,6 @@
 (vec (concat [1] (map (fn [[a b]] (+ a b)) (partition 2 1 [1 3 3 1])) [1]))
 
 
-; P98
-(def P98)
-
 
 
 ; P99
@@ -800,17 +731,6 @@
 ; P101
 (def P101)
 
-; P102
-(def P102)
-
-; P103
-(def P103)
-
-; P104
-(def P104)
-
-; P105
-(def P105)
 
 ; P106
 (def P106)
@@ -839,32 +759,10 @@
 
 
 
-; P108
-(def P108)
-
-; P109
-(def P109)
-
-; P110
-(def P110)
-
 ; P111
 (def P111)
 
-; P112
-(def P112)
 
-; P113
-(def P113)
-
-; P114
-(def P114)
-
-; P115
-(def P115)
-
-; P116
-(def P116)
 
 ; P117
 (def P117)
@@ -955,8 +853,6 @@
 (str 9)
 
 
-; P121
-(def P121)
 
 ; P122
 (require '[hashp.core])
@@ -1029,21 +925,6 @@
                                         S8 S9 ST SJ SQ SK SA]))
 ; Scratch
 
-
-; P129
-(def P129)
-
-; P130
-(def P130)
-
-; P131
-(def P131)
-
-; P132
-(def P132)
-
-; P133
-(def P133)
 
 
 ; P135
@@ -1140,26 +1021,10 @@
 (apply P135 '(10 / 2 - 1 * 2))
 (apply P135 (take 11 (infix-list)))
 
-; P136
-(def P136)
-
-; P137
-(def P137)
-
-; P138
-(def P138)
-
-; P139
-(def P139)
 
 ; P140
 (def P140)
 
-; P141
-(def P141)
-
-; P142
-(def P142)
 
 ; P143
 (def P143 (fn [xs1 xs2] (reduce + (map (fn [a b] (* a b)) xs1 xs2))))
@@ -1172,8 +1037,6 @@
 (= 32 (P143 [1 2 3] [4 5 6]))
 (= 256 (P143 [2 5 6] [100 10 1]))
 
-; P144
-(def P144)
 
 
 ; P146
@@ -1241,20 +1104,6 @@
 (map #(apply + %) (partition 2 1 [2 3 2]))
 (take 5 (P147 [2 3 2]))
 
-; P148
-(def P148)
-
-; P149
-(def P149)
-
-; P150
-(def P150)
-
-; P151
-(def P151)
-
-; P152
-(def P152)
 
 ; P153
 (require '[hashp.core])
@@ -1321,14 +1170,6 @@
 (mapcat seq #{#{\U} #{\s} #{\e \R \E} #{\P \L} #{\.}})
 
 
-; P154
-(def P154)
-
-; P155
-(def P155)
-
-
-
 ; P157
 (def P157 (fn [xs] (map (fn [a b] [a b]) xs (range))))
 ; Muiden
@@ -1339,24 +1180,6 @@
 (= (P157 [0 1 3]) '((0 0) (1 1) (3 2)))
 (= (P157 [[:foo] {:bar :baz}]) [[[:foo] 0] [{:bar :baz} 1]])
 
-; P158
-(def P158)
-
-; P159
-(def P159)
-
-; P160
-(def P160)
-
-
-; P163
-(def P163)
-
-; P164
-(def P164)
-
-; P165
-(def P165)
 
 ; P166
 ; https://stackoverflow.com/questions/18289671/implementing-other-comparison-operators-in-terms-of-operator-in-one-call
@@ -1377,24 +1200,6 @@
 (= :gt (P166 > 0 2))
 
 
-; P167
-(def P167)
-
-; P168
-(def P168)
-
-; P169
-(def P169)
-
-; P170
-(def P170)
-
-; P171
-(def P171)
-
-; P172
-(def P172)
-
 ; P173
 ; __ => f a
 (= 3
@@ -1402,101 +1207,5 @@
    (let [[[f a] b] [[+ 1] 2]] (f a b))
    (let [[f a] [inc 2]] (f a))
    )
-
-
-; P174
-(def P174)
-
-; P175
-(def P175)
-
-; P176
-(def P176)
-
-; P177
-(def P177)
-
-; P178
-(def P178)
-
-; P179
-(def P179)
-
-; P180
-(def P180)
-
-; P181
-(def P181)
-
-; P182
-(def P182)
-
-; P183
-(def P183)
-
-; P184
-(def P184)
-
-; P185
-(def P185)
-
-; P186
-(def P186)
-
-; P187
-(def P187)
-
-; P188
-(def P188)
-
-; P189
-(def P189)
-
-; P190
-(def P190)
-
-; P191
-(def P191)
-
-; P192
-(def P192)
-
-; P193
-(def P193)
-
-; P194
-(def P194)
-
-; P195
-(def P195)
-
-; P196
-(def P196)
-
-; P197
-(def P197)
-
-; P198
-(def P198)
-
-; P199
-(def P199)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
