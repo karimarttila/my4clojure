@@ -1259,15 +1259,15 @@
 (def P135b (fn calc
             ([x] x)
             ([x op y & r] (apply calc (conj r (op x y))))))
-(time (apply P135b (take 1000001 (infix-list))))
+;(time (apply P135b (take 1000001 (infix-list)))) ; => StackOverFlowError
 (time (apply P135c (take 1000001 (infix-list))))
 (time (apply P135d (take 1000001 (infix-list))))
-(time (apply P135  (take 1000001 (infix-list))))
+;(time (apply P135  (take 1000001 (infix-list)))) ; => StackOverFlowError
 
 (time (+ 12 2))
 (P135 10 / 2 - 1 * 2)
 (apply P135 '(10 / 2 - 1 * 2))
-(apply P135 (take 10 (infix-list)))
+(apply P135 (take 11 (infix-list)))
 
 ; P136
 (def P136)
