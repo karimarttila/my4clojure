@@ -128,10 +128,7 @@
 
 ; P22
 (def P22 #(count %)) ; Ei saa käyttää count.
-(def P22 (fn [lst] (reduce (fn [acc x] (let [;_ #p acc
-                                             ;_ #p x
-                                             ]
-                                         (+ 1 acc))) 0 (seq lst))))
+(def P22 (fn [lst] (reduce (fn [acc x] (+ 1 acc)) 0 (seq lst))))
 (def P22 (fn [lst] (reduce (fn [acc x] (+ 1 acc)) 0 (seq lst))))
 (def P22 (fn [lst] (reduce (fn [acc x] (+ 1 acc)) 0 lst)))
 ; Muiden
@@ -691,11 +688,7 @@
 ; Muiden
 (def P88 (fn [set1 set2] (reduce #((if (% %2) disj conj) % %2) set1 set2)))
 (def P88 (fn [set1 set2] (reduce (fn [acc x] ((if (acc x) disj conj) acc x)) set1 set2)))
-(def P88 (fn [set1 set2] (reduce (fn [acc x] (let [;_ #p acc
-                                                   ;_ #p x
-                                                   f (if (acc x) disj conj)
-                                                   ;_ #p f
-                                                   ] (f acc x))) set1 set2)))
+(def P88 (fn [set1 set2] (reduce (fn [acc x] (let [f (if (acc x) disj conj)] (f acc x))) set1 set2)))
 ;
 (P88 #{1 2 3 4 5 6} #{1 3 5 7})
 (= (P88 #{1 2 3 4 5 6} #{1 3 5 7}) #{2 4 6 7})
@@ -1206,7 +1199,7 @@
                (fn [z] (apply c z r))
                +)
              (f x y))))
-(def P135 (fn c [x f y & r]
+#_(def P135 (fn c [x f y & r]
             (let [_ #p x
                   _ #p f
                   _ #p y
@@ -1226,7 +1219,7 @@
                         (partial x acc)
                         (acc x)))
                     exprs)))
-(def P135cc (fn [& exprs]
+#_(def P135cc (fn [& exprs]
             (reduce (fn [acc x]
                       (let [_ #p acc
                             _ #p x])
@@ -1242,7 +1235,7 @@
                 x))))
 (P135 10 / 2 - 1 * 2)
 (P135c 10 / 2 - 1 * 2)
-(P135cc 10 / 2 - 1 * 2)
+#_(P135cc 10 / 2 - 1 * 2)
 (P135d 10 / 2 - 1 * 2)
 (apply P135 '(10 / 2 - 1 * 2))
 (apply P135 (list 10 / 2 - 1 * 2))
@@ -1370,7 +1363,7 @@
 ; Muiden
 ; Eli laitetaan alkuun 0 ja loppuun nolla => menee limittäin ja lasketaan yhteen.
 
-(def P147 (fn [coll] (iterate
+#_(def P147 (fn [coll] (iterate
                        (fn [xs]
                          (let [eka #p (conj (vec xs) 0)
                                toka #p (cons 0 (vec xs))]
