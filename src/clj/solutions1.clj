@@ -198,20 +198,29 @@
 ; Scratch
 (reverse "racecar")
 
-; TODO XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 ; P28
+(def P28 (fn [x]
+           (cond
+             (sequential? x) (mapcat P28 x)
+             :else [x])))
 
+(def P28 (fn [x]
+           (cond
+             (sequential? x) (remove nil? (concat (P28 (first x)) (P28 (next x))))
+             :else [x])))
 
-;(P28 '(1 (2 3)))
+(P28 '(1 (2 3)))
 ; Muiden:
-(def P28 (fn [x] (flatten x))) ; Ei saanut käyttää flatten.
-(def P28 (fn [x] (filter (complement sequential?)
-                         (rest (tree-seq sequential? seq x)))))
+; Ei saanut käyttää flatten.
+(def P28 (fn [x] (flatten x)))
+#(remove % (tree-seq % seq %2))
 ;
 (= (P28 '((1 2) 3 [4 [5 6]])) '(1 2 3 4 5 6))
 (= (P28 ["a" ["b"] "c"]) '("a" "b" "c"))
 (= (P28 '((((:a))))) '(:a))
 ; Scratch
+(cons 1 nil)
+(tree-seq seq? identity '((1 2 (3)) (4)))
 
 
 ; P29
@@ -1565,7 +1574,13 @@
 (def P172)
 
 ; P173
-(def P173)
+; __ => f a
+(= 3
+   (let [[f a] [+ (range 3)]] (apply f a))
+   (let [[[f a] b] [[+ 1] 2]] (f a b))
+   (let [[f a] [inc 2]] (f a))
+   )
+
 
 ; P174
 (def P174)
