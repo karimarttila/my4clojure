@@ -40,3 +40,13 @@ Example:
 #p[easy-solutions/P135cc:3] x => 2
 => 8
 ```
+
+Though the [4ever-clojure](https://4clojure.oxal.org/) site uses Clojurescript, I used Clojure (JVM) repl while developing the solutions for the exercises. The tasks are rather general in nature and in most cases the Clojure solution works in the Clojurescript side as well. For those exercises that I needed Clojurescript there is a [nodesolutions1.cljs](src/cljs/nodesolutions1.cljs) namespace.
+
+The [4ever-clojure](https://4clojure.oxal.org/) site uses four categories and I created four namespaces, one for each category solutions:
+
+- [elementary-solutions.clj](src/clj/elementary_solutions.clj) 
+- [easy-solutions.clj](src/clj/easy_solutions.clj)
+- [medium-solutions.clj](src/clj/medium_solutions.clj)
+- [hard-solutions.clj](src/clj/hard_solutions.clj)
+
