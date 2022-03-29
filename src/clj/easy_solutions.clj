@@ -10,7 +10,7 @@
 ;; the answer again!
 ;;
 ;; NOTE: There is some Finnish occasionally - this repo is just for my own learning purposes.
-;; E.g. "muiden" = others, i.e. once I finished my own solution, I copy-pasted best
+;; "Other developers' solutions": i.e. once I finished my own solution, I copy-pasted best
 ;; others' solutions and examined those solutions (e.g. using hashp) to learn from them.
 ;; There is a scratch area after each solution paragraph. If I realized that I need more space
 ;; for scratch I experimented in the myscratch namespace.
@@ -22,7 +22,7 @@
 
 ; P19
 (def P19 (fn [lst] (let [c (count lst)] (first (drop (- c 1) lst)))))
-; Muut:
+; Other developers' solutions:
 (def P19 #(first (reverse %)))
 ; HYVÄ!
 (def P19 (comp first reverse))
@@ -35,7 +35,7 @@
 (def P20 (fn [lst] (first (drop 1 (reverse lst)))))
 (def P20 (fn [lst] (->> lst reverse (drop 1) first)))
 (def P20 #(->> % reverse (drop 1) first))
-; Muiden
+; Other developers' solutions
 (def P20 #(second (reverse %)))
 (def P20 (comp last butlast))
 (= (P20 (list 1 2 3 4 5)) 4)
@@ -55,7 +55,7 @@
 (def P22 (fn [lst] (reduce (fn [acc x] (+ 1 acc)) 0 (seq lst))))
 (def P22 (fn [lst] (reduce (fn [acc x] (+ 1 acc)) 0 (seq lst))))
 (def P22 (fn [lst] (reduce (fn [acc x] (+ 1 acc)) 0 lst)))
-; Muiden
+; Other developers' solutions
 (def P22 #(reduce + (map (constantly 1) %)))
 ;
 (= (P22 '(1 2 3 3 1)) 5)
@@ -70,7 +70,7 @@
 ; P23
 (def P23 (fn [lst] (reduce (fn [acc x] (conj acc x)) '() lst)))
 (def P23 #(reduce (fn [acc x] (conj acc x)) '() %))
-; Muiden
+; Other developers' solutions
 ; HYVÄ!
 (def P23 (fn [xs] (into () xs)))
 (def P23 #(into () %))
@@ -82,7 +82,7 @@
 
 ; P24
 (def P24 #(apply + %))
-; Muiden
+; Other developers' solutions
 (def P24 #(reduce + %))
 ;
 (= (P24 [1 2 3]) 6)
@@ -131,7 +131,7 @@
              :else [x])))
 
 (P28 '(1 (2 3)))
-; Muiden:
+; Other developers' solutions:
 ; Ei saanut käyttää flatten.
 (def P28 (fn [x] (flatten x)))
 #(remove % (tree-seq % seq %2))
@@ -152,7 +152,7 @@
 ; Varsinainen ratkaisu:
 (def P29 (fn [s] (apply str (filter (set (map char (range 65 91))) s))))
 (P29 "HeLlO, WoRlD!")
-; Muiden:
+; Other developers' solutions:
 (def P29 (fn [st] (apply str (filter #(<= (int \A) (int %) (int \Z)) st))))
 (def P29 #(apply str (re-seq #"[A-Z]+" %)))
 ;
@@ -178,7 +178,7 @@
 (def P30 (fn [xs] (reduce (fn [acc x] (let [z (last acc)] (if (= z x) acc (conj acc x)))) [] xs)))
 (P30 [1 1 2 3 3 2 2 3])
 ;
-; Muiden:
+; Other developers' solutions:
 (def P30 (fn [x] (reduce #(if (= (last %) %2) % (conj % %2)) [] x)))
 (def P30 #(map first (partition-by identity %)))
 ;
@@ -205,7 +205,7 @@
 
 ; P32
 (def P32 (fn [xs] (mapcat (fn [x] [x x]) xs)))
-; Muiden
+; Other developers' solutions
 (def P32 #(interleave % %))
 (= (P32 [1 2 3]) '(1 1 2 2 3 3))
 (= (P32 [:a :a :b :b]) '(:a :a :a :a :b :b :b :b))
@@ -219,7 +219,7 @@
 ; P33
 (def P33 (fn [xs n] (apply interleave (for [n (range n)] xs))))
 (P33 [1 2 3] 2)
-; Muiden
+; Other developers' solutions
 (def P33 #(mapcat (partial repeat %2) %))
 ;
 (= (P33 [1 2 3] 2) '(1 1 2 2 3 3))
@@ -247,7 +247,7 @@
 (def P38 (fn [& xs] (reduce (fn [acc x] (if (> x acc) x acc)) (first xs) xs)))
 (def P38 (fn [& xs] (-> xs sort reverse first)))
 (def P38 (comp first reverse sort list))
-; Muiden
+; Other developers' solutions
 (def P38 #(reduce (fn [x y] (if (> x y) x y)) %&))
 (def P38 (fn [& s] (last (sort s))))
 ; Tämä toimii, koska partial tekee sort-funktion, jossa ensimmäinen parametri on >
@@ -263,7 +263,7 @@
 ; P39
 (def P39 (fn [xs1 xs2] (interleave xs1 xs2)))
 (def P39 (fn [xs1 xs2] (mapcat (fn [a b] [a b]) xs1 xs2)))
-; Muiden
+; Other developers' solutions
 (def P39 (fn [c1 c2] (mapcat list c1 c2)))
 (P39 [1 2 3] [:a :b :c])
 (= (P39 [1 2 3] [:a :b :c]) '(1 :a 2 :b 3 :c))
@@ -276,7 +276,7 @@
 ; P40
 (def P40 (fn [sep xs] (interpose sep xs)))
 (def P40 (fn [sep xs] (drop-last (interleave xs (iterate identity sep)))))
-; Muiden
+; Other developers' solutions
 (def P40 #(drop-last (interleave %2 (repeat %1))))
 ;
 (P40 0 [1 2 3])
@@ -296,7 +296,7 @@
                         (let [add (take (- n 1) lst)
                               xs2 (drop n lst)]
                           (recur (conj acc add) xs2 n))))))
-; Muiden
+; Other developers' solutions
 (def P41 #(apply concat (partition-all (dec %2) %2 %)))
 ;
 (P41 [1 2 3 4 5 6] 4)
@@ -309,7 +309,7 @@
 
 ; P42
 (def P42 (fn [n] (->> n inc (range 1) (apply *))))
-; Muiden
+; Other developers' solutions
 (def P42 #(reduce * (range 2 (inc %))))
 ;
 (P42 5)
@@ -337,7 +337,7 @@
 
 ; P49
 (def P49 (fn [n xs] [(take n xs) (drop n xs)]))
-; Muiden
+; Other developers' solutions
 (def P49 (juxt take drop))
 (P49 3 [1 2 3 4 5 6])
 
@@ -356,7 +356,7 @@
 (def P61 (fn [xs1 xs2] (reduce (fn [acc [k v]] (assoc acc k v)) {} (map (fn [a b] [a b]) xs1 xs2))))
 (def P61 (fn [xs1 xs2] (reduce (fn [acc [k v]] (assoc acc k v)) {} (partition 2 (interleave xs1 xs2)))))
 (P61 [:a :b :c] [1 2 3])
-; Muiden
+; Other developers' solutions
 (def P61 #(apply hash-map (interleave %1 %2)))
 (def P61 #(into {} (map vector %1 %2)))
 ;
@@ -387,7 +387,7 @@
 (def P63 (fn [f xs] (reduce (fn [acc [k v]] (assoc acc k (conj (get acc k []) v)))
                             {}
                             (map (fn [x] [(f x) x]) xs))))
-; Muiden
+; Other developers' solutions
 ; Nerokas. Katso doc:sta merge-with.
 (def P63 (fn [f coll]
            (reduce #(merge-with concat %1 {(f %2) [%2]}) {} coll)))
@@ -414,7 +414,7 @@
                                                          :when (and (= (mod n1 x1) 0)
                                                                     (= (mod n2 x2) 0))]
                                                      [x1 x2]))))))
-; Muiden
+; Other developers' solutions
 (def P66 (fn [a b] (if (= b 0) a (recur b (mod a b)))))
 ;
 (P66 4488 12240)
@@ -433,7 +433,7 @@
                              (let [x (first xs)]
                                (recur (if (set2 x) (conj acc x) acc)
                                       (drop 1 xs)))))))
-; Muiden
+; Other developers' solutions
 (def P81 (comp set filter))
 (def P81 (comp set keep))
 (def P81 #(set (for [x % y %2 :when (= x y)] x)))
@@ -447,7 +447,7 @@
 
 ; P83
 (def P83 (fn [& lst] (boolean (and (some true? lst) (not-every? true? lst)))))
-; Muiden
+; Other developers' solutions
 ; Eli pitää olla kumpaakin, sekä true että false.
 ; Ja koska pitää olla kumpaakin, niin ei voi olla niin, että on vain true tai on vain false.
 (def P83 #(not (apply = %&)))
@@ -476,7 +476,7 @@
                            (set (remove both all)))))
 (def P88 (fn [set1 set2] (set (remove (clojure.set/intersection set1 set2)
                                       (clojure.set/union set1 set2)))))
-; Muiden
+; Other developers' solutions
 (def P88 (fn [set1 set2] (reduce #((if (% %2) disj conj) % %2) set1 set2)))
 (def P88 (fn [set1 set2] (reduce (fn [acc x] ((if (acc x) disj conj) acc x)) set1 set2)))
 (def P88 (fn [set1 set2] (reduce (fn [acc x] (let [f (if (acc x) disj conj)] (f acc x))) set1 set2)))
@@ -513,7 +513,7 @@
                           (P95 (nth x 2)))))) ; ... ja toka lehti on myös binary-tree.
 (P95 '(:a (:b nil nil) nil))
 ;
-; Muiden
+; Other developers' solutions
 (def P95 (fn t [x]
            (or (nil? x) (and (sequential? x) (= 3 (count x)) (t (second x)) (t (nth x 2))) false)))
 (def P95 (fn bin-tree? [s]
@@ -551,7 +551,7 @@
 (def P96 (fn [x] (letfn [(tr1 [x] (if (nil? x) [x] (concat [(first x)] (tr1 (second x)) (tr1 (nth x 2)))))
                          (tr2 [x] (if (nil? x) [x] (concat [(first x)] (tr2 (nth x 2)) (tr2 (second x)))))]
                    (= (tr1 x) (tr2 x)))))
-; Muiden:
+; Other developers' solutions:
 ; TODO: kannattaa tutkia lisää näitä ratkaisuja.
 ;
 (P96 '(:a (:b nil nil) nil))
@@ -641,7 +641,7 @@
                              hcf_n (let [tmp (hcf dens)]
                                      (if (= tmp 0) 1 tmp))]
                          (/ lcm_n hcf_n)))))
-; Muiden
+; Other developers' solutions
 ; HUOM: Paljon parempi!
 (def P100 (fn [& x]
             (let [y (apply min x)]
@@ -696,7 +696,7 @@
 (def P107 (fn [n] (fn [x] (if (= n 0) 1 (nth (iterate (partial * x) x) (dec n))))))
 ; Käytä oletusarvoa 1, jos nth index ei löydy.
 (def P107 (fn [n] (fn [x] (nth (iterate (partial * x) x) (dec n) 1))))
-; Muiden
+; Other developers' solutions
 (def P107 (fn [n] #(int (Math/pow % n))))
 (def P107 (fn [n] (fn [x] (apply * (repeat n x)))))
 ;
@@ -814,7 +814,7 @@
                         muls (reverse (map int (seq s)))
                         exps (iterate inc 0)]
                     (apply + (map (fn [mu ex] (int (* mu (mypow2 ex)))) muls exps)))))
-; Muiden
+; Other developers' solutions
 (def P122 #(Integer/parseInt % 2))
 ;
 (P122 "101")
@@ -860,8 +860,6 @@
 (= (range 13) (map (comp :rank P128 str)
                                       '[S2 S3 S4 S5 S6 S7
                                         S8 S9 ST SJ SQ SK SA]))
-; Scratch
-
 
 
 ; P135
@@ -873,13 +871,15 @@
                                                new-acc (operator operand x)]
                                            (assoc acc :acc new-acc))))
                                      {:acc a :oper nil} xs))))
+
 (def P135 (fn [a & xs] (:acc (reduce (fn [acc x]
                                        (if (#{+ - / *} x)
                                          (assoc acc :oper x)
                                          (assoc acc :acc ((:oper acc) (:acc acc) x))))
                                      {:acc a :oper nil} xs))))
-"asdf"
-; Muiden
+(P135 10 / 2 - 1 * 2)
+
+; Other developers' solutions
 ; Tosi nerokas. Eli lasketaan (f x y) ja sitten tämä arvo laitetaan funktiolle,
 ; joka on if-lauseen jälkeen joko (fn [z] (apply c z r)) tai +.
 ; Eli kun (f x y) on laskettu, niin sen arvo laitetaan sisään z:n arvoksi.
@@ -888,7 +888,7 @@
                (fn [z] (apply c z r))
                +)
              (f x y))))
-#_(def P135 (fn c [x f y & r]
+(def P135 (fn c [x f y & r]
             (let [_ #p x
                   _ #p f
                   _ #p y
@@ -961,7 +961,7 @@
 
 ; P143
 (def P143 (fn [xs1 xs2] (reduce + (map (fn [a b] (* a b)) xs1 xs2))))
-; Muiden
+; Other developers' solutions
 (def P143 #(apply + (map * % %2)))
 ;
 (P143 [1 2 3] [4 5 6])
@@ -1013,7 +1013,7 @@
                               xn (last v)
                               nxs (map #(apply +' %) (partition 2 1 v))]
                                (vec (concat [x1] nxs [xn])))) s)))
-; Muiden
+; Other developers' solutions
 ; Eli laitetaan alkuun 0 ja loppuun nolla => menee limittäin ja lasketaan yhteen.
 
 #_(def P147 (fn [coll] (iterate
@@ -1051,7 +1051,7 @@
               (if (empty? s)
                 true
                 (and (checkit (first s) (rest s)) (recur (rest s)))))))
-; Muiden
+; Other developers' solutions
 (def P153 #(apply distinct? (mapcat seq %)))
 (def P153 (fn [xs] (apply distinct? (mapcat seq xs))))
 ; TODO: Mukana muitakin hyviä ratkaisuja, tutki myöhemmin!
@@ -1105,7 +1105,7 @@
 
 ; P157
 (def P157 (fn [xs] (map (fn [a b] [a b]) xs (range))))
-; Muiden
+; Other developers' solutions
 (def P157 #(map-indexed (fn [a b] [b a]) %))
 ;
 (P157 [:a :b :c])
@@ -1122,7 +1122,7 @@
               (and (not (o x y)) (not (o y x))) :eq
               (o y x) :gt
               :else :panic!)))
-; Muiden
+; Other developers' solutions
 (def P166 (fn [< x y]
             (cond (< x y) :lt
                   (< y x) :gt

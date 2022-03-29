@@ -50,3 +50,5 @@ The [4ever-clojure](https://4clojure.oxal.org/) site uses four categories and I 
 - [medium-solutions.clj](src/clj/medium_solutions.clj)
 - [hard-solutions.clj](src/clj/hard_solutions.clj)
 
+There is blog post regarding this exercise: [4Clojure Exercises Part 1](https://www.karimarttila.fi/clojure/2022/03/29/4clojure-exercises-part-1.html)
+

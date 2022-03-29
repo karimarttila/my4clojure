@@ -9,10 +9,10 @@
 ; just shadow-node
 ; ... wait till you see "Build completed", then:
 ; just run-node
-; Then start node REPL in Cursive (connect to .shadowin this window
+; Then start node REPL in Cursive and give command in the REPL:
 ; (shadow.cljs.devtools.api/repl :app)
 
-; HUOM! Älä ota pois tätä main! koska shadow-cljs vaatii sen.
+; Do not remove main since shadow-cljs requires it.
 (defn main! [])
 
 "asdf"

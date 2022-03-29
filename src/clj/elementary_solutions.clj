@@ -12,7 +12,7 @@
 ;; the answer again!
 ;;
 ;; NOTE: There is some Finnish occasionally - this repo is just for my own learning purposes.
-;; E.g. "muiden" = others, i.e. once I finished my own solution, I copy-pasted best
+;; "Other developers' solutions": i.e. once I finished my own solution, I copy-pasted best
 ;; others' solutions and examined those solutions (e.g. using hashp) to learn from them.
 ;; There is a scratch area after each solution paragraph. If I realized that I need more space
 ;; for scratch I experimented in the myscratch namespace.
@@ -171,7 +171,7 @@
 
 ; P156
 (def P156 (fn [v keys] (into {} (map (fn [k] {k v}) keys))))
-; Muiden:
+; Other developers' solutions:
 ; HYVÄ!
 (def P156 #(reduce into (for [k %2] {k %})))
 (def P156 #(zipmap %2 (repeat %1)))
