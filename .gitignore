@@ -47,4 +47,6 @@ trace.edn
 # clj-kondo cache
 .cache/
 
+.calva/
+.clj-kondo/
 

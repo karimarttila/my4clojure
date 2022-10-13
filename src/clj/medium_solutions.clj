@@ -16,13 +16,39 @@
 ;; for scratch I experimented in the myscratch namespace.
 
 
-*ns*
-"asdf"
-(require '[hashp.core])
-
 
 ; P43
-(def P43)
+(def P43 (fn [xs n]
+          (let [tuples (map (fn [z] [z n]) (range n))]
+            (map (fn [[y x]]
+                   (->> xs (drop y) (take-nth x))) tuples))))
+; Other developers' solutions
+(def P43
+  (fn [s n]
+    (for [i (range n)]
+      (take-nth n (drop i s)))))
+
+(= (P43 [1 2 3 4 5 6] 2) '((1 3 5) (2 4 6)))
+(= (P43 (range 9) 3) '((0 3 6) (1 4 7) (2 5 8)))
+(= (P43 (range 10) 5) '((0 5) (1 6) (2 7) (3 8) (4 9)))
+
+(comment
+  ((fn [xs n]
+     (let [tuples (map (fn [z] [z n]) (range n))]
+       (map (fn [[y x]]
+              (let [_ #p y
+                    _ #p x]
+                (->> xs (drop y) (take-nth x)))) tuples)))
+   [1 2 3 4 5 6] 2)
+
+  ((fn [x1 y1 xs1]
+     (->> xs1 (drop x1) (take-nth y1)))
+   0 2 [1 2 3 4 5 6])
+
+  (map (fn [z] [z 2]) (range 2))
+
+  ((fn [z] [z 0]) 2)
+  )
 
 ; P44
 (def P44)

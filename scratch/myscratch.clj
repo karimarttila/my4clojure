@@ -314,7 +314,7 @@ xf
 ;(time (apply P135 (take 1000000 (infix-list))))
 (time (+ 12 2))
 (apply P135 '(10 / 2 - 1 * 2))
-(apply P135 (take 10 (infix-list)))
+;; (apply P135 (take 10 (infix-list))) ; Wrong number of args (2) passed to: myscratch/calc
 
 (def P135 (fn [a & xs] (:acc (reduce (fn [acc x]
                                        (let [_ #p acc
@@ -329,7 +329,7 @@ xf
                                              (assoc acc :acc new-acc)))))
                                      {:acc a :oper nil} xs))))
 (P135 10 / 2 - 1 * 2)
-(apply P135 '(10 / 2 - 1 * 2))
+;; (apply P135 '(10 / 2 - 1 * 2)) ; Nullpointer
 (def P135c (fn [& exprs]
             (reduce (fn [acc x]
                       (let [_ #p acc
@@ -364,7 +364,7 @@ xf
 	([o n] (lazy-seq (cons o (cons n (infix-list o n))))))
 (time (apply P135-kari (take 1000000 (infix-list))))
 (time (apply P135-ve (take 1000000 (infix-list))))
-(time (apply P135-va (take 1000000 (infix-list))))
+; (time (apply P135-va (take 1000000 (infix-list)))) ;; Nullpointer
 
 (def mytype (fn [& r]
             (reduce (fn [acc x]

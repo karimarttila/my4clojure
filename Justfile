@@ -6,6 +6,10 @@
 @backend:
     clj -M:dev:test:common:backend:kari -m nrepl.cmdline --middleware '[com.gfredericks.debug-repl/wrap-debug-repl]'  -i -C
 
+# Start backend repl.
+@backend-calva:
+    clj -M:dev:test:common:backend:calva:kari -i -C
+
 # Init node packages.
 @init:
    mkdir -p target
