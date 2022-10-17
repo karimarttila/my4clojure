@@ -52,3 +52,23 @@ The [4ever-clojure](https://4clojure.oxal.org/) site uses four categories and I 
 
 There is blog post regarding this exercise: [4Clojure Exercises Part 1](https://www.karimarttila.fi/clojure/2022/03/29/4clojure-exercises-part-1.html)
 
+### Calva Instructions
+
+#### Clojure REPL
+
+Start backend repl with Calva dependencies: `just backend-calva`.
+In VSCode: command: `Connect to a running REPL server in the project`. Choose `deps.edn` and then accept the port (you can check that the port is the same as in file `.nrepl-port`). You are good to go. In Clojure files remember to `alt-n` - change namespace to use that of the file.
+
+#### Clojurescript REPL
+
+First run: `just shadow-node` ... and wait till you see `Build completed`.
+Then run: `just run-node`.
+Then in VSCode: command: `Connect to a running REPL server, not in the project`, then choose: `Clojurescript nRepl server`, then check the port number in file `.shadow-cljs/nrepl.port` and give that port number in VSCode.
+Then in the `cljs` file: evaluate: `(shadow.cljs.devtools.api/repl :app)`
+You are good to go.
+
+#### Check the REPL in VSCode
+
+Calva automatically uses the right REPL based on whether the file is `clj` (Clojure) or `cljs` (Clojurescript). You can see at the bottom of the VSCode window the status bar, which says `REPL ⚡ clj` (if your focus is in a `clj` file) or `REPL ⚡ cljs` (if your focus is in a `cljs` file).
+
+

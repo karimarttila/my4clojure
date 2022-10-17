@@ -11,12 +11,47 @@
 ; just run-node
 ; Then start node REPL in Cursive and give command in the REPL:
 ; (shadow.cljs.devtools.api/repl :app)
-
+ (shadow.cljs.devtools.api/repl :app)
 ; Do not remove main since shadow-cljs requires it.
+
+; Calva: 
+; - Start the node nrepl as described above.
+; - Evaluate
+
+
 (defn main! [])
 
 "asdf"
 (+ 1 1)
+
+(def my-obj #js {"a" 1 "b" 2})
+(type my-obj)
+
+(Math/abs -3)
+
+
+
+(def P44 (fn [n xs]
+          (let
+           [c (count xs)
+            n2 (Math/abs n)
+            x (Math/abs (if (<= n2 c) n2 (mod n2 c)))
+            p? (pos? n)
+            xs1 (if p?
+                  (take x xs)
+                  (take-last x xs))
+            xs2 (if p?
+                  (drop x xs)
+                  (drop-last x xs))]
+            (if p?
+              (concat xs2 xs1)
+              (concat xs1 xs2)))))
+
+(= (P44 2 [1 2 3 4 5]) '(3 4 5 1 2))
+(= (P44 -2 [1 2 3 4 5]) '(4 5 1 2 3))
+(= (P44 6 [1 2 3 4 5]) '(2 3 4 5 1))
+(= (P44 1 '(:a :b :c)) '(:b :c :a))
+(= (P44 -4 '(:a :b :c)) '(:c :a :b))
 
 
 ;; Works only with Java

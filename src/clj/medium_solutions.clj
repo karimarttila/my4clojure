@@ -19,10 +19,10 @@
 
 ; P43
 (def P43 (fn [xs n]
-          (let [tuples (map (fn [z] [z n]) (range n))]
-            (map (fn [[y x]]
-                   (->> xs (drop y) (take-nth x))) tuples))))
-; Other developers' solutions
+           (let [tuples (map (fn [z] [z n]) (range n))]
+             (map (fn [[y x]]
+                    (->> xs (drop y) (take-nth x))) tuples))))
+; Other developers' solutions:
 (def P43
   (fn [s n]
     (for [i (range n)]
@@ -47,11 +47,75 @@
 
   (map (fn [z] [z 2]) (range 2))
 
-  ((fn [z] [z 0]) 2)
-  )
+  ((fn [z] [z 0]) 2))
+
+
 
 ; P44
-(def P44)
+; NOTE: In Clojurescript you need to use Math/abs - see the nodesolutions1.cljs.
+(def P44 (fn [n xs]
+           (let
+            [c (count xs)
+             n2 (abs n)
+             x (if (<= n2 c) n2 (mod n2 c))
+             p? (pos? n)
+             xs1 (if p?
+                   (take x xs)
+                   (take-last (abs x) xs))
+             xs2 (if p?
+                   (drop x xs)
+                   (drop-last (abs x) xs))]
+             (if p?
+               (concat xs2 xs1)
+               (concat xs1 xs2)))))
+; Other developers' solutions:
+(def P44 (fn [n c] 
+           (let [idx (mod n (count c))] (concat (drop idx c) (take idx c)))))
+
+(def P44 (fn [n c] 
+           (let [idx (mod n (count c))
+                 _ #p idx] (concat (drop idx c) (take idx c)))))
+; Damn, I didn't realize modulo rolls like that. 
+
+(= (P44 2 [1 2 3 4 5]) '(3 4 5 1 2)) 
+(= (P44 -2 [1 2 3 4 5]) '(4 5 1 2 3))
+(= (P44 6 [1 2 3 4 5]) '(2 3 4 5 1)) 
+(= (P44 1 '(:a :b :c)) '(:b :c :a)) 
+(= (P44 -4 '(:a :b :c)) '(:c :a :b)) 
+
+(comment
+
+  ((fn [n xs]
+     (let
+      [c (count xs)
+       n2 (abs n)
+       x (if (<= n2 c) n2 (mod n2 c))
+       p? (pos? n)
+       xs1 (if p?
+             (take x xs)
+             (take-last (abs x) xs))
+       xs2 (if p?
+             (drop x xs)
+             (drop-last (abs x) xs))
+       _ #p n
+       _ #p x
+       _ #p xs1
+       _ #p xs2]
+       (if p?
+         (concat xs2 xs1)
+         (concat xs1 xs2)))) -4 '(:a :b :c))
+
+  (count [1 2 3 4 5])
+
+  (let [xs1 (take 2 [1 2 3 4 5])
+        xs2 (drop 2 [1 2 3 4 5])]
+    (concat xs2 xs1))
+
+  (mod 6 5)
+  (mod 5 2)
+  (mod 9 4)
+  )
+
 
 
 ; P46

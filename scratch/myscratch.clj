@@ -6,7 +6,50 @@
 ;; A bigger scratch area for experimentation.
 
 
+(+ 1 2)
+
+String
+
+(defn date? [d] (instance? java.util.Date d))
+(date? (java.util.Date.))
+(date? "asdf")
+
+
 (require '[hashp.core])
+
+
+
+(comment
+  ((fn [xs n]
+     (let [tuples (map (fn [z] [z n]) (range n))]
+       (map (fn [[y x]]
+              (let [_ #p y
+                    _ #p x]
+                (->> xs (drop y) (take-nth x)))) tuples)))
+   [1 2 3 4 5 6] 2)
+
+  ((fn [x1 y1 xs1]
+     (->> xs1 (drop x1) (take-nth y1)))
+   0 2 [1 2 3 4 5 6])
+
+  (map (fn [z] [z 2]) (range 2))
+
+  ((fn [z] [z 0]) 2))
+
+
+
+
+(def p23
+  (fn [lst]
+    (reduce (fn [acc item]
+              (cons item acc))
+            '() lst)))
+
+(def p23-old (fn [sq]
+               (loop [myseq sq newSq '()]
+                 (if (empty? myseq)
+                   newSq (recur (rest myseq) (conj newSq (first myseq)))))))
+
 
 ; #156 ****************************************
 (def p156 (fn [d v]
@@ -16,8 +59,7 @@
   (testing "p156"
     (is (= (p156 0 [:a :b :c]) {:a 0 :b 0 :c 0}))
     (is (= (p156 "x" [1 2 3]) {1 "x" 2 "x" 3 "x"}))
-    (is (= (p156 [:a :b] [:foo :bar]) {:foo [:a :b] :bar [:a :b]}))
-    ))
+    (is (= (p156 [:a :b] [:foo :bar]) {:foo [:a :b] :bar [:a :b]}))))
 
 ; #22 ****************************************
 (def p22
@@ -52,13 +94,11 @@
                (loop [myseq sq newSq '()]
                  (if (empty? myseq)
                    newSq
-                   (recur (rest myseq) (conj newSq (first myseq))))
-                 )
-               ))
+                   (recur (rest myseq) (conj newSq (first myseq)))))))
 
 (deftest p23-test
   (testing
-    (is (= (p23 [1 2 3 4 5]) [5 4 3 2 1]))
+   (is (= (p23 [1 2 3 4 5]) [5 4 3 2 1]))
     (is (= (p23 [1 2 3 4 5]) [5 4 3 2 1]))
     (is (= (p23 (sorted-set 5 7 2 7)) '(7 5 2)))
     (is (= (p23 [[1 2] [3 4] [5 6]]) [[5 6] [3 4] [1 2]]))))
@@ -94,7 +134,7 @@
 
 (deftest p27-test
   (testing
-    (is (false? (p27 '(1 2 3 4 5))))
+   (is (false? (p27 '(1 2 3 4 5))))
     (is (true? (p27 "racecar")))
     (is (true? (p27 [:foo :bar :foo])))
     (is (true? (p27 '(1 1 3 3 1 1))))
@@ -124,12 +164,12 @@
 
 (def p26 (fn [n]
            (take n ((fn fib [a b]
-                       (lazy-seq (cons a (fib b (+ a b)))))
-                     1N 1N))))
+                      (lazy-seq (cons a (fib b (+ a b)))))
+                    1N 1N))))
 
 (deftest p26-test
   (testing
-    (is (= (p26 3) '(1 1 2)))
+   (is (= (p26 3) '(1 1 2)))
     (is (= (p26 6) '(1 1 2 3 5 8)))
     (is (= (p26 8) '(1 1 2 3 5 8 13 21)))))
 
@@ -276,17 +316,17 @@ xf
             ([x op y & r] (apply calc (conj r (op x y))))))
 ; Vesa
 (def P135c (fn [& exprs]
-            (reduce (fn [acc x]
-                      (if (fn? x)
-                        (partial x acc)
-                        (acc x)))
-                    exprs)))
+             (reduce (fn [acc x]
+                       (if (fn? x)
+                         (partial x acc)
+                         (acc x)))
+                     exprs)))
 ; Valtteri
 (def P135d
-    (fn calc ([x op y & r]
-              (if op
-                (recur (op x y) (first r) (second r) (drop 2 r))
-                x))))
+  (fn calc ([x op y & r]
+            (if op
+              (recur (op x y) (first r) (second r) (drop 2 r))
+              x))))
 (P135 10 / 2 - 1 * 2)
 (apply P135 '(10 / 2 - 1 * 2))
 (apply P135 '(1 + 1))
@@ -299,15 +339,15 @@ xf
 ; Scratch
 (assoc {:acc 0 :oper nil} :oper +)
 (defn infix-list
-	([] (cons 1 (infix-list + 1)))
-	([o n] (lazy-seq (cons o (cons n (infix-list o n))))))
+  ([] (cons 1 (infix-list + 1)))
+  ([o n] (lazy-seq (cons o (cons n (infix-list o n))))))
 (def jee (take 5 (infix-list)))
 (apply P135 jee)
 ; Oma reducella tehty ratkaisu toimii.
 ; Rekursiolla tehty ratkaisu räjäyttää pinon.
 (def P135b (fn calc
-            ([x] x)
-            ([x op y & r] (apply calc (conj r (op x y))))))
+             ([x] x)
+             ([x op y & r] (apply calc (conj r (op x y))))))
 ;(time (apply P135b (take 1000000 (infix-list))))
 ;(time (apply P135c (take 1000000 (infix-list))))
 ;(time (apply P135d (take 1000000 (infix-list))))
@@ -331,45 +371,45 @@ xf
 (P135 10 / 2 - 1 * 2)
 ;; (apply P135 '(10 / 2 - 1 * 2)) ; Nullpointer
 (def P135c (fn [& exprs]
-            (reduce (fn [acc x]
-                      (let [_ #p acc
-                            _ #p x])
-                      (if (fn? x)
-                        (partial x acc)
-                        (acc x)))
-                    exprs)))
+             (reduce (fn [acc x]
+                       (let [_ #p acc
+                             _ #p x])
+                       (if (fn? x)
+                         (partial x acc)
+                         (acc x)))
+                     exprs)))
 (defn infix-list
-	([] (cons 1 (infix-list + 1)))
-	([o n] (lazy-seq (cons o (cons n (infix-list o n))))))
+  ([] (cons 1 (infix-list + 1)))
+  ([o n] (lazy-seq (cons o (cons n (infix-list o n))))))
 (P135c 10 / 2 - 1 * 2)
 (apply P135c (take 100 (infix-list)))
 (def P135-kari (fn [a & xs] (:acc (reduce (fn [acc x]
-                                       (if (#{+ - / *} x)
-                                         (assoc acc :oper x)
-                                         (assoc acc :acc ((:oper acc) (:acc acc) x))))
-                                     {:acc a :oper nil} xs))))
+                                            (if (#{+ - / *} x)
+                                              (assoc acc :oper x)
+                                              (assoc acc :acc ((:oper acc) (:acc acc) x))))
+                                          {:acc a :oper nil} xs))))
 (def P135-ve (fn [& exprs]
-            (reduce (fn [acc x]
-                      (if (fn? x)
-                        (partial x acc)
-                        (acc x)))
-                    exprs)))
+               (reduce (fn [acc x]
+                         (if (fn? x)
+                           (partial x acc)
+                           (acc x)))
+                       exprs)))
 (def P135-va
-    (fn calc ([x op y & r]
-              (if op
-                (recur (op x y) (first r) (second r) (drop 2 r))
-                x))))
+  (fn calc ([x op y & r]
+            (if op
+              (recur (op x y) (first r) (second r) (drop 2 r))
+              x))))
 (defn infix-list
-	([] (cons 1 (infix-list + 1)))
-	([o n] (lazy-seq (cons o (cons n (infix-list o n))))))
+  ([] (cons 1 (infix-list + 1)))
+  ([o n] (lazy-seq (cons o (cons n (infix-list o n))))))
 (time (apply P135-kari (take 1000000 (infix-list))))
 (time (apply P135-ve (take 1000000 (infix-list))))
 ; (time (apply P135-va (take 1000000 (infix-list)))) ;; Nullpointer
 
 (def mytype (fn [& r]
-            (reduce (fn [acc x]
-                     (conj acc (type x)))
-                    [] r)))
+              (reduce (fn [acc x]
+                        (conj acc (type x)))
+                      [] r)))
 
 ; Huomaa ero!
 (mytype 10 / 2 - 1)
