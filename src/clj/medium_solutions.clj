@@ -16,7 +16,6 @@
 ;; for scratch I experimented in the myscratch namespace.
 
 
-
 ; P43
 (def P43 (fn [xs n]
            (let [tuples (map (fn [z] [z n]) (range n))]
@@ -69,19 +68,19 @@
                (concat xs2 xs1)
                (concat xs1 xs2)))))
 ; Other developers' solutions:
-(def P44 (fn [n c] 
+(def P44 (fn [n c]
            (let [idx (mod n (count c))] (concat (drop idx c) (take idx c)))))
 
-(def P44 (fn [n c] 
+(def P44 (fn [n c]
            (let [idx (mod n (count c))
                  _ #p idx] (concat (drop idx c) (take idx c)))))
 ; Damn, I didn't realize modulo rolls like that. 
 
-(= (P44 2 [1 2 3 4 5]) '(3 4 5 1 2)) 
+(= (P44 2 [1 2 3 4 5]) '(3 4 5 1 2))
 (= (P44 -2 [1 2 3 4 5]) '(4 5 1 2 3))
-(= (P44 6 [1 2 3 4 5]) '(2 3 4 5 1)) 
-(= (P44 1 '(:a :b :c)) '(:b :c :a)) 
-(= (P44 -4 '(:a :b :c)) '(:c :a :b)) 
+(= (P44 6 [1 2 3 4 5]) '(2 3 4 5 1))
+(= (P44 1 '(:a :b :c)) '(:b :c :a))
+(= (P44 -4 '(:a :b :c)) '(:c :a :b))
 
 (comment
 
@@ -113,16 +112,30 @@
 
   (mod 6 5)
   (mod 5 2)
-  (mod 9 4)
-  )
+  (mod 9 4))
 
 
 
 ; P46
-(def P46)
+; Quite trivial.
+(def P46 (fn [f]
+           (fn [x y]
+             (f y x))))
+
+
+(= 3 ((P46 nth) 2 [1 2 3 4 5]))
+(= true ((P46 >) 7 8))
+(= 4 ((P46 quot) 2 8))
+(= [1 2 3] ((P46 take) [1 2 3 4 5] 3))
+
+
 
 ; P50
-(def P50)
+(def P50 :false)
+
+(= (set (P50 [1 :a 2 :b 3 :c])) #{[1 2 3] [:a :b :c]})
+(= (set (P50 [:a "foo"  "bar" :b])) #{[:a :b] ["foo" "bar"]})
+(= (set (P50 [[1 2] :a [3 4] 5 6 :b])) #{[[1 2] [3 4]] [:a :b] [5 6]})
 
 ; P54
 (def P54)
