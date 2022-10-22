@@ -1,38 +1,33 @@
-{
- :paths ["resources"]
+{:paths ["resources"]
 
  :aliases {:dev {:extra-paths ["dev-resources" "classes"]
                  :extra-deps {org.clojure/clojure {:mvn/version "1.11.1"}
-                              clj-kondo/clj-kondo {:mvn/version "2022.09.08"}
-                              nrepl/nrepl {:mvn/version "1.0.0"}}}
+                              clj-kondo/clj-kondo {:mvn/version "2022.10.14"}
+                              nrepl/nrepl {:mvn/version "1.0.0"}
+                              org.slf4j/slf4j-nop {:mvn/version "2.0.3"}}}
            :test {:extra-paths ["test/clj"]
-                  :extra-deps {lambdaisland/kaocha {:mvn/version "1.60.977"}
-                               lambdaisland/kaocha-cljs {:mvn/version "1.0.107"}}}
+                  :extra-deps {lambdaisland/kaocha {:mvn/version "1.70.1086"}
+                               lambdaisland/kaocha-cljs {:mvn/version "1.4.130"}}}
            :common {:extra-paths ["src/cljc"]
-                    :extra-deps {nrepl/nrepl {:mvn/version "0.9.0"}
-                                 hashp/hashp {:mvn/version "0.2.1"}}}
+                    :extra-deps {nrepl/nrepl {:mvn/version "1.0.0"}
+                                 hashp/hashp {:mvn/version "0.2.2"}}}
            :backend {:extra-paths ["src/clj"]
                      :extra-deps {}}
            :node {:extra-paths ["src/cljs"]
-                  :extra-deps {org.clojure/clojurescript {:mvn/version "1.11.4"}
-                               thheller/shadow-cljs {:mvn/version "2.16.12"}
-                               }}
+                  :extra-deps {org.clojure/clojurescript {:mvn/version "1.11.60"}
+                               thheller/shadow-cljs {:mvn/version "2.20.5"}}}
            ;; Test runner in console.
            :test-runner {:extra-paths ["test"]
                          :extra-deps {com.cognitect/test-runner {:git/url "https://github.com/cognitect-labs/test-runner.git"
-                                                                 :sha "209b64504cb3bd3b99ecfec7937b358a879f55c1"}}
+                                                                 :sha "a522ab2851a2aa5bf9c22a942b45287a3a019310"}}
                          :main-opts ["-m" "cognitect.test-runner"]}
-           :outdated {:extra-deps {olical/depot {:mvn/version "RELEASE"}}
-                      :main-opts ["-m" "depot.outdated.main" "-a" "outdated"]}
-           :clj-kondo {:extra-deps {clj-kondo/clj-kondo {:mvn/version "2020.10.10"}}
-                       :main-opts ["-m" "clj-kondo.main"]}
            ;; Cider specific.
            :cider {:extra-deps {cider/cider-nrepl {:mvn/version "0.28.6"}}
-                       :main-opts ["-m" "nrepl.cmdline" "--middleware" "[cider.nrepl/cider-middleware]"]}
-           :calva {:extra-deps {cider/cider-nrepl {:mvn/version,"0.28.6"}}
                    :main-opts ["-m" "nrepl.cmdline" "--middleware" "[cider.nrepl/cider-middleware]"]}
-           }
- }
+           ;; Cider specific.
+           :calva {:extra-deps {cider/cider-nrepl {:mvn/version,"0.28.6"}}
+                   :main-opts ["-m" "nrepl.cmdline" "--middleware" "[cider.nrepl/cider-middleware]"]}}}
+
 
 
 

@@ -26,7 +26,7 @@
 
 # Update dependencies.
 @outdated:
-    clj -M:dev:test:common:backend:frontend:outdated --update
+    clojure -M:outdated --upgrade
 
 # Lint.
 @lint:

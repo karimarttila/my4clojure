@@ -20,6 +20,9 @@
 
 (defn main! [])
 
+(def ooh "ooh")
+ooh
+
 "asdf"
 (+ 1 1)
 (.abs js/Math -4)
