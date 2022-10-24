@@ -1,4 +1,5 @@
-(ns misc1)
+(ns misc1
+  (:require [clojure.string :as str]))
 
 "asdf"
 
@@ -11,6 +12,10 @@
 
 (def jee 1)
 jee
+
+String
+(.toUpperCase "fred")
+(System/getProperty "java.vm.version")
 
 (def foo 1)
 foo

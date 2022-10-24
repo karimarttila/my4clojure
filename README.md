@@ -56,12 +56,14 @@ There is blog post regarding this exercise: [4Clojure Exercises Part 1](https://
 
 #### Clojure REPL
 
-See also chapter [REPL Connect Sequences](#repl-connect-sequences) below.
+See also chapter [REPL Connect Sequences](#repl-connect-sequences) below => there you can find the actual instructions how to do the REPL connection with Calva.
 
 Start backend repl with Calva dependencies: `just backend-calva`.
 In VSCode: command: `Connect to a running REPL server in the project`. Choose `deps.edn` and then accept the port (you can check that the port is the same as in file `.nrepl-port`). You are good to go. In Clojure files remember to `alt-n` - change namespace to use that of the file.
 
 #### Clojurescript REPL
+
+See also chapter [REPL Connect Sequences](#repl-connect-sequences) below => there you can find the actual instructions how to do the REPL connection with Calva.
 
 First run: `just shadow-node` ... and wait till you see `Build completed`.
 Then run: `just run-node`.
@@ -75,10 +77,23 @@ Calva automatically uses the right REPL based on whether the file is `clj` (Cloj
 
 #### REPL Connect Sequences
 
-I created a couple of [Calva REPL Connect Sequences](https://calva.io/connect-sequences/), in VSCode `settings.json` file:
+NOTE: You can have only one REPL connection in one VSCode window (read more in [Configuring VSCode/Calva for Clojure programming - Part 3](https://www.karimarttila.fi/clojure/2022/10/18/clojure-calva-part3.html).)
+
+I created the following [Calva REPL Connect Sequences](https://calva.io/connect-sequences/), in VSCode `settings.json` file:
 
 ```json
     "calva.replConnectSequences": [
+      {
+        "name": "backend + frontend",
+        "projectType": "shadow-cljs",
+        "cljsType": "shadow-cljs",
+        "menuSelections": {
+          "cljsLaunchBuilds": [
+            ":app"
+          ],
+          "cljsDefaultBuild": ":app"
+        }
+      },
       {
         "name": "clojure-backend",
         "nReplPortFile": [".nrepl-port"],
@@ -93,11 +108,32 @@ I created a couple of [Calva REPL Connect Sequences](https://calva.io/connect-se
             "connectCode": "(shadow.cljs.devtools.api/repl :app)",
         }
       }
-    ],
+    ],    
 ```
 
-Start the backend and frontend (well, node in this project) REPLs as described earlier. Then give VSCode commands:
+So, first, start `shadow-cljs` process and `node process` (in two different terminals):
 
-- `Calva: Connect to a Running REPL Server in the Project` => Choose `clojure-backend`, next for the suggested `host:port` press `Enter`.
-- `Calva: Connect to a Running REPL Server in the Project` => Choose `clojurescript-frontend`, next for the suggested `host:port` press `Enter`.
+- `just shadow-node` (wait until you see: `[watch:cljs] [:app] Build completed.`)
+- `just run-node` (you should see something like: `shadow-cljs - #3 ready!` )
 
+Then use VSCode command `Calva: Connect to a Running REPL Server in the Project` => Choose `backend + frontend`, next for the suggested `host:port` press `Enter`.
+
+You should see something like:
+```text
+; Connecting ...
+; Hooking up nREPL sessions...
+; Connected session: clj
+...
+clj꞉shadow.user꞉> 
+; Creating cljs repl session...
+; Connecting cljs repl: backend + frontend...
+;   The Calva Connection Log might have more connection progress information.
+; Connected session: cljs, repl: :app
+```
+
+You now should have both Clojure (JVM) and Clojurescript (Node) REPLs available (through shadow-cljs).
+
+Test:
+
+- Open file [misc1.clj](scratch/misc1.clj): evaluate and you should see `REPL clj` at the bottom of the VSCode info bar.
+- Open file [nodesolutions1.cljs](src/cljs/nodesolutions1.cljs) evaluate and you should see `REPL cljs` at the bottom of the VSCode info bar.

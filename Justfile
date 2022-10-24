@@ -6,9 +6,10 @@
 @backend:
     clj -M:dev:test:common:backend:kari -m nrepl.cmdline --middleware '[com.gfredericks.debug-repl/wrap-debug-repl]'  -i -C
 
+# NOTE: Not needed if you use Calva connection "backend + frontend"
 # Start backend repl.
 @backend-calva:
-    clj -M:dev:test:common:backend:calva:kari -i -C
+    clj -M:dev:test:common:backend:calva-backend:kari -i -C
 
 # Init node packages.
 @init:
@@ -38,10 +39,5 @@
     rm -rf .cpcache/*
     rm -rf .shadow-cljs/*
     rm -rf target/*
-    rm -rf dev-resources/public/js/*
-    rm -rf dev-resources/public/css/*
-    rm -rf prod-resources/public/js/*
-    rm -rf prod-resources/public/css/*
-    rm -rf dynamodb/dev-resources/*
     rm -rf out/*
     npm install

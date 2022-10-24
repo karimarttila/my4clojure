@@ -8,14 +8,12 @@
            :test {:extra-paths ["test/clj"]
                   :extra-deps {lambdaisland/kaocha {:mvn/version "1.70.1086"}
                                lambdaisland/kaocha-cljs {:mvn/version "1.4.130"}}}
-           :common {:extra-paths ["src/cljc"]
-                    :extra-deps {nrepl/nrepl {:mvn/version "1.0.0"}
-                                 hashp/hashp {:mvn/version "0.2.2"}}}
+           :common {:extra-paths ["src/cljc"]}
            :backend {:extra-paths ["src/clj"]
                      :extra-deps {}}
            :node {:extra-paths ["src/cljs"]
                   :extra-deps {org.clojure/clojurescript {:mvn/version "1.11.60"}
-                               thheller/shadow-cljs {:mvn/version "2.20.5"}}}
+                               thheller/shadow-cljs {:mvn/version "2.20.6"}}}
            ;; Test runner in console.
            :test-runner {:extra-paths ["test"]
                          :extra-deps {com.cognitect/test-runner {:git/url "https://github.com/cognitect-labs/test-runner.git"
@@ -24,9 +22,11 @@
            ;; Cider specific.
            :cider {:extra-deps {cider/cider-nrepl {:mvn/version "0.28.6"}}
                    :main-opts ["-m" "nrepl.cmdline" "--middleware" "[cider.nrepl/cider-middleware]"]}
-           ;; Cider specific.
-           :calva {:extra-deps {cider/cider-nrepl {:mvn/version,"0.28.6"}}
-                   :main-opts ["-m" "nrepl.cmdline" "--middleware" "[cider.nrepl/cider-middleware]"]}}}
+           ;; Calva specific.
+           :calva-backend {:extra-deps {cider/cider-nrepl {:mvn/version,"0.28.6"}}
+                           :main-opts ["-m" "nrepl.cmdline" "--middleware" "[cider.nrepl/cider-middleware]"]}
+           ;; Calva-node specific
+           :calva-node {:extra-deps {cider/cider-nrepl {:mvn/version,"0.28.6"}}}}}
 
 
 

@@ -1,8 +1,7 @@
 
-{:deps {:aliases [:dev :common :node :kari]}
+{:deps {:aliases [:kari :dev :common :backend :node :calva-node]}
  :log {:level :debug}
  ;:source-paths ["src/cljs"]
- :dependencies []
  :builds {:app {:target :node-script
                 :output-to "target/main.js"
                 :main nodesolutions1/main!

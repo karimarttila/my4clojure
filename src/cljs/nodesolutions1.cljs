@@ -24,7 +24,7 @@
 ooh
 
 "asdf"
-(+ 1 1)
+(+ 1 2)
 (.abs js/Math -4)
 
 (def my-obj #js {"a" 1 "b" 2})
