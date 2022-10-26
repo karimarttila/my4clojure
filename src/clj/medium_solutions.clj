@@ -3,9 +3,10 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
-;; NOTE: In this solution1 namespace the elementary and easy solutions.
+;; https://4clojure.oxal.org/
 ;;
-;; NOTE!
+;; NOTE: In this namespace are the medium solutions.
+;;
 ;; If some problem page does not work, try to hard refresh (ctrl + refresh-button), then supply
 ;; the answer again!
 ;;
@@ -14,7 +15,6 @@
 ;; others' solutions and examined those solutions (e.g. using hashp) to learn from them.
 ;; There is a scratch area after each solution paragraph. If I realized that I need more space
 ;; for scratch I experimented in the myscratch namespace.
-
 
 ; P43
 (def P43 (fn [xs n]

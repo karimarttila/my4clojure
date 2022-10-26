@@ -7,7 +7,6 @@
 ;;
 ;; NOTE: In this namespace are the elementary solutions.
 ;;
-;; NOTE!
 ;; If some problem page does not work, try to hard refresh (ctrl + refresh-button), then supply
 ;; the answer again!
 ;;

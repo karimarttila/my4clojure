@@ -3,9 +3,10 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
-;; NOTE: In this solution1 namespace the elementary and easy solutions.
+;; https://4clojure.oxal.org/
 ;;
-;; NOTE!
+;; NOTE: In this namespace are the easy solutions.
+
 ;; If some problem page does not work, try to hard refresh (ctrl + refresh-button), then supply
 ;; the answer again!
 ;;
