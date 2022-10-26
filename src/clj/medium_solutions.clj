@@ -131,11 +131,57 @@
 
 
 ; P50
-(def P50 :false)
+(def P50 (fn [xs]
+           (into #{} (-> (reduce
+                          (fn [acc item]
+                            (let [t (type item)]
+                              (if (get acc t)
+                                (update acc t conj item)
+                                (assoc acc t [item]))))
+                          {}
+                          xs)
+                         vals))))
+
+; Other developers' solutions:
+; Shit. Why didn't I think of group-by?
+(def P50 (fn [c]
+           (vals (group-by class c))))
 
 (= (set (P50 [1 :a 2 :b 3 :c])) #{[1 2 3] [:a :b :c]})
 (= (set (P50 [:a "foo"  "bar" :b])) #{[:a :b] ["foo" "bar"]})
 (= (set (P50 [[1 2] :a [3 4] 5 6 :b])) #{[[1 2] [3 4]] [:a :b] [5 6]})
+
+
+(comment
+
+  ((fn [xs]
+     (into #{} (-> (reduce
+                    (fn [acc item]
+                      (let [t (type item)]
+                        (if (get acc t)
+                          (update acc t conj item)
+                          (assoc acc t [item]))))
+                    {}
+                    xs)
+                   vals)))
+   [1 :a 2 :b 3 :c])
+
+  ((fn [xs]
+     (reduce
+      (fn [acc item]
+        (let [t (type item)]
+          (if (get acc t)
+            (update acc t conj item)
+            (assoc acc t [item]))))
+      {}
+      xs))
+   [1 :a 2 :b 3 :c])
+
+  (group-by class [1 :a 2 :b 3 :c])
+
+  (type 2)
+  (type :a)
+  (type [1 2]))
 
 ; P54
 (def P54)
