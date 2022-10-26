@@ -1,0 +1,152 @@
+No.;Name;Difficulty;Status
+1;Nothing but the Truth;elementary;1/1 Passed!
+2;Simple Math;elementary;1/1 Passed!
+3;Strings;elementary;1/1 Passed!
+4;Lists;elementary;1/1 Passed!
+5;conj on lists;elementary;2/2 Passed!
+6;Vectors;elementary;1/1 Passed!
+7;conj on vectors;elementary;2/2 Passed!
+8;Sets;elementary;2/2 Passed!
+9;conj on sets;elementary;1/1 Passed!
+10;Maps;elementary;2/2 Passed!
+11;conj on maps;elementary;1/1 Passed!
+12;Sequences;elementary;3/3 Passed!
+13;rest;elementary;1/1 Passed!
+14;Functions;elementary;4/4 Passed!
+15;Double Down;elementary;4/4 Passed!
+16;Hello World;elementary;3/3 Passed!
+17;map;elementary;1/1 Passed!
+18;filter;elementary;1/1 Passed!
+19;Last Element;easy;3/3 Passed!
+20;Penultimate Element;easy;3/3 Passed!
+21;Nth Element;easy;4/4 Passed!
+22;Count a Sequence;easy;5/5 Passed!
+23;Reverse a Sequence;easy;3/3 Passed!
+24;Sum It All Up;easy;5/5 Passed!
+25;Find the odd numbers;easy;4/4 Passed!
+26;Fibonacci Sequence;easy;3/3 Passed!
+27;Palindrome Detector;easy;5/5 Passed!
+28;Flatten a Sequence;easy;3/3 Passed!
+29;Get the Caps;easy;3/3 Passed!
+30;Compress a Sequence;easy;3/3 Passed!
+31;Pack a Sequence;easy;3/3 Passed!
+32;Duplicate a Sequence;easy;4/4 Passed!
+33;Replicate a Sequence;easy;5/5 Passed!
+34;Implement range;easy;3/3 Passed!
+35;Local bindings;elementary;3/3 Passed!
+36;Let it Be;elementary;3/3 Passed!
+37;Regular Expressions;elementary;1/1 Passed!
+38;Maximum value;easy;3/3 Passed!
+39;Interleave Two Seqs;easy;4/4 Passed!
+40;Interpose a Seq;easy;3/3 Passed!
+41;Drop Every Nth Item;easy;3/3 Passed!
+42;Factorial Fun;easy;4/4 Passed!
+43;Reverse Interleave;medium;3/3 Passed!
+44;Rotate Sequence;medium;5/5 Passed!
+45;Intro to Iterate;easy;1/1 Passed!
+46;Flipping out;medium;4/4 Passed!
+47;Contain Yourself;easy;4/4 Passed!
+48;Intro to some;easy;2/2 Passed!
+49;Split a sequence;easy;3/3 Passed!
+50;Split by Type;medium;3/3 Passed!
+51;Advanced Destructuring;easy;1/1 Passed!
+52;Intro to Destructuring;elementary;1/1 Passed!
+53;Longest Increasing Sub-Seq;hard;-
+54;Partition a Sequence;medium;-
+55;Count Occurences;medium;-
+56;Find Distinct Items;medium;-
+57;Simple Recursion;elementary;1/1 Passed!
+58;Function Composition;medium;-
+59;Juxtaposition;medium;-
+60;Sequence Reductions;medium;-
+61;Map Construction;easy;3/3 Passed!
+62;Re-implement Iteration;easy;3/3 Passed!
+63;Group a Sequence;easy;3/3 Passed!
+64;Intro to Reduce;elementary;3/3 Passed!
+65;Black Box Testing;medium;-
+66;Greatest Common Divisor;easy;4/4 Passed!
+67;Prime Numbers;medium;-
+68;Recurring Theme;elementary;1/1 Passed!
+69;Merge with a Function;medium;-
+70;Word Sorting;medium;-
+71;Rearranging Code: ->;elementary;1/1 Passed!
+72;Rearranging Code: ->>;elementary;1/1 Passed!
+73;Analyze a Tic-Tac-Toe Board;hard;-
+74;Filter Perfect Squares;medium;-
+75;Euler's Totient Function;medium;-
+76;Intro to Trampoline;medium;-
+77;Anagram Finder;medium;-
+78;Reimplement Trampoline;medium;-
+79;Triangle Minimal Path;hard;-
+80;Perfect Numbers;medium;-
+81;Set Intersection;easy;3/3 Passed!
+82;Word Chains;hard;-
+83;A Half-Truth;easy;6/6 Passed!
+84;Transitive Closure;hard;-
+85;Power Set;medium;-
+86;Happy numbers;medium;-
+87;Create an Equation;;-
+88;Symmetric Difference;easy;4/4 Passed!
+89;Graph Tour;hard;-
+90;Cartesian Product;easy;3/3 Passed!
+91;Graph Connectivity;hard;-
+92;Read Roman numerals;hard;-
+93;Partially Flatten a Sequence;medium;-
+94;Game of Life;hard;-
+95;To Tree, or not to Tree;easy;7/7 Passed!
+96;Beauty is Symmetry;easy;6/6 Passed!
+97;Pascal's Triangle;easy;4/4 Passed!
+98;Equivalence Classes;medium;-
+99;Product Digits;easy;3/3 Passed!
+100;Least Common Multiple;easy;2/2 Passed!
+101;Levenshtein Distance;hard;-
+102;intoCamelCase;medium;-
+103;Generating k-combinations;medium;-
+104;Write Roman Numerals;medium;-
+105;Identify keys and values;medium;-
+106;Number Maze;hard;-
+107;Simple closures;easy;3/3 Passed!
+108;Lazy Searching;medium;-
+110;Sequence of pronunciations;medium;-
+111;Crossword puzzle;hard;-
+112;Sequs Horribilis;medium;-
+114;Global take-while;medium;-
+115;The Balance of N;medium;-
+116;Prime Sandwich;medium;-
+117;For Science!;hard;-
+118;Re-implement Map;easy;2/2 Passed!
+119;Win at Tic-Tac-Toe;hard;-
+120;Sum of square of digits;easy;4/4 Passed!
+121;Universal Computation Engine;medium;-
+122;Read a binary number;easy;7/7 Passed!
+124;Analyze Reversi;hard;-
+125;Gus' Quinundrum;hard;-
+126;Through the Looking Class;easy;0/0 Passed!
+127;Love Triangle;hard;-
+128;Recognize Playing Cards;easy;4/4 Passed!
+131;Sum Some Set Subsets;medium;-
+132;Intervals;medium;-
+134;A nil key;elementary;3/3 Passed!
+135;Infix Calculator;easy;4/4 Passed!
+137;Digits and bases;medium;-
+140;Veitch, Please!;hard;-
+141;Tricky card games;medium;-
+143;dot product;easy;4/4 Passed!
+144;Oscilrate;medium;-
+145;For the win;elementary;3/3 Passed!
+146;Trees into tables;easy;3/3 Passed!
+147;Pascal's Trapezoid;easy;4/4 Passed!
+148;The Big Divide;medium;-
+150;Palindromic Numbers;medium;-
+153;Pairwise Disjoint Sets;easy;7/7 Passed!
+156;Map Defaults;elementary;3/3 Passed!
+157;Indexing Sequences;easy;3/3 Passed!
+158;Decurry;medium;-
+161;Subset and Superset;elementary;4/4 Passed!
+162;Logical falsity and truth;elementary;7/7 Passed!
+166;Comparisons;easy;4/4 Passed!
+168;Infinite Matrix;medium;-
+171;Intervals;medium;-
+173;Intro to Destructuring 2;easy;1/1 Passed!
+177;Balancing Brackets;medium;-
+195;Parentheses... Again;medium;-
