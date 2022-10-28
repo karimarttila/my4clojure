@@ -202,17 +202,22 @@
 ; Other developers' solutions:
 ; A lot better than my solution. Much more functional style.
 ; I have to remember this kind of cons'ing in the future.
-(def P54 (fn part [n coll]
-           (let [rst (drop n coll)
-                 _ #p coll
-                 _ #p rst] 
+(def P54b (fn part [n coll]
+           (let [rst (drop n coll)] 
              (cons (take n coll) (if (>= (count rst) n) (part n rst) '())))))
 
 (= (P54 3 (range 9)) '((0 1 2) (3 4 5) (6 7 8)))
 (= (P54 2 (range 8)) '((0 1) (2 3) (4 5) (6 7)))
 (= (P54 3 (range 8)) '((0 1 2) (3 4 5)))
+
 ; My solution works also with other input than (range N)
 (= (P54 2 "ABCDE") '((\A \B) (\C \D)))
+
+; Testing with large data sets since P54b is not tail call optimized recursion.
+(def test-list (range 10000000))
+(time (take 1 (P54 2 test-list))) ; "Elapsed time: 7105.357526 msecs"
+(time (take 1 (P54b 2 test-list))) ; Execution error (StackOverflowError) at medium-solutions/part (REPL:207) .
+; Well, my solution is not that beautiful, but it handles larger data sets.
 
 (comment
 
