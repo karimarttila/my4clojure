@@ -184,7 +184,72 @@
   (type [1 2]))
 
 ; P54
-(def P54)
+(def P54 (fn [n xs]
+           (->> xs
+          ; [[0 0] [1 1] [2 2]...]
+                (map-indexed vector)
+          ; [[0 0] [0 1] [1 2]...]
+                (map (fn [[i v]] [(quot i n) v]))
+          ; {0 ([0 0] [0 1]) 1 ([1 2])... }
+                (group-by (fn [[i v]] i))
+          ; ([[0 0] [0 1]] [1 2] [1 3]...)
+                (vals)
+          ; ([0 1] [2 3]...)
+                (map (fn [l] (map (fn [[k v]] v) l)))
+          ; Filter out if not enough items in the list.
+                (filter (fn [item] (= (count item) n))))))
+
+; Other developers' solutions:
+; A lot better than my solution. Much more functional style.
+; I have to remember this kind of cons'ing in the future.
+(def P54 (fn part [n coll]
+           (let [rst (drop n coll)
+                 _ #p coll
+                 _ #p rst] 
+             (cons (take n coll) (if (>= (count rst) n) (part n rst) '())))))
+
+(= (P54 3 (range 9)) '((0 1 2) (3 4 5) (6 7 8)))
+(= (P54 2 (range 8)) '((0 1) (2 3) (4 5) (6 7)))
+(= (P54 3 (range 8)) '((0 1 2) (3 4 5)))
+; My solution works also with other input than (range N)
+(= (P54 2 "ABCDE") '((\A \B) (\C \D)))
+
+(comment
+
+  ((fn [n xs]
+     (let [mx (map-indexed vector xs) ; [[0 0] [1 1]...]
+           sx (map (fn [[i v]] [(quot i n) v]) mx) ; [[0 0] [0 1]...]
+           lx (vals (group-by (fn [[i v]] i) sx)) ; ([[0 0] [0 1]] [1 2] [1 3]...)
+           rx (map (fn [l] (map (fn [[k v]] v) l)) lx) ; Final partitions
+           fx (filter (fn [item] (= (count item) n)) rx)]
+
+       fx))
+   2 (range 9))
+
+  ((fn [n xs]
+     (->> xs
+          ; [[0 0] [1 1] [2 2]...]
+          (map-indexed vector)
+          ; [[0 0] [0 1] [1 2]...]
+          (map (fn [[i v]] [(quot i n) v]))
+          ; {0 ([0 0] [0 1]) 1 ([1 2])... }
+          (group-by (fn [[i v]] i))
+          ; ([[0 0] [0 1]] [1 2] [1 3]...)
+          (vals)
+          ; ([0 1] [2 3]...)
+          (map (fn [l] (map (fn [[k v]] v) l)))
+          ; Filter out if not enough items in the list.
+          (filter (fn [item] (= (count item) n)))))
+   2 (range 9))
+
+  (map-indexed vector (range 9))
+  (map (fn [item])
+       (range 9))
+
+  (map (fn [item] (quot item 2))
+       (range 9)))
+
+
 
 ; P55
 (def P55)
