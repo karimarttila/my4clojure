@@ -203,8 +203,8 @@
 ; A lot better than my solution. Much more functional style.
 ; I have to remember this kind of cons'ing in the future.
 (def P54b (fn part [n coll]
-           (let [rst (drop n coll)] 
-             (cons (take n coll) (if (>= (count rst) n) (part n rst) '())))))
+            (let [rst (drop n coll)]
+              (cons (take n coll) (if (>= (count rst) n) (part n rst) '())))))
 
 (= (P54 3 (range 9)) '((0 1 2) (3 4 5) (6 7 8)))
 (= (P54 2 (range 8)) '((0 1) (2 3) (4 5) (6 7)))
@@ -253,7 +253,6 @@
 
   (map (fn [item] (quot item 2))
        (range 9)))
-
 
 
 ; P55

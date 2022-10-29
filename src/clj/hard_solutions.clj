@@ -24,8 +24,71 @@
 
 
 ; P53
-(def P53)
+(def P53 (fn [xs] (let [ret (reduce (fn [acc x]
+                                      (let [prev (:previous-item acc)
+                                            acc (if (nil? prev)
+                                                  (-> acc
+                                                      (assoc :candidate-list [x])
+                                                      (assoc :previous-item x))
+                                                  (let [acc (assoc acc :previous-item x)]
+                                                    (if (> x prev)
+                                                      (update acc :candidate-list conj x)
+                                                      (assoc acc :candidate-list [x]))))]
+                                        (if (> (count (:candidate-list acc)) (count (:longest-list acc)))
+                                          (assoc acc :longest-list (:candidate-list acc))
+                                          acc)))
+                                    {:longest-list []
+                                     :candidate-list []
+                                     :previous-item nil}
+                                    xs)
+                        ret (:longest-list ret)]
+                    (if (> (count ret) 1)
+                      ret
+                      []))))
 
+(= (P53 [1 0 1 2 3 0 4 5]) [0 1 2 3])
+(= (P53 [5 6 1 3 2 7]) [5 6])
+(= (P53 [2 3 3 4 5]) [3 4 5])
+(= (P53 [7 6 5 4]) [])
+
+(comment
+
+
+
+  ((fn [xs] (let [ret (reduce (fn [acc x]
+                                (let [prev (:previous-item acc)
+                                           ;_ #p x
+                                           ;_ #p prev
+                                           ;_ #p acc
+                                      acc (if (nil? prev)
+                                            (-> acc
+                                                (assoc :candidate-list [x])
+                                                (assoc :previous-item x))
+                                            (let [acc (assoc acc :previous-item x)]
+                                              (if (> x prev)
+                                                (update acc :candidate-list conj x)
+                                                (assoc acc :candidate-list [x]))))]
+                                  (let [_ #p x
+                                        _ #p acc
+                                        new-acc (if (> (count (:candidate-list acc)) (count (:longest-list acc)))
+                                                  (-> acc
+                                                      (assoc :longest-list (:candidate-list acc)))
+                                                  acc)
+                                        _ #p new-acc]
+                                    new-acc)))
+                              {:longest-list []
+                               :candidate-list []
+                               :previous-item nil}
+                              xs)
+                  ret (:longest-list ret)]
+              (if (> (count ret) 1)
+                ret
+                [])))
+   [2 3 3 4 5]
+   #_[1 0 1 2 3 0 4 5]
+   #_[7 6 5 4])
+
+  )            
 
 ; P73
 (def P73)

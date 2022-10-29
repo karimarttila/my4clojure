@@ -59,12 +59,11 @@ items
 (map (fn [[k v]]
        (let [solved (filter (fn [item]
                               (let [solved? (get item 3)]
-                                (str/includes? solved? "Passed"))
-                              ) v)]
+                                (str/includes? solved? "Passed"))) v)]
          {k {:count (count v) :solved (count solved) :percentage (int (* 100 (double (/ (count solved) (count v)))))}}))
      grouped)
 
-
+(map inc (map inc (range 3)))
 
 
 
