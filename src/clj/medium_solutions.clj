@@ -255,8 +255,65 @@
        (range 9)))
 
 
+
 ; P55
-(def P55)
+(def P55 (fn [xs]
+           (->> xs
+                (group-by identity)
+                (mapcat (fn [[k v]] {k (count v)}))
+                (into {}))))
+; Other developers' solutions:
+(def P55b (fn [coll]
+           (into {}
+                 (map #(vector % (count (filter #{%} coll))) (distinct coll)))))
+
+(= (P55 [1 1 2 3 2 1 1]) {1 4, 2 2, 3 1})
+(= (P55 [:b :a :b :a :b]) {:a 2, :b 3})
+(= (P55 '([1 2] [1 3] [1 3])) {[1 2] 1, [1 3] 2})
+
+
+(comment
+
+  (frequencies [1 1 2 3 2 1 1])
+
+  (group-by identity [1 1 2 3 2 1 1])
+
+  ((fn [xs]
+     (let [buf (group-by identity xs)
+           _ #p buf
+           buf (mapcat (fn [[k v]]
+                         {k (count v)})
+                       buf)
+           _ #p buf
+           buf (into {} buf)]
+       buf))
+   [1 1 2 3 2 1 1])
+
+  ((fn [xs]
+     (->> xs
+          (group-by identity)
+          (mapcat (fn [[k v]] {k (count v)}))
+          (into {})))
+   [1 1 2 3 2 1 1])
+  
+  ; Other developers' solutions:
+  ((fn [coll]
+     (into {}
+           (map #(vector % (count (filter #{%} coll))) (distinct coll))))
+   [1 1 2 3 2 1 1])
+  
+  ((fn [coll]
+     (let [c (distinct coll)
+           _ #p c
+           buf (map #(vector % (count (filter #{%} coll))) c)
+           _ #p buf]
+       (into {} buf))) 
+   [1 1 2 3 2 1 1])
+  
+
+
+  
+  )
 
 ; P56
 (def P56)
