@@ -63,9 +63,12 @@ items
          {k {:count (count v) :solved (count solved) :percentage (int (* 100 (double (/ (count solved) (count v)))))}}))
      grouped)
 
+(map inc
+     (map
+      inc
+      (range 3)))
+
 (map inc (map inc (range 3)))
-
-
 
 
 

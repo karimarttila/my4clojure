@@ -6,6 +6,13 @@
 ;; A bigger scratch area for experimentation.
 
 
+(comment
+  
+  (use 'clojure.pprint)
+  (pprint (for [x (range 10)] (range x)))
+  
+  )
+
 (+ 1 2)
 
 String

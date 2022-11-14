@@ -309,14 +309,37 @@
            _ #p buf]
        (into {} buf))) 
    [1 1 2 3 2 1 1])
-  
-
-
-  
   )
 
 ; P56
-(def P56)
+(def P56 (fn [xs]
+           (reduce (fn [acc x]
+                     (if (some #(= x %) acc)
+                       acc
+                       (conj acc x)))
+                   []
+                   xs)))
+
+(= (P56 [1 2 1 3 1 2 4]) [1 2 3 4])
+(= (P56 [:a :a :b :b :c :c]) [:a :b :c])
+(= (P56 '([2 4] [1 2] [1 3] [1 3])) '([2 4] [1 2] [1 3]))
+(= (P56 (range 50)) (range 50))
+
+(comment
+  (distinct [:a :b :a])
+  (dedupe [:a :b :a])
+  (set [:a :b :a])
+
+  ((fn [xs]
+     (reduce (fn [acc x]
+               (if (some #(= x %) acc)
+                 acc
+                 (conj acc x)))
+             []
+             xs))
+   [1 2 1 3 1 2 4])
+  
+  )
 
 ; P58
 (def P58)

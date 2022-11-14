@@ -18,7 +18,7 @@
 
 *ns*
 "asdf"
-(require '[hashp.core])
+;(require '[hashp.core])
 
 
 ; P19
@@ -654,8 +654,8 @@
 (def P100 (fn [& numbers]
             (letfn [(gcd [a b] (if (zero? b) a (gcd b (mod a b))))]
               (/
-                (apply * numbers)
-                (reduce gcd numbers)))))
+               (apply * numbers)
+               (reduce gcd numbers)))))
 ; Tämä ratkaisu ei jää jumiin sivulle.
 (def P100 (fn [e & r]
             ((fn f [p]
@@ -748,8 +748,8 @@
 ; Toimii: https://clojure.org/reference/lazy
 (def P118 (fn [f coll]
             (lazy-seq
-              (when-let [s (seq coll)]
-                (cons (f (first s)) (P118 f (rest s)))))))
+             (when-let [s (seq coll)]
+               (cons (f (first s)) (P118 f (rest s)))))))
 (def P118 map)
 "asdf"
 (P118 inc [2 3 4 5 6])
@@ -785,10 +785,10 @@
                                       (< x (apply + nums))))
                                   xs))))
 ; Works in Clojurescript.
-#_ (def P120 (fn [xs] (count (filter (fn [x]
-                                    (let [nums (map (comp #(* % %) int) (seq (str x)))]
-                                      (< x (apply + nums))))
-                                  xs))))
+#_(def P120 (fn [xs] (count (filter (fn [x]
+                                      (let [nums (map (comp #(* % %) int) (seq (str x)))]
+                                        (< x (apply + nums))))
+                                    xs))))
 (P120 (range 10))
 (= 8 (P120 (range 10)))
 (= 19 (P120 (range 30)))
@@ -811,10 +811,10 @@
                     (apply + (map (fn [mu ex] (int (* mu (mypow2 ex)))) muls exps)))))
 ; Clojurescript versio.
 #_(def P122 (fn [s] (let [mypow (fn [x] (fn [n] (apply * (repeat n x))))
-                        mypow2 (mypow 2)
-                        muls (reverse (map int (seq s)))
-                        exps (iterate inc 0)]
-                    (apply + (map (fn [mu ex] (int (* mu (mypow2 ex)))) muls exps)))))
+                          mypow2 (mypow 2)
+                          muls (reverse (map int (seq s)))
+                          exps (iterate inc 0)]
+                      (apply + (map (fn [mu ex] (int (* mu (mypow2 ex)))) muls exps)))))
 ; Other developers' solutions
 (def P122 #(Integer/parseInt % 2))
 ;
@@ -849,7 +849,7 @@
 ; P128
 (require '[hashp.core])
 (def P128 (fn [card] (let [[s r] card
-                           ranks {\2 0 \3 1 \4 2 \5 3 \6 4 \7 5 \8 6 \9 7 \T 8 \J 9 \Q 10 \K 11 \A 12 }
+                           ranks {\2 0 \3 1 \4 2 \5 3 \6 4 \7 5 \8 6 \9 7 \T 8 \J 9 \Q 10 \K 11 \A 12}
                            suits {\D :diamond \H :heart \C :club \S :spade}]
                        {:suit (suits s)
                         :rank (ranks r)})))
@@ -859,8 +859,8 @@
 (= {:suit :heart :rank 3} (P128 "H5"))
 (= {:suit :club :rank 12} (P128 "CA"))
 (= (range 13) (map (comp :rank P128 str)
-                                      '[S2 S3 S4 S5 S6 S7
-                                        S8 S9 ST SJ SQ SK SA]))
+                   '[S2 S3 S4 S5 S6 S7
+                     S8 S9 ST SJ SQ SK SA]))
 
 
 ; P135
@@ -904,25 +904,25 @@
             ([x op y & r] (apply calc (conj r (op x y))))))
 ; My Ve colleagues's solution.
 (def P135c (fn [& exprs]
-            (reduce (fn [acc x]
-                      (if (fn? x)
-                        (partial x acc)
-                        (acc x)))
-                    exprs)))
+             (reduce (fn [acc x]
+                       (if (fn? x)
+                         (partial x acc)
+                         (acc x)))
+                     exprs)))
 #_(def P135cc (fn [& exprs]
-            (reduce (fn [acc x]
-                      (let [_ #p acc
-                            _ #p x])
-                      (if (fn? x)
-                        (partial x acc)
-                        (acc x)))
-                    exprs)))
+                (reduce (fn [acc x]
+                          (let [_ #p acc
+                                _ #p x])
+                          (if (fn? x)
+                            (partial x acc)
+                            (acc x)))
+                        exprs)))
 ; My Va colleagues's solution.
 (def P135d
-    (fn calc ([x op y & r]
-              (if op
-                (recur (op x y) (first r) (second r) (drop 2 r))
-                x))))
+  (fn calc ([x op y & r]
+            (if op
+              (recur (op x y) (first r) (second r) (drop 2 r))
+              x))))
 (P135 10 / 2 - 1 * 2)
 (P135c 10 / 2 - 1 * 2)
 #_(P135cc 10 / 2 - 1 * 2)
@@ -940,15 +940,15 @@
 ; Scratch
 (assoc {:acc 0 :oper nil} :oper +)
 (defn infix-list
-	([] (cons 1 (infix-list + 1)))
-	([o n] (lazy-seq (cons o (cons n (infix-list o n))))))
+  ([] (cons 1 (infix-list + 1)))
+  ([o n] (lazy-seq (cons o (cons n (infix-list o n))))))
 (def jee (take 5 (infix-list)))
 (apply P135 jee)
 ; Oma reducella tehty ratkaisu toimii.
 ; Rekursiolla tehty ratkaisu räjäyttää pinon.
 (def P135b (fn calc
-            ([x] x)
-            ([x op y & r] (apply calc (conj r (op x y))))))
+             ([x] x)
+             ([x op y & r] (apply calc (conj r (op x y))))))
 ;(time (apply P135b (take 1000001 (infix-list)))) ; => StackOverFlowError
 (time (apply P135c (take 1000001 (infix-list))))
 (time (apply P135d (take 1000001 (infix-list))))
@@ -986,7 +986,7 @@
                     [[k k1] v1]))))
 ;
 (P146 '{a {p 1, q 2}
-           b {m 3, n 4}})
+        b {m 3, n 4}})
 (= (P146 '{a {p 1, q 2}
            b {m 3, n 4}})
    '{[a p] 1, [a q] 2
@@ -1011,18 +1011,18 @@
 ; Muista: iterate:lla tekee siistin lazy-seq:n!
 (def P147 (fn [s] (iterate (fn [v]
                              (let [x1 (first v)
-                              xn (last v)
-                              nxs (map #(apply +' %) (partition 2 1 v))]
+                                   xn (last v)
+                                   nxs (map #(apply +' %) (partition 2 1 v))]
                                (vec (concat [x1] nxs [xn])))) s)))
 ; Other developers' solutions
 ; Eli laitetaan alkuun 0 ja loppuun nolla => menee limittäin ja lasketaan yhteen.
 
 #_(def P147 (fn [coll] (iterate
-                       (fn [xs]
-                         (let [eka #p (conj (vec xs) 0)
-                               toka #p (cons 0 (vec xs))]
-                           (map +' eka toka)))
-                       coll)))
+                        (fn [xs]
+                          (let [eka #p (conj (vec xs) 0)
+                                toka #p (cons 0 (vec xs))]
+                            (map +' eka toka)))
+                        coll)))
 (def P147 (fn [coll] (iterate #(map +' (conj (vec %) 0) (cons 0 (vec %))) coll)))
 ;
 (= (second (P147 [2 3 2])) [2 5 5 2])
@@ -1033,8 +1033,8 @@
 (partition 2 1 [2 3 2])
 (def lazy-seq-example (fn [f coll]
                         (lazy-seq
-                          (when-let [s (seq coll)]
-                            (cons (f (first s)) (lazy-seq-example f (rest s)))))))
+                         (when-let [s (seq coll)]
+                           (cons (f (first s)) (lazy-seq-example f (rest s)))))))
 (map #(apply + %) (partition 2 1 [2 3 2]))
 (take 5 (P147 [2 3 2]))
 
@@ -1060,44 +1060,44 @@
 (P153 #{#{\U} #{\s} #{\e \R \E} #{\P \L} #{\.}})
 
 (= (P153 #{#{\U} #{\s} #{\e \R \E} #{\P \L} #{\.}})
-                       true)
+   true)
 (= (P153 #{#{:a :b :c :d :e}
-                             #{:a :b :c :d}
-                             #{:a :b :c}
-                             #{:a :b}
-                             #{:a}})
-                       false)
+           #{:a :b :c :d}
+           #{:a :b :c}
+           #{:a :b}
+           #{:a}})
+   false)
 (= (P153 #{#{[1 2 3] [4 5]}
-                             #{[1 2] [3 4 5]}
-                             #{[1] [2] 3 4 5}
-                             #{1 2 [3 4] [5]}})
-                       true)
+           #{[1 2] [3 4 5]}
+           #{[1] [2] 3 4 5}
+           #{1 2 [3 4] [5]}})
+   true)
 (= (P153 #{#{'a 'b}
-                             #{'c 'd 'e}
-                             #{'f 'g 'h 'i}
-                             #{''a ''c ''f}})
-                       true)
+           #{'c 'd 'e}
+           #{'f 'g 'h 'i}
+           #{''a ''c ''f}})
+   true)
 (= (P153 #{#{'(:x :y :z) '(:x :y) '(:z) '()}
-                             #{#{:x :y :z} #{:x :y} #{:z} #{}}
-                             #{'[:x :y :z] [:x :y] [:z] [] {}}})
-                       false)
+           #{#{:x :y :z} #{:x :y} #{:z} #{}}
+           #{'[:x :y :z] [:x :y] [:z] [] {}}})
+   false)
 (= (P153 #{#{(= "true") false}
-                             #{:yes :no}
-                             #{(class 1) 0}
-                             #{(symbol "true") 'false}
-                             #{(keyword "yes") ::no}
-                             #{(class '1) (int \0)}})
-                       false)
+           #{:yes :no}
+           #{(class 1) 0}
+           #{(symbol "true") 'false}
+           #{(keyword "yes") ::no}
+           #{(class '1) (int \0)}})
+   false)
 (= (P153 (set [(set [distinct?])
-                                 (set [#(-> %) #(-> %)])
-                                 (set [#(-> %) #(-> %) #(-> %)])
-                                 (set [#(-> %) #(-> %) #(-> %)])]))
-                       true)
-(= (P153 #{#{(#(-> *)) + (quote mapcat) #_ nil}
-                             #{'+ '* mapcat (comment mapcat)}
-                             #{(do) set contains? nil?}
-                             #{, , , #_, , empty?}})
-                       false)
+               (set [#(-> %) #(-> %)])
+               (set [#(-> %) #(-> %) #(-> %)])
+               (set [#(-> %) #(-> %) #(-> %)])]))
+   true)
+(= (P153 #{#{(#(-> *)) + (quote mapcat) #_nil}
+           #{'+ '* mapcat (comment mapcat)}
+           #{(do) set contains? nil?}
+           #{#_empty?}})
+   false)
 ; Scratch
 (def P153 (fn [xs] (apply distinct? (mapcat seq xs))))
 (P153 #{#{\U} #{\s} #{\e \R \E} #{\P \L} #{\.}})
@@ -1139,7 +1139,6 @@
 (= 3
    (let [[f a] [+ (range 3)]] (apply f a))
    (let [[[f a] b] [[+ 1] 2]] (f a b))
-   (let [[f a] [inc 2]] (f a))
-   )
+   (let [[f a] [inc 2]] (f a)))
 
 
