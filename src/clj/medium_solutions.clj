@@ -264,8 +264,8 @@
                 (into {}))))
 ; Other developers' solutions:
 (def P55b (fn [coll]
-           (into {}
-                 (map #(vector % (count (filter #{%} coll))) (distinct coll)))))
+            (into {}
+                  (map #(vector % (count (filter #{%} coll))) (distinct coll)))))
 
 (= (P55 [1 1 2 3 2 1 1]) {1 4, 2 2, 3 1})
 (= (P55 [:b :a :b :a :b]) {:a 2, :b 3})
@@ -295,21 +295,20 @@
           (mapcat (fn [[k v]] {k (count v)}))
           (into {})))
    [1 1 2 3 2 1 1])
-  
+
   ; Other developers' solutions:
   ((fn [coll]
      (into {}
            (map #(vector % (count (filter #{%} coll))) (distinct coll))))
    [1 1 2 3 2 1 1])
-  
+
   ((fn [coll]
      (let [c (distinct coll)
            _ #p c
            buf (map #(vector % (count (filter #{%} coll))) c)
            _ #p buf]
-       (into {} buf))) 
-   [1 1 2 3 2 1 1])
-  )
+       (into {} buf)))
+   [1 1 2 3 2 1 1]))
 
 ; P56
 (def P56 (fn [xs]
@@ -337,12 +336,85 @@
                  (conj acc x)))
              []
              xs))
-   [1 2 1 3 1 2 4])
-  
-  )
+   [1 2 1 3 1 2 4]))
 
 ; P58
-(def P58)
+(def P58_with_debug (fn [& fs]
+                      (let [_ #p fs]
+                        (fn [& args]
+                          (first
+                           (let [_ #p args]
+                             (reduce (fn [acc f]
+                                       (let [_ #p acc
+                                             _ #p f
+                                             _ #p (list (apply f acc))]
+                                         (list (apply f acc))))
+                                     args
+                                     (reverse fs))))))))
+
+(def P58 (fn [& fs]
+           (fn [& args]
+             (first
+              (reduce (fn [acc f]
+                        (list (apply f acc)))
+                      args
+                      (reverse fs))))))
+
+(= [3 2 1] ((P58 rest reverse) [1 2 3 4]))
+(= 5 ((P58 (partial + 3) second) [1 2 3 4]))
+(= true ((P58 zero? #(mod % 8) +) 3 5 7 9))
+(= "HELLO" ((P58 #(.toUpperCase %) #(apply str %) take) 5 "hello world"))
+
+(comment
+
+  (= [3 2 1] ((comp rest reverse) [1 2 3 4]))
+  (= true ((comp zero? #(mod % 8) +) 3 5 7 9))
+  (+ 3 5 7 9) ; 24
+  (mod 24 8) ; 0
+  (zero? 0) ; true
+  (apply + (list 3 5 7 9)) ; 24
+  (apply reverse (list [1 2 3 4]))
+  (apply rest (list [4 3 2 1]))
+
+
+  (((fn [& fs]
+      (let [_ #p fs]
+        (fn [& args]
+          (first
+           (let [_ #p args]
+             (reduce (fn [acc f]
+                       (let [_ #p acc
+                             _ #p f
+                             _ #p (list (apply f acc))]
+                         (list (apply f acc))))
+                     args
+                     (reverse fs)))))))
+    rest reverse)
+   [1 2 3 4])
+
+  (((fn [args]
+      (let [_ #p args]
+        (fn [xs]
+          (let [_ #p xs]
+            (reduce (fn [acc f]
+                      (let [_ #p acc
+                            _ #p f
+                            _ #p (f acc)]
+                        (f acc)))
+                    xs
+                    (reverse args))))))
+    [rest reverse])
+   [1 2 3 4])
+
+  (let [xs [1 2 3 4]]
+    (reduce (fn [acc f]
+              (f acc))
+            xs
+            (reverse [rest reverse])))
+
+  (rest [1 2 3 4]))
+
+
 
 ; P59
 (def P59)
