@@ -181,7 +181,8 @@
 
   (type 2)
   (type :a)
-  (type [1 2]))
+  (type [1 2])
+  )
 
 ; P54
 (def P54 (fn [n xs]
@@ -308,7 +309,9 @@
            buf (map #(vector % (count (filter #{%} coll))) c)
            _ #p buf]
        (into {} buf)))
-   [1 1 2 3 2 1 1]))
+   [1 1 2 3 2 1 1])
+  
+  )
 
 ; P56
 (def P56 (fn [xs]
