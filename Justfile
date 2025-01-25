@@ -8,6 +8,7 @@
 
 # NOTE: Not needed if you use Calva connection "backend + frontend"
 # Start backend repl.
+# In VSCode: 1. Calva: Connect to a Running REPL, 2: clojure-backend
 @backend-calva:
     clj -M:dev:test:common:backend:calva-backend:kari -i -C
 
