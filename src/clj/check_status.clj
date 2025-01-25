@@ -5,6 +5,14 @@
 (require '[clojure.pprint :as pp])
 
 
+(def mymap_orig {:a 1 :b 2 :c {:d 3 :e {:f 4}}})
+(def mymap {:a 1 :b 2 :c {:d 3 :e {:f 4}}})
+mymap
+mymap_orig
+
+(def JEE "Java EE")
+
+
 (def process-file
   (fn [file]
     (let [lines (drop 1 (str/split-lines (slurp file)))
@@ -28,13 +36,19 @@
 ; When debugging in Clojure JVM REPL.
 ;(pp/pprint (process-file "misc/status_2022-10-26.csv"))
 
+
+(comment
+  JEE
+  JEE
+  mymap
+
 ; Run with babashka.
-(let [[file] *command-line-args*]
-  (when (empty? file)
-    (println "Usage: <file>")
-    (System/exit 1))
-  (when (not (.exists (io/file file)))
-    (println (str "File does not exist: " file))
-    (System/exit 1))
-  (pp/pprint (process-file file)))
+  #_(let [[file] *command-line-args*]
+      (when (empty? file)
+        (println "Usage: <file>")
+        (System/exit 1))
+      (when (not (.exists (io/file file)))
+        (println (str "File does not exist: " file))
+        (System/exit 1))
+      (pp/pprint (process-file file))))
 
