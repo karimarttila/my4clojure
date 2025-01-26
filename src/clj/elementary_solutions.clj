@@ -1,5 +1,8 @@
 (ns elementary-solutions
+  ; Turn off, since I provide many different solutions using the same def.
+  {:clj-kondo/config '{:linters {:redefined-var {:level :off}}}}
   (:require [hashp.core]))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -175,6 +178,7 @@
 
 ; P156
 (def P156 (fn [v keys] (into {} (map (fn [k] {k v}) keys))))
+(def P156 (fn [d s] (reduce (fn [acc i] (assoc acc i d)) {} s)))
 ; Other developers' solutions:
 ; HYVÄ!
 (def P156 #(reduce into (for [k %2] {k %})))

@@ -1,4 +1,6 @@
 (ns medium-solutions
+  ; Turn off, since I provide many different solutions using the same def.
+  {:clj-kondo/config '{:linters {:redefined-var {:level :off}}}}  
   (:require [hashp.core]))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
