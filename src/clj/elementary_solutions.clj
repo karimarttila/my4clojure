@@ -149,6 +149,11 @@
 
 ; P134
 (def P134 (fn [k m] (and (contains? m k) (nil? (k m)))))
+(def P134 ( fn [x m]
+              (let [x  (get m x :not-found)]
+                (if (= x :not-found)
+                  false
+                  (nil? x)))))
 (true? (P134 :a {:a nil :b 2}))
 (false? (P134 :b {:a nil :b 2}))
 (false? (P134 :c {:a nil :b 2}))

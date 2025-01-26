@@ -9,28 +9,65 @@
 
 
 (comment
+  (get {:a 1} :b :not-found)
+  (contains? {:a nil} :a)
+  (:a {:a nil})
+  
+  
+  (def P134 ( fn [x m]
+              (let [x  (get m x :not-found)]
+                (if (= x :not-found)
+                  false
+                  (nil? x)))))
+  
+  
+  (true?  (jee :a {:a nil :b 2}))
+  
+  
+  (->> [2 5 4 1 3 6] (drop 2) (take 3) (map inc) (__))
+  
+  (->> [2 5 4 1 3 6] (drop 2) (take 3) (map inc) (reduce + ))
+  
+  
+  (->> 5 (+ 3) (/ 2) (- 1))
+   ; 3/4
+  (-> 5 (+ 3) (/ 2) (- 1))
+   ; 3
+  
   
   '(1 2 3 4 5)
   
-  (-> [2 5 4 1 3 6] reverse rest sort __) 
+  
+  (-> [2 5 4 1 3 6] reverse rest sort last)
+  
+  (->> [2 5 4 1 3 6] reverse rest sort last)
+  
   
   (take 10 (range))
+  
   (def P37 "ABC")
+  
   (= P37 (apply str (re-seq #"[A-Z]+" "bA1B3Ce ")))
   
+  
   (= __ (map #(+ % 5) '(1 2 3)))
+  
   (#(+ % 5) 1)
+  
   
   
   (= (__ '(5 4 3)) 3)
   
+  
   (drop 5)
   
+  
   ((fn [l] (first ( reverse l))) '(5 4 3))
-  
-  
-  
   )
+  
+  
+  
+
 
 
 (comment
