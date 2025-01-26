@@ -22,6 +22,7 @@
 
 
 ; P19
+(def P19 (fn [l] (first ( reverse l))))
 (def P19 (fn [lst] (let [c (count lst)] (first (drop (- c 1) lst)))))
 ; Other developers' solutions:
 (def P19 #(first (reverse %)))

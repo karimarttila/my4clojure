@@ -10,6 +10,31 @@
 
 (comment
   
+  '(1 2 3 4 5)
+  
+  (-> [2 5 4 1 3 6] reverse rest sort __) 
+  
+  (take 10 (range))
+  (def P37 "ABC")
+  (= P37 (apply str (re-seq #"[A-Z]+" "bA1B3Ce ")))
+  
+  (= __ (map #(+ % 5) '(1 2 3)))
+  (#(+ % 5) 1)
+  
+  
+  (= (__ '(5 4 3)) 3)
+  
+  (drop 5)
+  
+  ((fn [l] (first ( reverse l))) '(5 4 3))
+  
+  
+  
+  )
+
+
+(comment
+  
   (use 'clojure.pprint)
   (pprint (for [x (range 10)] (range x)))
   
