@@ -7,6 +7,24 @@
 ;; A bigger scratch area for experimentation.
 
 
+; Easy solutions.
+
+(comment 
+  
+  (reverse '(1 2 3))
+  (second '(1 2 3))
+  (second (reverse '(1 2 3)))
+  ((comp second reverse) '(1 2 3))
+  (def P20 #((comp second reverse) %))
+  (P20 (list 1 2 3 4 5 6))
+  (def P20 #(-> % reverse second) )
+  (P20 (list 1 2 3 4 5 6))
+  (= (P20 (list 1 2 3 4 5 6)) 5)
+  
+  )
+
+
+
 
 
 ; 2025-01-26: All elementary solutions done (again).
