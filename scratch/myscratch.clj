@@ -1,4 +1,5 @@
 (ns myscratch
+  {:clj-kondo/config '{:linters {:redefined-var {:level :off}}}}
   (:require [clojure.test :refer [deftest use-fixtures is testing]]
             [hashp.core]
             [clojure.string :as s]))
@@ -8,6 +9,23 @@
 
 
 ; Easy solutions.
+
+(comment
+  (def P22 (fn [l] (count l)))
+  (def P22 (fn [l] (reduce (fn [acc _] (inc acc)) 0 l)))
+  (P22 '(1 2 3 3 1))
+  (= (P22 '(1 2 3 3 1)) 5)
+  )
+
+(comment
+  
+  (def P21 (fn [lst n] (nth lst n)))
+  (def P21 (fn [l n] (first (drop n l))))
+  (def P21 #(first (drop %2 %1)))
+  (P21 '(4 5 6 7) 2)
+  (= (P21 '(4 5 6 7) 2) 6)
+   
+  )
 
 (comment 
   

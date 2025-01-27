@@ -52,6 +52,8 @@
 (= (P20 [[1 2] [3 4]]) [1 2])
 
 ; P21
+; New 2025-01-27
+(def P21 #(first (drop %2 %1)))
 (def P21 (fn [lst n] (first (drop n lst))))
 (def P21 #(->> %1 (drop %2) first))
 (= (P21 '(4 5 6 7) 2) 6)
@@ -60,6 +62,8 @@
 (= (P21 '([1 2] [3 4] [5 6]) 2) [5 6])
 
 ; P22
+; New 2025-01-27
+(def P22 (fn [l] (reduce (fn [acc _] (inc acc)) 0 l)))
 (def P22 #(count %)) ; Ei saa käyttää count.
 (def P22 (fn [lst] (reduce (fn [acc x] (+ 1 acc)) 0 (seq lst))))
 (def P22 (fn [lst] (reduce (fn [acc x] (+ 1 acc)) 0 (seq lst))))
