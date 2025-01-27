@@ -26,6 +26,7 @@
 ; P19
 ; New 2025-01-25
 (def P19 (fn [l] (first ( reverse l))))
+; Old.
 (def P19 (fn [lst] (let [c (count lst)] (first (drop (- c 1) lst)))))
 ; Other developers' solutions:
 (def P19 #(first (reverse %)))
@@ -39,8 +40,8 @@
 ; P20
 ; New 2025-01-27
 (def P20 #((comp second reverse) %))
-; New 2025-01-27
 (def P20 #(-> % reverse second) )
+; Old.
 (def P20 (fn [lst] (first (drop 1 (reverse lst)))))
 (def P20 (fn [lst] (->> lst reverse (drop 1) first)))
 (def P20 #(->> % reverse (drop 1) first))
@@ -54,6 +55,7 @@
 ; P21
 ; New 2025-01-27
 (def P21 #(first (drop %2 %1)))
+; Old.
 (def P21 (fn [lst n] (first (drop n lst))))
 (def P21 #(->> %1 (drop %2) first))
 (= (P21 '(4 5 6 7) 2) 6)
@@ -64,6 +66,7 @@
 ; P22
 ; New 2025-01-27
 (def P22 (fn [l] (reduce (fn [acc _] (inc acc)) 0 l)))
+; Old.
 (def P22 #(count %)) ; Ei saa käyttää count.
 (def P22 (fn [lst] (reduce (fn [acc x] (+ 1 acc)) 0 (seq lst))))
 (def P22 (fn [lst] (reduce (fn [acc x] (+ 1 acc)) 0 (seq lst))))
@@ -81,6 +84,9 @@
 (P22 "abc")
 
 ; P23
+; New 2025-01-27
+(def P23 (fn [c] (reduce (fn [acc x] (cons x acc)) '() c)))
+; Old.
 (def P23 (fn [lst] (reduce (fn [acc x] (conj acc x)) '() lst)))
 (def P23 #(reduce (fn [acc x] (conj acc x)) '() %))
 ; Other developers' solutions
@@ -94,6 +100,10 @@
 (= (P23 [[1 2] [3 4] [5 6]]) [[5 6] [3 4] [1 2]])
 
 ; P24
+; New 2025-01-27
+(def P24 (fn [s] (reduce + s)))
+(def P24 #(reduce + %))
+; Old.
 (def P24 #(apply + %))
 ; Other developers' solutions
 (def P24 #(reduce + %))
@@ -105,6 +115,10 @@
 (= (P24 '(1 10 3)) 14)
 
 ; P25
+; New 2025-01-27
+(def P25 (fn [s] (filter odd? s)))
+(def P25 #(filter odd? %))
+; Old.
 (def P25 #(filter odd? %))
 (= (P25 #{1 2 3 4 5}) '(1 3 5))
 (= (P25 [4 2 1 6]) '(1))
@@ -112,6 +126,21 @@
 (= (P25 [1 1 1 3]) '(1 1 1 3))
 
 ; P26
+; New 2025-01-27
+; Hieman kökkö, mutta toimii.
+(def P26 (fn [n]
+             (let [fib (fn [v num]
+                         (if (> num 2)
+                           (let [x (last v)
+                                 y (last (butlast v))
+                                 z (+ x y)]
+                             (recur (conj v z) (dec num)))
+                           v))]
+               (cond
+                 (= n 1) [1]
+                 (= n 2) [1 1]
+                 (> n 2) (fib [1 1] n)))))
+; Old.
 ; Muistin tämän ratkaisun jostain Clojure-kirjasta.
 (def P26 (fn [n] (take n (map first (iterate (fn [[x1 x2]] [x2 (+ x1 x2)]) [1 1])))))
 ;(P26 4)

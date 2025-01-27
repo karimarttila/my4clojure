@@ -11,6 +11,67 @@
 ; Easy solutions.
 
 (comment
+
+
+  ((fn [v num]
+     (if (> num 2)
+       (let [x (last v)
+             _ #p x
+             y (last (butlast v))
+             z (+ x y)]
+         (recur (conj v z) (dec num)))
+       v)) [1 1] 5)
+
+  (def P26 (fn [n]
+             (let [fib (fn [v num]
+                         (if (> num 2)
+                           (let [x (last v)
+                                 y (last (butlast v))
+                                 z (+ x y)]
+                             (recur (conj v z) (dec num)))
+                           v))]
+               (cond
+                 (= n 1) [1]
+                 (= n 2) [1 1]
+                 (> n 2) (fib [1 1] n)))))
+
+  (P26 1)
+  (P26 2)
+  (P26 3)
+  (P26 10)
+  (= (P26 3) '(1 1 2))
+
+
+  )
+
+
+
+(comment
+  (def P25 (fn [s] (filter odd? s)))
+  (def P25 #(filter odd? %))
+  (= (P25 #{1 2 3 4 5}) '(1 3 5))
+  
+  )
+
+
+(comment
+  
+  (def P24 (fn [s] (reduce + s)))
+  (def P24 #(reduce + %))
+  (= (P24 [1 2 3]) 6)
+  
+  )
+
+(comment 
+  
+  (def P23 (fn [c] (reduce (fn [acc x] (cons x acc)) '() c)))
+  (P23 [1 2 3 4 5])
+  (= (P23 [1 2 3 4 5]) [5 4 3 2 1])
+  
+  )
+
+
+(comment
   (def P22 (fn [l] (count l)))
   (def P22 (fn [l] (reduce (fn [acc _] (inc acc)) 0 l)))
   (P22 '(1 2 3 3 1))
