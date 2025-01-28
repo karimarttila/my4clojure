@@ -10,8 +10,89 @@
 
 ; Easy solutions.
 
+
 (comment
 
+  (flatten '((1 2) 3 [4 [5 6]]))
+
+  (seq? '(1 2))
+  (seq? 1)
+  (seq? [4 [5 6]])
+  (sequential? [4 [5 6]])
+  (sequential? '(1 2))
+
+  (def P28 (fn [xs]
+             (reduce (fn [acc x]
+                       (let [_ #p x
+                             _ #p acc]
+                         (if (sequential? x)
+                           (conj acc (P28 x))
+                           (conj acc x)))) [] xs)))
+
+  (P28 '((1 2) 3 [4 [5 6]]))
+
+  (def P28 (fn [xs]
+             (reduce (fn [acc x]
+                       (let [_ #p x
+                             _ #p acc]
+                         (if (sequential? x)
+                           (concat acc (P28 x))
+                           (conj acc x)))) [] xs)))
+  ; Almost there, but not quite: the order is wrong.
+  (P28 '((1 2) 3 [4 [5 6]]))
+
+  (def P28 (fn [xs]
+             (reduce (fn [acc x]
+                       (let [_ #p x
+                             _ #p acc]
+                         (if (sequential? x)
+                           (concat acc (P28 x))
+                           (concat acc [x])))) [] xs)))
+
+  (P28 '((1 2) 3 [4 [5 6]]))
+
+
+
+  (= (P28 '((1 2) 3 [4 [5 6]])) '(1 2 3 4 5 6))
+
+;;   (fn [input]
+;;     (let [my-fun (fn [xs]
+;;                    (reduce (fn [acc x]
+;;                              (let [_ #p x
+;;                                    _ #p acc]
+;;                                (if (sequential? x)
+;;                                  (concat acc (my-fun x))
+;;                                  (concat acc [x])))) [] xs))]
+;;       (my-fun input)))
+   
+  ; You have to use letfn !!!
+  (def P28 (fn [input]
+             (letfn [(my-fun [xs]
+                       (reduce (fn [acc x]
+                                 (if (sequential? x)
+                                   (concat acc (my-fun x))
+                                   (concat acc [x]))) [] xs))]
+               (my-fun input))))
+  
+  (= (P28 '((1 2) 3 [4 [5 6]])) '(1 2 3 4 5 6))
+
+  )
+
+(comment
+  
+  (s/join (reverse "racecar"))
+  (def P27 (fn [sr] (= sr (s/join (reverse sr)))))
+  (def P27 #(= % (s/join (reverse %)))) 
+  (true? (P27 "racecar"))
+  (true? (P27 [:foo :bar :foo]))
+  
+  (seq "racecar")
+  (seq [:foo :bar :foo])
+  (def P27 #(= (seq %) (reverse %))) 
+  
+  )
+
+(comment 
 
   ((fn [v num]
      (if (> num 2)

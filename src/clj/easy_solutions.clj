@@ -152,6 +152,9 @@
 ((fn [n] (take n (map first (iterate (fn [[x1 x2]] [x2 (+ x1 x2)]) [1 1])))) 5)
 
 ; P27
+; New 2025-01-28
+(def P27 #(= (seq %) (reverse %))) 
+; Old.
 (def P27 #(= (seq %) (reverse %)))
 (false? (P27 '(1 2 3 4 5)))
 (true? (P27 "racecar"))
@@ -162,6 +165,16 @@
 (reverse "racecar")
 
 ; P28
+; New 2025-01-28
+(def P28 (fn [input]
+             (letfn [(my-fun [xs]
+                       (reduce (fn [acc x]
+                                 (if (sequential? x)
+                                   (concat acc (my-fun x))
+                                   (concat acc [x]))) [] xs))]
+               (my-fun input))))
+; Am I getting old? My solution a couple of years ago is a lot shorter.
+; Old.
 (def P28 (fn [x]
            (cond
              (sequential? x) (mapcat P28 x)
