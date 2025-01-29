@@ -189,17 +189,30 @@
 ; Other developers' solutions:
 ; Ei saanut käyttää flatten.
 (def P28 (fn [x] (flatten x)))
-#(remove % (tree-seq % seq %2))
-;
+(def P28 (fn flat [c]
+           (if (sequential? c)
+             (mapcat flat c)
+             (list c))))
 (= (P28 '((1 2) 3 [4 [5 6]])) '(1 2 3 4 5 6))
 (= (P28 ["a" ["b"] "c"]) '("a" "b" "c"))
 (= (P28 '((((:a))))) '(:a))
 ; Scratch
 (cons 1 nil)
 (tree-seq seq? identity '((1 2 (3)) (4)))
+(P28 '((1 2) 3 [4 [5 6]]))
+(mapcat reverse [[3 2 1 0] [6 5 4] [9 8 7]])
+(map reverse [[3 2 1 0] [6 5 4] [9 8 7]])
 
 
 ; P29
+; New 2025-01-29.
+(def P29 (fn [s]
+             (let [caps #{\A \B \C \D \E \F \G \H \I \J \K \L \M \N \O \P \Q \R \S \T \U \V \W \X \Y \Z}
+                   filtered (filter (fn [x]
+                                      (caps x))
+                                    s)]
+               (apply str filtered))))
+; Old.
 ; Works only with Java
 ;(def P29 (fn [s] (apply str (filter #(Character/isUpperCase %) s))))
 ; Javascript

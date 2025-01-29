@@ -2,14 +2,46 @@
   {:clj-kondo/config '{:linters {:redefined-var {:level :off}}}}
   (:require [clojure.test :refer [deftest use-fixtures is testing]]
             [hashp.core]
-            [clojure.string :as s]))
+            [clojure.string :as s]
+            [clojure.repl :as repl]))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; A bigger scratch area for experimentation.
 
+; ctrl+shift+D => show doc for symbol in a tab.
+; ctrl+x k => kill tab.
+; ctrl+shift+i => navigate to symbol source.
+; ctrl+shift+j => naviage back.
+
+(comment
+  ; General area.
+  
+  (repl/source seq)
+  
+  )
+
 
 ; Easy solutions.
 
+
+(comment
+  
+  (def my-caps #{\A \B \C \D \E \F \G \H \I \J \K \L \M \N \O \P \Q \R \S \T \U \V \W \X \Y \Z})
+  (my-caps \A)
+  (my-caps \a)
+  
+  (def P29 (fn [s]
+             (let [caps #{\A \B \C \D \E \F \G \H \I \J \K \L \M \N \O \P \Q \R \S \T \U \V \W \X \Y \Z}
+                   filtered (filter (fn [x]
+                                      (caps x))
+                                    s)]
+               (apply str filtered))))
+  (P29 "HeLlO, WoRlD!")
+  
+  (= (P29 "HeLlO, WoRlD!") "HLOWRD")
+  
+   
+  )
 
 (comment
 
@@ -64,7 +96,7 @@
 ;;                                  (concat acc (my-fun x))
 ;;                                  (concat acc [x])))) [] xs))]
 ;;       (my-fun input)))
-   
+  
   ; You have to use letfn !!!
   (def P28 (fn [input]
              (letfn [(my-fun [xs]
