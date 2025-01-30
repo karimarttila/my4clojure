@@ -207,7 +207,7 @@
 ; P29
 ; New 2025-01-29.
 (def P29 (fn [s]
-             (let [caps #{\A \B \C \D \E \F \G \H \I \J \K \L \M \N \O \P \Q \R \S \T \U \V \W \X \Y \Z}
+             (let [caps (set (map char (range (int \A) (inc (int \Z)))))
                    filtered (filter (fn [x]
                                       (caps x))
                                     s)]
@@ -235,6 +235,26 @@
 
 
 ; P30
+; New 2025-01-30.
+(def P30 (fn [s]
+             (let [check-type (fn [x]
+                                (cond
+                                  (string? x) :string
+                                  (vector? x) :vector
+                                  (list? x) :list
+                                  :else :unknown))
+                   my-type (check-type s)
+                   result (:acc (reduce (fn [acc mys]
+                                          (if (= (:prev acc) mys)
+                                            {:acc (:acc acc) :prev mys}
+                                            {:acc (conj (:acc acc) mys) :prev mys})) {:acc [] :prev ""} (seq s)))]
+               (cond
+                 (= my-type :string) (reduce str result)
+                 (= my-type :vector) (vec result)
+                 (= my-type :list) (list result)
+                 :else :error))))
+; WTF? Am I getting old? My previous solutions were a lot shorter than the new one.
+;Old
 (def P30 (fn [xs] (let [lst (->> xs
                                  (partition 2 1)
                                  (remove (fn [[a b]] (= a b))))
@@ -247,8 +267,13 @@
 (P30 [1 1 2 3 3 2 2 3])
 ;
 ; Other developers' solutions:
+; Why didn't I figure this one. This is a real beauty. Clear and concise. Maybe I didn't realize to use `last`?
 (def P30 (fn [x] (reduce #(if (= (last %) %2) % (conj % %2)) [] x)))
+; This is also genious.
 (def P30 #(map first (partition-by identity %)))
+(partition-by identity "Leeeeeerrroyyy") ; => Then just map with first...
+;;=> ((\L) (\e \e \e \e \e \e) (\r \r \r) (\o) (\y \y \y))
+; ... it really is a good to do these exercises: you get to know the standard library  better.
 ;
 (= (apply str (P30 "Leeeeeerrroyyy")) "Leroy")
 (= (P30 [1 1 2 3 3 2 2 3]) '(1 2 3 2 3))

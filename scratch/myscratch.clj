@@ -26,12 +26,106 @@
 
 (comment
   
+  (seq "Leee")
+  ;;=> (\L \e \e \e)
+  (str "" \L)
+  ;;=> "L"
+  
+  
+  (def my-acc {:acc "Le", :prev \e})
+  (def my-mys \e)
+  (= (str (:prev my-acc)) my-mys)
+  
+  (def P30 (fn [s]
+             (:acc (reduce (fn [acc mys]
+                             (let [_ #p acc
+                                   _ #p mys]
+                               (if (= (:prev acc) mys)
+                                 {:acc (:acc acc) :prev mys}
+                                 {:acc (str (:acc acc) mys) :prev mys}))) {:acc "" :prev ""} (seq s)))))
+  ; Does not work with generic list items...
+  (def P30 (fn [s]
+             (:acc (reduce (fn [acc mys]
+                             (if (= (:prev acc) mys)
+                               {:acc (:acc acc) :prev mys}
+                               {:acc (str (:acc acc) mys) :prev mys})) {:acc "" :prev ""} (seq s)))))
+  
+  (type '(1 1))
+  ;;=> clojure.lang.PersistentList
+  (type [ 1 1])
+  ;;=> clojure.lang.PersistentVector
+  (type "11")
+  ;;=> java.lang.String
+  (string? "11")
+  ;;=> true
+  (string? [1 1])
+  ;;=> false
+  
+  
+  (def P30 (fn [s]
+             (let [check-type (fn [x]
+                                (cond
+                                  (string? x) :string
+                                  (vector? x) :vector
+                                  (list? x) :list
+                                  :else :unknown))
+                   my-type (check-type s)
+                   _ #p my-type
+                   result (:acc (reduce (fn [acc mys]
+                                          (let [_ #p acc
+                                                _ #p mys]
+                                            (if (= (:prev acc) mys)
+                                              {:acc (:acc acc) :prev mys}
+                                              {:acc (conj (:acc acc) mys) :prev mys}))) {:acc [] :prev ""} (seq s)))
+                   _ #p result]
+               (cond
+                 (= my-type :string) (reduce str result)
+                 (= my-type :vector) (vec result)
+                 (= my-type :list) (list result)
+                 :else :error))))
+  
+  (def P30 (fn [s]
+             (let [check-type (fn [x]
+                                (cond
+                                  (string? x) :string
+                                  (vector? x) :vector
+                                  (list? x) :list
+                                  :else :unknown))
+                   my-type (check-type s)
+                   result (:acc (reduce (fn [acc mys]
+                                          (if (= (:prev acc) mys)
+                                            {:acc (:acc acc) :prev mys}
+                                            {:acc (conj (:acc acc) mys) :prev mys})) {:acc [] :prev ""} (seq s)))]
+               (cond
+                 (= my-type :string) (reduce str result)
+                 (= my-type :vector) (vec result)
+                 (= my-type :list) (list result)
+                 :else :error))))
+  
+  (reduce str [\L \e \r \o \y])
+  (P30 "Leeeeeerrroyyy")
+  (P30 [1 1 2 3 3 2 2 3])
+  (P30 [[1 2] [1 2] [3 4] [1 2]])
+  (= (P30 [[1 2] [1 2] [3 4] [1 2]]) '([1 2] [3 4] [1 2]))
+  
+  (= (apply str (P30 "Leeeeeerrroyyy")) "Leroy")
+  
+  (= (P30 [1 1 2 3 3 2 2 3]) '(1 2 3 2 3))
+  
+  
+  
+  )
+
+(comment
+  
   (def my-caps #{\A \B \C \D \E \F \G \H \I \J \K \L \M \N \O \P \Q \R \S \T \U \V \W \X \Y \Z})
+  (def my-caps (set (map char (range (int \A) (inc (int \Z))))))
+  my-caps
   (my-caps \A)
   (my-caps \a)
   
   (def P29 (fn [s]
-             (let [caps #{\A \B \C \D \E \F \G \H \I \J \K \L \M \N \O \P \Q \R \S \T \U \V \W \X \Y \Z}
+             (let [caps (set (map char (range (int \A) (inc (int \Z)))))
                    filtered (filter (fn [x]
                                       (caps x))
                                     s)]
@@ -40,7 +134,7 @@
   
   (= (P29 "HeLlO, WoRlD!") "HLOWRD")
   
-   
+  
   )
 
 (comment
