@@ -23,6 +23,95 @@
 
 ; Easy solutions.
 
+(comment
+  
+  (def P38 (fn [n & r]
+             (last (sort (flatten (list n r))))))
+  
+  (def P38 (fn [n & r] (-> (list n r) flatten sort last)))
+  
+  (def P38 (fn [& r] (-> r flatten sort last)))
+  
+  (def P38 (fn [& r] (-> r sort last)))
+  
+  (P38 1 8 3 4)
+  
+  (= (P38 1 8 3 4) 8)
+  
+  )
+
+(comment
+  
+  ; Really easy.
+  (def P34 (fn [b e]
+             (take (- e b) (iterate inc b))))
+  
+  (P34 1 4)
+  
+  (= (P34 1 4) '(1 2 3))
+  
+  )
+
+(comment
+  
+  (def mys [1 2 3]) 
+  
+  (take 2 (iterate identity 1))
+  ;;=> (1 1)
+  
+  ; That was easy, now that know mapcat, iterate and identity.
+  (def P33 (fn [xs n] 
+             (mapcat (fn [x]
+                       (take n (iterate identity x)))
+                     xs)))
+  
+  ; Let's see how to use repeat.
+  (take 2 (repeat 1))
+  ;;=> (1 1)
+  
+  (def P33 (fn [xs n] 
+             (mapcat (fn [x]
+                       (take n (repeat x)))
+                     xs)))
+  ; => It is better.
+  
+  (P33 mys 2)
+  
+  (= (P33 [1 2 3] 2) '(1 1 2 2 3 3))
+  
+  )
+
+
+(comment
+  
+  (def mys [1 2 3])
+  (map (fn [x] [x x]) mys)
+  ;;=> ([1 1] [2 2] [3 3])
+  (mapcat (fn [x] [x x]) mys)
+  ;;=> (1 1 2 2 3 3)
+  
+  (def P32 (fn [xs] (mapcat (fn [x] [x x]) xs)))
+
+  
+  
+  (P32 mys)
+  
+
+  (= (P32 [1 2 3]) '(1 1 2 2 3 3))
+  )
+
+
+(comment
+
+  (def P31 (fn [xs] (partition-by identity xs)))
+  
+  (def mys [1 1 2 1 1 1 3 3])
+  (partition-by identity mys)
+  
+  (P31 [1 1 2 1 1 1 3 3])
+  (= (P31 [1 1 2 1 1 1 3 3]) '((1 1) (2) (1 1 1) (3 3)))
+
+  )
 
 (comment
   

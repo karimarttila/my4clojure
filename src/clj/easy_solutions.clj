@@ -273,7 +273,7 @@
 (def P30 #(map first (partition-by identity %)))
 (partition-by identity "Leeeeeerrroyyy") ; => Then just map with first...
 ;;=> ((\L) (\e \e \e \e \e \e) (\r \r \r) (\o) (\y \y \y))
-; ... it really is a good to do these exercises: you get to know the standard library  better.
+; ... it really is a good to do these exercises: you get to know the standard library  
 ;
 (= (apply str (P30 "Leeeeeerrroyyy")) "Leroy")
 (= (P30 [1 1 2 3 3 2 2 3]) '(1 2 3 2 3))
@@ -286,10 +286,13 @@
 
 
 ; P31
+; New 2025-01-31
+; I learned from the previous exercise P31.
+(def P31 (fn [xs] (partition-by identity xs)))
+; Old.
 (def P31 (fn [xs] (partition-by identity xs)))
 (P31 [1 1 2 1 1 1 3 3])
 ;
-
 (= (P31 [1 1 2 1 1 1 3 3]) '((1 1) (2) (1 1 1) (3 3)))
 (= (P31 [:a :a :b :b :c]) '((:a :a) (:b :b) (:c)))
 (= (P31 [[1 2] [1 2] [3 4]]) '(([1 2] [1 2]) ([3 4])))
@@ -297,8 +300,13 @@
 (partition-by identity [1 1 2 1 1 1 3 3])
 
 ; P32
+; New 2025-01-31.
+; Damn, I'm getting better at this.
+(def P32 (fn [xs] (mapcat (fn [x] [x x]) xs)))
+; Old. Or not - same function a few years ago.
 (def P32 (fn [xs] (mapcat (fn [x] [x x]) xs)))
 ; Other developers' solutions
+; This is good out-of-the-box thinking.
 (def P32 #(interleave % %))
 (= (P32 [1 2 3]) '(1 1 2 2 3 3))
 (= (P32 [:a :a :b :b]) '(:a :a :a :a :b :b :b :b))
@@ -310,6 +318,11 @@
 
 
 ; P33
+; New 2025-01-31
+(def P33 (fn [xs n] (mapcat (fn [x] (take n (iterate identity x))) xs)))
+; I examined other developers' solutions. I should have used repeat.
+; Old.
+; Hm. That was also good.
 (def P33 (fn [xs n] (apply interleave (for [n (range n)] xs))))
 (P33 [1 2 3] 2)
 ; Other developers' solutions
@@ -329,6 +342,11 @@
 
 
 ; P34
+; New 2025-01-31
+(def P34 (fn [b e]
+             (take (- e b) (iterate inc b))))
+; Exactly the same, even the symbols (b = begin, e = end). Did I remember this?
+; Old.
 (def P34 (fn [b e] (take (- e b) (iterate inc b))))
 (P34 1 4)
 (= (P34 1 4) '(1 2 3))
@@ -337,6 +355,9 @@
 
 
 ; P38
+; New 2025-01-31
+(def P38 (fn [& r] (-> r sort last)))
+; Old
 (def P38 (fn [& xs] (reduce (fn [acc x] (if (> x acc) x acc)) (first xs) xs)))
 (def P38 (fn [& xs] (-> xs sort reverse first)))
 (def P38 (comp first reverse sort list))
