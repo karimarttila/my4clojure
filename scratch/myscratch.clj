@@ -8,10 +8,31 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; A bigger scratch area for experimentation.
 
+; Some useful keybindings
+; ** Calva specific: **
+; See also: https://www.karimarttila.fi/clojure/2025/02/02/clojure-keybindings.html
+; See also: https://www.karimarttila.fi/keyboard/2020/09/28/dygma-raise-reflections-part-1.html
+; https://www.karimarttila.fi/clojure/2022/10/08/clojure-calva.html
+; https://www.karimarttila.fi/clojure/2022/10/16/clojure-calva-part2.html 
+; https://www.karimarttila.fi/clojure/2022/10/18/clojure-calva-part3.html
 ; ctrl+shift+D => show doc for symbol in a tab.
 ; ctrl+x k => kill tab.
 ; ctrl+shift+i => navigate to symbol source.
 ; ctrl+shift+j => naviage back.
+; alt+l => evaluate form
+; alt+shift+l => evaluate S-expr and add result as comment below.
+; ctrl+shift+k => kill S-expr.
+; alt+shift+k => copy S-expr.
+; ctrl+k => just ordinary Emacs kill till the end of row.
+; ** Copilot specific: ** 
+; https://www.karimarttila.fi/programming/2025/02/01/copilot-keybindings.html
+; ctrl+shift+n => Ask Copilot for a suggestion.
+; ctrl+shift+m => Accept Copilot suggestion.
+; ctrl+shift+, => Accept Copilot suggestion word by word.
+; ctrl+shift+. => Show several Copilot suggestions in a separate panel.
+
+
+
 
 (comment
   ; General area.
@@ -24,6 +45,51 @@
 ; Easy solutions.
 
 (comment
+  
+  (interpose 0 [1 2 3])
+  ;;=> (1 0 2 0 3)
+  
+  
+  
+  
+  (take 5 (iterate identity 0))
+  
+  (def P40 (fn [n xs] (drop 1 (mapcat (fn [x y ] [x y]) (iterate identity n) xs))))
+  
+  (P40 0 [1 2 3])
+  (= (P40 0 [1 2 3]) [1 0 2 0 3])
+
+  ; Old
+  ; Damn, I didn't remember interleave.
+  ; Anyway, pretty similar as my new solution.
+  (def P40 (fn [sep xs] (drop-last (interleave xs (iterate identity sep)))))
+  (interleave [1 2 3] (iterate identity 0))
+  ;;=> (1 0 2 0 3 0)
+  
+  )
+
+(comment
+
+  (flatten (map (fn [x y]
+                  [x y])
+                [1 2 3] [:a :b]))
+  
+  (def P39 (fn [xs xy]
+             (flatten (map (fn [x y] [x y])
+                           xs xy)))) 
+
+  (P39 [1 2 3] [:a :b :c])
+
+  (= (P39 [1 2 3] [:a :b :c]) '(1 :a 2 :b 3 :c))
+
+(apply assoc {} 
+   (interleave [:fruit :color :temp] 
+               ["grape" "red" "hot"]))  
+  
+  )
+
+
+(comment.
   
   (def P38 (fn [n & r]
              (last (sort (flatten (list n r))))))

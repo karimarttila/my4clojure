@@ -375,6 +375,9 @@
 (= (P38 45 67 11) 67)
 
 ; P39
+; New 2025-01-31
+(def P39 (fn [xs xy] (flatten (map (fn [x y] [x y]) xs xy))))
+; Old
 (def P39 (fn [xs1 xs2] (interleave xs1 xs2)))
 (def P39 (fn [xs1 xs2] (mapcat (fn [a b] [a b]) xs1 xs2)))
 ; Other developers' solutions
@@ -388,6 +391,9 @@
 
 
 ; P40
+; New 2025-02-01
+(def P40 (fn [n xs] (drop 1 (mapcat (fn [x y ] [x y]) (iterate identity n) xs))))
+; Old
 (def P40 (fn [sep xs] (interpose sep xs)))
 (def P40 (fn [sep xs] (drop-last (interleave xs (iterate identity sep)))))
 ; Other developers' solutions
