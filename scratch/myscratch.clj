@@ -44,13 +44,38 @@
 
 ; Easy solutions.
 
+[:a :b :c]
+
+(comment 
+  
+  (partition 3 3 [:pad :pad :pad] [1 2 3 4 5 6 7 8 9 10])
+  ;;=> ((1 2 3) (4 5 6) (7 8 9) (10 :pad :pad))
+  (mapcat (fn [x]
+            (take (- 3 1) x))
+          '((1 2 3) (4 5 6) (7 8 9) (10 :pad :pad)))
+  ;;=> (1 2 4 5 7 8 10 :pad)
+  
+  [1 2 4 5 7 8 10 :pad]
+  (remove #(= :pad %) [1 2 4 5 7 8 10 :pad])
+  
+  
+  (def P41 (fn [xs n]
+             (->> xs
+                  (partition n n [:pad :pad :pad])
+                  (mapcat (fn [x] (take (- n 1) x)))
+                  (remove #(= :pad %)))))
+  
+  (P41 [1 2 3 4 5 6 7 8 9 10] 3)
+  
+  (= (P41 [1 2 3 4 5 6 7 8] 3) [1 2 4 5 7 8])
+  
+  )
+
+
 (comment
   
   (interpose 0 [1 2 3])
-  ;;=> (1 0 2 0 3)
-  
-  
-  
+  ;;=> (1 0 2 0 3) 
   
   (take 5 (iterate identity 0))
   

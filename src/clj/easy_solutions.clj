@@ -408,6 +408,14 @@
 (drop 5 (iterate identity 1))
 
 ; P41
+; New 2025-02-02
+; Just realized: Should the [:pad :pad :pad] be using iterate? Try later.
+(def P41 (fn [xs n]
+           (->> xs
+                (partition n n [:pad :pad :pad])
+                (mapcat (fn [x] (take (- n 1) x)))
+                (remove #(= :pad %)))))
+; Old.
 ; Ei ihan toimi.
 (def P41 (fn [xs n] (apply concat (partition (- n 1) n xs))))
 (def P41 (fn [xs n] (loop [acc [] lst xs n n]
