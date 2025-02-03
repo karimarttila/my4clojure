@@ -25,7 +25,7 @@
 
 ; P19
 ; New 2025-01-25
-(def P19 (fn [l] (first ( reverse l))))
+(def P19 (fn [l] (first (reverse l))))
 ; Old.
 (def P19 (fn [lst] (let [c (count lst)] (first (drop (- c 1) lst)))))
 ; Other developers' solutions:
@@ -40,7 +40,7 @@
 ; P20
 ; New 2025-01-27
 (def P20 #((comp second reverse) %))
-(def P20 #(-> % reverse second) )
+(def P20 #(-> % reverse second))
 ; Old.
 (def P20 (fn [lst] (first (drop 1 (reverse lst)))))
 (def P20 (fn [lst] (->> lst reverse (drop 1) first)))
@@ -129,17 +129,17 @@
 ; New 2025-01-27
 ; Hieman kökkö, mutta toimii.
 (def P26 (fn [n]
-             (let [fib (fn [v num]
-                         (if (> num 2)
-                           (let [x (last v)
-                                 y (last (butlast v))
-                                 z (+ x y)]
-                             (recur (conj v z) (dec num)))
-                           v))]
-               (cond
-                 (= n 1) [1]
-                 (= n 2) [1 1]
-                 (> n 2) (fib [1 1] n)))))
+           (let [fib (fn [v num]
+                       (if (> num 2)
+                         (let [x (last v)
+                               y (last (butlast v))
+                               z (+ x y)]
+                           (recur (conj v z) (dec num)))
+                         v))]
+             (cond
+               (= n 1) [1]
+               (= n 2) [1 1]
+               (> n 2) (fib [1 1] n)))))
 ; Old.
 ; Muistin tämän ratkaisun jostain Clojure-kirjasta.
 (def P26 (fn [n] (take n (map first (iterate (fn [[x1 x2]] [x2 (+ x1 x2)]) [1 1])))))
@@ -153,7 +153,7 @@
 
 ; P27
 ; New 2025-01-28
-(def P27 #(= (seq %) (reverse %))) 
+(def P27 #(= (seq %) (reverse %)))
 ; Old.
 (def P27 #(= (seq %) (reverse %)))
 (false? (P27 '(1 2 3 4 5)))
@@ -167,12 +167,12 @@
 ; P28
 ; New 2025-01-28
 (def P28 (fn [input]
-             (letfn [(my-fun [xs]
-                       (reduce (fn [acc x]
-                                 (if (sequential? x)
-                                   (concat acc (my-fun x))
-                                   (concat acc [x]))) [] xs))]
-               (my-fun input))))
+           (letfn [(my-fun [xs]
+                     (reduce (fn [acc x]
+                               (if (sequential? x)
+                                 (concat acc (my-fun x))
+                                 (concat acc [x]))) [] xs))]
+             (my-fun input))))
 ; Am I getting old? My solution a couple of years ago is a lot shorter.
 ; Old.
 (def P28 (fn [x]
@@ -207,11 +207,11 @@
 ; P29
 ; New 2025-01-29.
 (def P29 (fn [s]
-             (let [caps (set (map char (range (int \A) (inc (int \Z)))))
-                   filtered (filter (fn [x]
-                                      (caps x))
-                                    s)]
-               (apply str filtered))))
+           (let [caps (set (map char (range (int \A) (inc (int \Z)))))
+                 filtered (filter (fn [x]
+                                    (caps x))
+                                  s)]
+             (apply str filtered))))
 ; Old.
 ; Works only with Java
 ;(def P29 (fn [s] (apply str (filter #(Character/isUpperCase %) s))))
@@ -237,22 +237,22 @@
 ; P30
 ; New 2025-01-30.
 (def P30 (fn [s]
-             (let [check-type (fn [x]
-                                (cond
-                                  (string? x) :string
-                                  (vector? x) :vector
-                                  (list? x) :list
-                                  :else :unknown))
-                   my-type (check-type s)
-                   result (:acc (reduce (fn [acc mys]
-                                          (if (= (:prev acc) mys)
-                                            {:acc (:acc acc) :prev mys}
-                                            {:acc (conj (:acc acc) mys) :prev mys})) {:acc [] :prev ""} (seq s)))]
-               (cond
-                 (= my-type :string) (reduce str result)
-                 (= my-type :vector) (vec result)
-                 (= my-type :list) (list result)
-                 :else :error))))
+           (let [check-type (fn [x]
+                              (cond
+                                (string? x) :string
+                                (vector? x) :vector
+                                (list? x) :list
+                                :else :unknown))
+                 my-type (check-type s)
+                 result (:acc (reduce (fn [acc mys]
+                                        (if (= (:prev acc) mys)
+                                          {:acc (:acc acc) :prev mys}
+                                          {:acc (conj (:acc acc) mys) :prev mys})) {:acc [] :prev ""} (seq s)))]
+             (cond
+               (= my-type :string) (reduce str result)
+               (= my-type :vector) (vec result)
+               (= my-type :list) (list result)
+               :else :error))))
 ; WTF? Am I getting old? My previous solutions were a lot shorter than the new one.
 ;Old
 (def P30 (fn [xs] (let [lst (->> xs
@@ -344,7 +344,7 @@
 ; P34
 ; New 2025-01-31
 (def P34 (fn [b e]
-             (take (- e b) (iterate inc b))))
+           (take (- e b) (iterate inc b))))
 ; Exactly the same, even the symbols (b = begin, e = end). Did I remember this?
 ; Old.
 (def P34 (fn [b e] (take (- e b) (iterate inc b))))
@@ -392,7 +392,7 @@
 
 ; P40
 ; New 2025-02-01
-(def P40 (fn [n xs] (drop 1 (mapcat (fn [x y ] [x y]) (iterate identity n) xs))))
+(def P40 (fn [n xs] (drop 1 (mapcat (fn [x y] [x y]) (iterate identity n) xs))))
 ; Old
 (def P40 (fn [sep xs] (interpose sep xs)))
 (def P40 (fn [sep xs] (drop-last (interleave xs (iterate identity sep)))))
@@ -415,6 +415,11 @@
                 (partition n n [:pad :pad :pad])
                 (mapcat (fn [x] (take (- n 1) x)))
                 (remove #(= :pad %)))))
+; Ok, didn't know about partition-all, let's refine the solution:
+(def P41 (fn [xs n]
+           (->> xs
+                (partition-all n)
+                (mapcat (fn [x] (take (dec n) x))))))
 ; Old.
 ; Ei ihan toimi.
 (def P41 (fn [xs n] (apply concat (partition (- n 1) n xs))))
@@ -436,10 +441,20 @@
 "asdf"
 
 ; P42
+; New 2025-02-03
+(def P42 (fn [num]
+           (reduce (fn [acc n]
+                     (if (= n 1)
+                       acc
+                       (* acc n)))
+                   1 (range 1 (inc num)))))
+; Damn, my old solution is shorter. And better. I'm getting dumber.
+; Old
 (def P42 (fn [n] (->> n inc (range 1) (apply *))))
-; Other developers' solutions
+; Other developers' solutions. 
+; A beauty.
 (def P42 #(reduce * (range 2 (inc %))))
-;
+
 (P42 5)
 (= (P42 1) 1)
 (= (P42 3) 6)

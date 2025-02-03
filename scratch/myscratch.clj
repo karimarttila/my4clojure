@@ -31,7 +31,8 @@
 ; ctrl+shift+, => Accept Copilot suggestion word by word.
 ; ctrl+shift+. => Show several Copilot suggestions in a separate panel.
 
-
+; TODO: Write a blog post regarding: Insight - Learn to Know the Clojure Standard Library
+; Ks. personal/Blog-idea.txt
 
 
 (comment
@@ -44,9 +45,44 @@
 
 ; Easy solutions.
 
-[:a :b :c]
+(comment
+
+  ; Not quite there. :-) 
+  (take 5 (iterate (partial #(* (inc %) %)) 1))
+  ;;=> (1 2 6 42 1806)
+  
+  (reduce (fn [ acc n]
+            (let [_ #p acc
+                  _ #p n]
+              (if (= n 1)
+                acc
+                (* acc n)))
+            )
+          1 (range 1 (inc 5)))
+  ;;=> 120
+  
+  ; Let's just implement it using a reduce, 
+  ; even though I'm pretty sure someone used some elaborate one liner without reduce.
+  (def P42 (fn [num]
+             (reduce (fn [acc n]
+                       (if (= n 1)
+                         acc
+                         (* acc n)))
+                     1 (range 1 (inc num)))))
+; My old solution, a lot shorter:
+  (def P42 (fn [n] (->> n inc (range 1) (apply *))))
+  
+  (->> 5 inc (range 1) (apply *))
+  
+  (P42 5)
+  (= (P42 5) 120)
+
+
+  )
 
 (comment 
+  
+  [:a :b :c]
   
   (partition 3 3 [:pad :pad :pad] [1 2 3 4 5 6 7 8 9 10])
   ;;=> ((1 2 3) (4 5 6) (7 8 9) (10 :pad :pad))
@@ -65,9 +101,19 @@
                   (mapcat (fn [x] (take (- n 1) x)))
                   (remove #(= :pad %)))))
   
+  ; Ok, didn't know about partition-all, let's refine the solution:
+  (def P41 (fn [xs n]
+             (->> xs
+                  (partition-all n)
+                  (mapcat (fn [x] (take (dec n) x))))))
+  
   (P41 [1 2 3 4 5 6 7 8 9 10] 3)
   
   (= (P41 [1 2 3 4 5 6 7 8] 3) [1 2 4 5 7 8])
+  
+  ; Other developers:
+  (def P41 (fn [s c] (mapcat #(take (dec c) %) (partition-all c s))))
+  
   
   )
 
