@@ -47,6 +47,72 @@
 
 (comment
 
+  (zipmap [:a :b :c] [1 2 3])
+  
+  (map (fn [x y] [x y]) [:a :b :c] [1 2 3])
+  ;;=> ([:a 1] [:b 2] [:c 3])
+  (reduce (fn [acc [k v]]
+            (assoc acc k v))
+          {} '([:a 1] [:b 2] [:c 3]))
+  ; And then combine them.
+  (def P61 (fn [ks vs]
+            (let [pairs (map (fn [x y] [x y]) ks vs)]
+              (reduce (fn [acc [k v]]
+                        (assoc acc k v))
+                      {} pairs))))
+  
+  (P61 [:a :b :c] [1 2 3])
+
+  (= (P61 [:a :b :c] [1 2 3]) {:a 1, :b 2, :c 3})
+  )
+
+(comment
+  ; Trivial.
+  (let [[a b & c :as d] [1 2 3 4 5]] [a b c d])
+  (def P51 [1 2 3 4 5])
+  (= [1 2 [3 4 5] [1 2 3 4 5]] (let [[a b & c :as d] P51] [a b c d]))
+  )
+
+(comment 
+  
+  (split-at 3 [1 2 3 4 5 6])
+  ; Should not have looked the split-at documentation. :-)
+  (take 3 [1 2 3 4 5 6])
+  (drop 3 [1 2 3 4 5 6])
+  (def P49 (fn [n xs] [(take n xs) (drop n xs)]))
+  ; Other developers solutions:
+  ; Damn, I forgot juxt. Got to remember it now.
+  (def P49 (juxt take drop))
+  
+  (P49 3 [1 2 3 4 5 6])
+  
+  (= (P49 3 [1 2 3 4 5 6]) [[1 2 3] [4 5 6]])
+  
+  )
+
+(comment
+  ; Trivial
+  (def P48 6)
+  (= P48 (some #{2 7 6} [5 6 7 8]))
+  )
+
+(comment
+  ; Trivial
+  (def P47 4)
+  (contains? #{4 5 6} P47)
+  (contains? [1 1 1 1 1] P47)
+  )
+
+(comment
+  ; Trivial.
+  (def P45 '(1 4 7 10 13))
+  (= P45 (take 5 (iterate #(+ 3 %) 1)))
+  )
+
+
+
+(comment
+
   ; Not quite there. :-) 
   (take 5 (iterate (partial #(* (inc %) %)) 1))
   ;;=> (1 2 6 42 1806)

@@ -479,8 +479,13 @@
 (= P48 (some #(when (even? %) %) [5 6 7 8]))
 
 ; P49
+; New 2025-02-03
+; Should not have looked the split-at documentation. :-)
+(def P49 (fn [n xs] [(take n xs) (drop n xs)]))
+; Old.
 (def P49 (fn [n xs] [(take n xs) (drop n xs)]))
 ; Other developers' solutions
+; What?
 (def P49 (juxt take drop))
 (P49 3 [1 2 3 4 5 6])
 
@@ -495,6 +500,14 @@
 
 
 ; P61
+; New 2025-02-03
+(def P61 (fn [ks vs]
+           (let [pairs (map (fn [x y] [x y]) ks vs)]
+             (reduce (fn [acc [k v]]
+                       (assoc acc k v))
+                     {} pairs))))
+; Seems to be that I got the same solution as previously.
+; Old
 (def P61 (fn [xs1 xs2] (zipmap xs1 xs2)))
 (def P61 (fn [xs1 xs2] (reduce (fn [acc [k v]] (assoc acc k v)) {} (map (fn [a b] [a b]) xs1 xs2))))
 (def P61 (fn [xs1 xs2] (reduce (fn [acc [k v]] (assoc acc k v)) {} (partition 2 (interleave xs1 xs2)))))
