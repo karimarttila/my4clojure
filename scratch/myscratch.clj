@@ -84,11 +84,33 @@
   ; Let's elaborate my solution a bit.
   (def P62 (fn [f n]
              (letfn [(iter [g m]
-                          (cons m (lazy-seq (iter g (g m)))))]
+                       (cons m (lazy-seq (iter g (g m)))))]
                (iter f n))))
 
   (take 5 (P62 #(* 2 %) 1))
   ;;=> (1 2 4 8 16)
+  
+  ; Other developers' solutions, what the heck is this?
+  (def P62c (fn [f x]
+              (reductions #(%2 %1) x (repeat f))))
+  
+  (take 5 (P62c #(* 2 %) 1))
+  ;;=> (1 2 4 8 16)
+  
+  ; Let's try to make it more understandable by eliminating the #() macro.
+  (def P62d (fn [f x]
+              (reductions (fn [n g] (g n)) x (repeat f))))
+  
+  (take 5 (P62d #(* 2 %) 1))
+  ;;=> (1 2 4 8 16)
+  
+  ; Ok. I got it now. Reductions takes a function, and creates a lazy seq by applying it like reduce.
+  ; See: https://clojuredocs.org/clojure.core/reductions
+  (reductions + [1 2 3])
+  ;;=> (1 3 6)
+  
+  
+  
   )
 
 (comment
