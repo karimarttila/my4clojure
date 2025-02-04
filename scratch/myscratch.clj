@@ -47,24 +47,44 @@
 
   (take 5 (iterate #(* 2 %) 1))
   ;;=> (1 2 4 8 16)
-
+  
   (defn positive-numbers
     ([] (positive-numbers 1))
     ([n] (lazy-seq (cons n (positive-numbers (inc n))))))
 
   (take 5 (positive-numbers))
   ;;=> (1 2 3 4 5)
-
+  
   (defn iter [f n]
     (lazy-seq (cons n (iter f (f n)))))
 
   (take 5 (iter #(* 2 %) 1))
   ;;=> (1 2 4 8 16)
   ; Damn it. It was so easy using an example.
-
+  
   (def P62 (fn [f n]
              (letfn [(iter [g m]
                        (lazy-seq (cons m (iter g (g m)))))]
+               (iter f n))))
+
+  (take 5 (P62 #(* 2 %) 1))
+  ;;=> (1 2 4 8 16)
+  
+  ; Other developers' solutions
+  ; Did not remember that you can give name for a function using the fn macro.
+  ; And also, it would be better to have the lazy-seq for the part of adding x.
+  (def P62b (fn func [f x]
+              (cons
+               x
+               (lazy-seq
+                (func f (f x))))))
+
+  (take 5 (P62b #(* 2 %) 1))
+
+  ; Let's elaborate my solution a bit.
+  (def P62 (fn [f n]
+             (letfn [(iter [g m]
+                          (cons m (lazy-seq (iter g (g m)))))]
                (iter f n))))
 
   (take 5 (P62 #(* 2 %) 1))
