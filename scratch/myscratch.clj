@@ -37,18 +37,44 @@
 
 (comment
   ; General area.
-  
-  (repl/source seq)
-  
-  )
+
+  (repl/source seq))
 
 
 ; Easy solutions.
 
 (comment
 
+  (take 5 (iterate #(* 2 %) 1))
+  ;;=> (1 2 4 8 16)
+
+  (defn positive-numbers
+    ([] (positive-numbers 1))
+    ([n] (lazy-seq (cons n (positive-numbers (inc n))))))
+
+  (take 5 (positive-numbers))
+  ;;=> (1 2 3 4 5)
+
+  (defn iter [f n]
+    (lazy-seq (cons n (iter f (f n)))))
+
+  (take 5 (iter #(* 2 %) 1))
+  ;;=> (1 2 4 8 16)
+  ; Damn it. It was so easy using an example.
+
+  (def P62 (fn [f n]
+             (letfn [(iter [g m]
+                       (lazy-seq (cons m (iter g (g m)))))]
+               (iter f n))))
+
+  (take 5 (P62 #(* 2 %) 1))
+  ;;=> (1 2 4 8 16)
+  )
+
+(comment
+
   (zipmap [:a :b :c] [1 2 3])
-  
+
   (map (fn [x y] [x y]) [:a :b :c] [1 2 3])
   ;;=> ([:a 1] [:b 2] [:c 3])
   (reduce (fn [acc [k v]]
@@ -56,25 +82,23 @@
           {} '([:a 1] [:b 2] [:c 3]))
   ; And then combine them.
   (def P61 (fn [ks vs]
-            (let [pairs (map (fn [x y] [x y]) ks vs)]
-              (reduce (fn [acc [k v]]
-                        (assoc acc k v))
-                      {} pairs))))
-  
+             (let [pairs (map (fn [x y] [x y]) ks vs)]
+               (reduce (fn [acc [k v]]
+                         (assoc acc k v))
+                       {} pairs))))
+
   (P61 [:a :b :c] [1 2 3])
 
-  (= (P61 [:a :b :c] [1 2 3]) {:a 1, :b 2, :c 3})
-  )
+  (= (P61 [:a :b :c] [1 2 3]) {:a 1, :b 2, :c 3}))
 
 (comment
   ; Trivial.
   (let [[a b & c :as d] [1 2 3 4 5]] [a b c d])
   (def P51 [1 2 3 4 5])
-  (= [1 2 [3 4 5] [1 2 3 4 5]] (let [[a b & c :as d] P51] [a b c d]))
-  )
+  (= [1 2 [3 4 5] [1 2 3 4 5]] (let [[a b & c :as d] P51] [a b c d])))
 
-(comment 
-  
+(comment
+
   (split-at 3 [1 2 3 4 5 6])
   ; Should not have looked the split-at documentation. :-)
   (take 3 [1 2 3 4 5 6])
@@ -83,31 +107,26 @@
   ; Other developers solutions:
   ; Damn, I forgot juxt. Got to remember it now.
   (def P49 (juxt take drop))
-  
+
   (P49 3 [1 2 3 4 5 6])
-  
-  (= (P49 3 [1 2 3 4 5 6]) [[1 2 3] [4 5 6]])
-  
-  )
+
+  (= (P49 3 [1 2 3 4 5 6]) [[1 2 3] [4 5 6]]))
 
 (comment
   ; Trivial
   (def P48 6)
-  (= P48 (some #{2 7 6} [5 6 7 8]))
-  )
+  (= P48 (some #{2 7 6} [5 6 7 8])))
 
 (comment
   ; Trivial
   (def P47 4)
   (contains? #{4 5 6} P47)
-  (contains? [1 1 1 1 1] P47)
-  )
+  (contains? [1 1 1 1 1] P47))
 
 (comment
   ; Trivial.
   (def P45 '(1 4 7 10 13))
-  (= P45 (take 5 (iterate #(+ 3 %) 1)))
-  )
+  (= P45 (take 5 (iterate #(+ 3 %) 1))))
 
 
 
@@ -116,17 +135,16 @@
   ; Not quite there. :-) 
   (take 5 (iterate (partial #(* (inc %) %)) 1))
   ;;=> (1 2 6 42 1806)
-  
-  (reduce (fn [ acc n]
+
+  (reduce (fn [acc n]
             (let [_ #p acc
                   _ #p n]
               (if (= n 1)
                 acc
-                (* acc n)))
-            )
+                (* acc n))))
           1 (range 1 (inc 5)))
   ;;=> 120
-  
+
   ; Let's just implement it using a reduce, 
   ; even though I'm pretty sure someone used some elaborate one liner without reduce.
   (def P42 (fn [num]
@@ -137,62 +155,56 @@
                      1 (range 1 (inc num)))))
 ; My old solution, a lot shorter:
   (def P42 (fn [n] (->> n inc (range 1) (apply *))))
-  
+
   (->> 5 inc (range 1) (apply *))
-  
+
   (P42 5)
-  (= (P42 5) 120)
+  (= (P42 5) 120))
 
+(comment
 
-  )
-
-(comment 
-  
   [:a :b :c]
-  
+
   (partition 3 3 [:pad :pad :pad] [1 2 3 4 5 6 7 8 9 10])
   ;;=> ((1 2 3) (4 5 6) (7 8 9) (10 :pad :pad))
   (mapcat (fn [x]
             (take (- 3 1) x))
           '((1 2 3) (4 5 6) (7 8 9) (10 :pad :pad)))
   ;;=> (1 2 4 5 7 8 10 :pad)
-  
+
   [1 2 4 5 7 8 10 :pad]
   (remove #(= :pad %) [1 2 4 5 7 8 10 :pad])
-  
-  
+
+
   (def P41 (fn [xs n]
              (->> xs
                   (partition n n [:pad :pad :pad])
                   (mapcat (fn [x] (take (- n 1) x)))
                   (remove #(= :pad %)))))
-  
+
   ; Ok, didn't know about partition-all, let's refine the solution:
   (def P41 (fn [xs n]
              (->> xs
                   (partition-all n)
                   (mapcat (fn [x] (take (dec n) x))))))
-  
+
   (P41 [1 2 3 4 5 6 7 8 9 10] 3)
-  
+
   (= (P41 [1 2 3 4 5 6 7 8] 3) [1 2 4 5 7 8])
-  
+
   ; Other developers:
-  (def P41 (fn [s c] (mapcat #(take (dec c) %) (partition-all c s))))
-  
-  
-  )
+  (def P41 (fn [s c] (mapcat #(take (dec c) %) (partition-all c s)))))
 
 
 (comment
-  
+
   (interpose 0 [1 2 3])
   ;;=> (1 0 2 0 3) 
-  
+
   (take 5 (iterate identity 0))
-  
-  (def P40 (fn [n xs] (drop 1 (mapcat (fn [x y ] [x y]) (iterate identity n) xs))))
-  
+
+  (def P40 (fn [n xs] (drop 1 (mapcat (fn [x y] [x y]) (iterate identity n) xs))))
+
   (P40 0 [1 2 3])
   (= (P40 0 [1 2 3]) [1 0 2 0 3])
 
@@ -202,7 +214,6 @@
   (def P40 (fn [sep xs] (drop-last (interleave xs (iterate identity sep)))))
   (interleave [1 2 3] (iterate identity 0))
   ;;=> (1 0 2 0 3 0)
-  
   )
 
 (comment
@@ -210,124 +221,113 @@
   (flatten (map (fn [x y]
                   [x y])
                 [1 2 3] [:a :b]))
-  
+
   (def P39 (fn [xs xy]
              (flatten (map (fn [x y] [x y])
-                           xs xy)))) 
+                           xs xy))))
 
   (P39 [1 2 3] [:a :b :c])
 
   (= (P39 [1 2 3] [:a :b :c]) '(1 :a 2 :b 3 :c))
 
-(apply assoc {} 
-   (interleave [:fruit :color :temp] 
-               ["grape" "red" "hot"]))  
-  
-  )
+  (apply assoc {}
+         (interleave [:fruit :color :temp]
+                     ["grape" "red" "hot"])))
 
 
 (comment.
-  
-  (def P38 (fn [n & r]
-             (last (sort (flatten (list n r))))))
-  
-  (def P38 (fn [n & r] (-> (list n r) flatten sort last)))
-  
-  (def P38 (fn [& r] (-> r flatten sort last)))
-  
-  (def P38 (fn [& r] (-> r sort last)))
-  
-  (P38 1 8 3 4)
-  
-  (= (P38 1 8 3 4) 8)
-  
-  )
+
+ (def P38 (fn [n & r]
+            (last (sort (flatten (list n r))))))
+
+ (def P38 (fn [n & r] (-> (list n r) flatten sort last)))
+
+ (def P38 (fn [& r] (-> r flatten sort last)))
+
+ (def P38 (fn [& r] (-> r sort last)))
+
+ (P38 1 8 3 4)
+
+ (= (P38 1 8 3 4) 8))
 
 (comment
-  
+
   ; Really easy.
   (def P34 (fn [b e]
              (take (- e b) (iterate inc b))))
-  
+
   (P34 1 4)
-  
-  (= (P34 1 4) '(1 2 3))
-  
-  )
+
+  (= (P34 1 4) '(1 2 3)))
 
 (comment
-  
-  (def mys [1 2 3]) 
-  
+
+  (def mys [1 2 3])
+
   (take 2 (iterate identity 1))
   ;;=> (1 1)
-  
+
   ; That was easy, now that know mapcat, iterate and identity.
-  (def P33 (fn [xs n] 
+  (def P33 (fn [xs n]
              (mapcat (fn [x]
                        (take n (iterate identity x)))
                      xs)))
-  
+
   ; Let's see how to use repeat.
   (take 2 (repeat 1))
   ;;=> (1 1)
-  
-  (def P33 (fn [xs n] 
+
+  (def P33 (fn [xs n]
              (mapcat (fn [x]
                        (take n (repeat x)))
                      xs)))
   ; => It is better.
-  
+
   (P33 mys 2)
-  
-  (= (P33 [1 2 3] 2) '(1 1 2 2 3 3))
-  
-  )
+
+  (= (P33 [1 2 3] 2) '(1 1 2 2 3 3)))
 
 
 (comment
-  
+
   (def mys [1 2 3])
   (map (fn [x] [x x]) mys)
   ;;=> ([1 1] [2 2] [3 3])
   (mapcat (fn [x] [x x]) mys)
   ;;=> (1 1 2 2 3 3)
-  
+
   (def P32 (fn [xs] (mapcat (fn [x] [x x]) xs)))
 
-  
-  
-  (P32 mys)
-  
 
-  (= (P32 [1 2 3]) '(1 1 2 2 3 3))
-  )
+
+  (P32 mys)
+
+
+  (= (P32 [1 2 3]) '(1 1 2 2 3 3)))
 
 
 (comment
 
   (def P31 (fn [xs] (partition-by identity xs)))
-  
+
   (def mys [1 1 2 1 1 1 3 3])
   (partition-by identity mys)
-  
-  (P31 [1 1 2 1 1 1 3 3])
-  (= (P31 [1 1 2 1 1 1 3 3]) '((1 1) (2) (1 1 1) (3 3)))
 
-  )
+  (P31 [1 1 2 1 1 1 3 3])
+  (= (P31 [1 1 2 1 1 1 3 3]) '((1 1) (2) (1 1 1) (3 3))))
 
 (comment
-  
+
   (seq "Leee")
   ;;=> (\L \e \e \e)
   (str "" \L)
   ;;=> "L"
-  
-  
+
+
   (def my-acc {:acc "Le", :prev \e})
   (def my-mys \e)
   (= (str (:prev my-acc)) my-mys)
-  
+
   (def P30 (fn [s]
              (:acc (reduce (fn [acc mys]
                              (let [_ #p acc
@@ -341,10 +341,10 @@
                              (if (= (:prev acc) mys)
                                {:acc (:acc acc) :prev mys}
                                {:acc (str (:acc acc) mys) :prev mys})) {:acc "" :prev ""} (seq s)))))
-  
+
   (type '(1 1))
   ;;=> clojure.lang.PersistentList
-  (type [ 1 1])
+  (type [1 1])
   ;;=> clojure.lang.PersistentVector
   (type "11")
   ;;=> java.lang.String
@@ -352,8 +352,8 @@
   ;;=> true
   (string? [1 1])
   ;;=> false
-  
-  
+
+
   (def P30 (fn [s]
              (let [check-type (fn [x]
                                 (cond
@@ -375,7 +375,7 @@
                  (= my-type :vector) (vec result)
                  (= my-type :list) (list result)
                  :else :error))))
-  
+
   (def P30 (fn [s]
              (let [check-type (fn [x]
                                 (cond
@@ -393,29 +393,25 @@
                  (= my-type :vector) (vec result)
                  (= my-type :list) (list result)
                  :else :error))))
-  
+
   (reduce str [\L \e \r \o \y])
   (P30 "Leeeeeerrroyyy")
   (P30 [1 1 2 3 3 2 2 3])
   (P30 [[1 2] [1 2] [3 4] [1 2]])
   (= (P30 [[1 2] [1 2] [3 4] [1 2]]) '([1 2] [3 4] [1 2]))
-  
+
   (= (apply str (P30 "Leeeeeerrroyyy")) "Leroy")
-  
-  (= (P30 [1 1 2 3 3 2 2 3]) '(1 2 3 2 3))
-  
-  
-  
-  )
+
+  (= (P30 [1 1 2 3 3 2 2 3]) '(1 2 3 2 3)))
 
 (comment
-  
+
   (def my-caps #{\A \B \C \D \E \F \G \H \I \J \K \L \M \N \O \P \Q \R \S \T \U \V \W \X \Y \Z})
   (def my-caps (set (map char (range (int \A) (inc (int \Z))))))
   my-caps
   (my-caps \A)
   (my-caps \a)
-  
+
   (def P29 (fn [s]
              (let [caps (set (map char (range (int \A) (inc (int \Z)))))
                    filtered (filter (fn [x]
@@ -423,11 +419,8 @@
                                     s)]
                (apply str filtered))))
   (P29 "HeLlO, WoRlD!")
-  
-  (= (P29 "HeLlO, WoRlD!") "HLOWRD")
-  
-  
-  )
+
+  (= (P29 "HeLlO, WoRlD!") "HLOWRD"))
 
 (comment
 
@@ -482,7 +475,7 @@
 ;;                                  (concat acc (my-fun x))
 ;;                                  (concat acc [x])))) [] xs))]
 ;;       (my-fun input)))
-  
+
   ; You have to use letfn !!!
   (def P28 (fn [input]
              (letfn [(my-fun [xs]
@@ -491,26 +484,22 @@
                                    (concat acc (my-fun x))
                                    (concat acc [x]))) [] xs))]
                (my-fun input))))
-  
-  (= (P28 '((1 2) 3 [4 [5 6]])) '(1 2 3 4 5 6))
 
-  )
+  (= (P28 '((1 2) 3 [4 [5 6]])) '(1 2 3 4 5 6)))
 
 (comment
-  
+
   (s/join (reverse "racecar"))
   (def P27 (fn [sr] (= sr (s/join (reverse sr)))))
-  (def P27 #(= % (s/join (reverse %)))) 
+  (def P27 #(= % (s/join (reverse %))))
   (true? (P27 "racecar"))
   (true? (P27 [:foo :bar :foo]))
-  
+
   (seq "racecar")
   (seq [:foo :bar :foo])
-  (def P27 #(= (seq %) (reverse %))) 
-  
-  )
+  (def P27 #(= (seq %) (reverse %))))
 
-(comment 
+(comment
 
   ((fn [v num]
      (if (> num 2)
@@ -538,68 +527,54 @@
   (P26 2)
   (P26 3)
   (P26 10)
-  (= (P26 3) '(1 1 2))
-
-
-  )
+  (= (P26 3) '(1 1 2)))
 
 
 
 (comment
   (def P25 (fn [s] (filter odd? s)))
   (def P25 #(filter odd? %))
-  (= (P25 #{1 2 3 4 5}) '(1 3 5))
-  
-  )
+  (= (P25 #{1 2 3 4 5}) '(1 3 5)))
 
 
 (comment
-  
+
   (def P24 (fn [s] (reduce + s)))
   (def P24 #(reduce + %))
-  (= (P24 [1 2 3]) 6)
-  
-  )
+  (= (P24 [1 2 3]) 6))
 
-(comment 
-  
+(comment
+
   (def P23 (fn [c] (reduce (fn [acc x] (cons x acc)) '() c)))
   (P23 [1 2 3 4 5])
-  (= (P23 [1 2 3 4 5]) [5 4 3 2 1])
-  
-  )
+  (= (P23 [1 2 3 4 5]) [5 4 3 2 1]))
 
 
 (comment
   (def P22 (fn [l] (count l)))
   (def P22 (fn [l] (reduce (fn [acc _] (inc acc)) 0 l)))
   (P22 '(1 2 3 3 1))
-  (= (P22 '(1 2 3 3 1)) 5)
-  )
+  (= (P22 '(1 2 3 3 1)) 5))
 
 (comment
-  
+
   (def P21 (fn [lst n] (nth lst n)))
   (def P21 (fn [l n] (first (drop n l))))
   (def P21 #(first (drop %2 %1)))
   (P21 '(4 5 6 7) 2)
-  (= (P21 '(4 5 6 7) 2) 6)
-   
-  )
+  (= (P21 '(4 5 6 7) 2) 6))
 
-(comment 
-  
+(comment
+
   (reverse '(1 2 3))
   (second '(1 2 3))
   (second (reverse '(1 2 3)))
   ((comp second reverse) '(1 2 3))
   (def P20 #((comp second reverse) %))
   (P20 (list 1 2 3 4 5 6))
-  (def P20 #(-> % reverse second) )
+  (def P20 #(-> % reverse second))
   (P20 (list 1 2 3 4 5 6))
-  (= (P20 (list 1 2 3 4 5 6)) 5)
-  
-  )
+  (= (P20 (list 1 2 3 4 5 6)) 5))
 
 
 
@@ -609,21 +584,16 @@
 
 
 (comment
-  (if-not false 1 0)
-
-  )
+  (if-not false 1 0))
 
 (comment
-  (clojure.set/superset? #{1 2} #{2})
-  )
-  
+  (clojure.set/superset? #{1 2} #{2}))
+
 
 (comment
   (def P156 (fn [d s]
               (reduce (fn [acc i] (assoc acc i d)) {} s)))
-  (= (P156 0 [:a :b :c]) {:a 0 :b 0 :c 0})
-  
-  )
+  (= (P156 0 [:a :b :c]) {:a 0 :b 0 :c 0}))
 
 (comment
   (get {:a 1} :b :not-found)

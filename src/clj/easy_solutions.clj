@@ -526,6 +526,13 @@
 
 
 ; P62
+; New 2025-02-04
+(def P62 (fn [f n]
+           (letfn [(iter [g m]
+                     (lazy-seq (cons m (iter g (g m)))))]
+             (iter f n))))
+; I kind of like better my new solution.
+; Old
 (def P62 (fn [f x] (lazy-seq (cons x (P62 f (f x))))))
 ;
 (take 5 (P62 #(* 2 %) 1))
