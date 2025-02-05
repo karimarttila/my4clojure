@@ -546,6 +546,16 @@
 (= (take 9 (P62 #(inc (mod % 3)) 1)) (take 9 (cycle [1 2 3])))
 
 ; P63
+; New 2025-02-05
+(def P63 (fn [f xs]
+           (let [items (map (fn [x] [(f x) x]) xs)]
+             (reduce (fn [acc [k v]]
+                       (let [myv (acc k)]
+                         (if (nil? myv)
+                           (assoc acc k [v])
+                           (assoc acc k (conj myv v))))) {} items))))
+; My old solution is almost the same, but using or is a bit more elegant.
+; Old
 (def P63 (fn [f xs] (group-by f xs)))
 ; First make a sequence of [k v] pairs. Then reduce the pairs to a map.
 (def P63 (fn [f xs] (reduce (fn [acc [k v]] (assoc acc k (conj (or (get-in acc [k]) []) v)))
@@ -575,6 +585,19 @@
 
 
 ; P66
+; New 2025-02-05
+(def P66 (fn [x y]
+           (let [m (max x y)
+                 n (min x y)
+                 cands (reverse (range 1 (inc m)))]
+             (->> cands
+                  (map (fn [x]
+                         (if (= (mod n x) (mod m x) 0)
+                           x
+                           nil)))
+                  (remove nil?)
+                  first))))
+; Old.
 ; https://brilliant.org/wiki/greatest-common-divisor/
 (def P66 (fn [n1 n2] (apply max (map first (filter (fn [[a b]] (= a b))
                                                    (for [x1 (range 1 (inc n1))

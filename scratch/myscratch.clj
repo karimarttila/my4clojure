@@ -44,6 +44,78 @@
 ; Easy solutions.
 
 (comment
+  
+  ; Brute force. Just try each candidate in turn.
+  ; In real life we should stop when finding the first match.
+  (def P66 (fn [x y]
+             (let [m (max x y)
+                   n (min x y)
+                   cands (reverse (range 1 (inc m)))]
+               (->> cands
+                    (map (fn [x]
+                           (if (= (mod n x) (mod m x) 0)
+                             x
+                             nil)))
+                    (remove nil?)
+                    first))))
+  
+  (= (P66 2 4) 2)
+  
+  )
+
+
+(comment
+
+  ({:a 1} :a)
+  ;;=> 1
+  ({:a 1} :b)
+  ;;=> nil
+  
+  (group-by #(> % 5) #{1 3 6 8})
+  ;;=> {false [1 3], true [6 8]}
+  
+  ; Let's show the iterative workflow using Clojure.
+  ; First, lets map them and get the keys and values.  
+  (def P63 (fn [f xs]
+             (map (fn [x]
+                    [(f x) x]) xs)))
+  (P63 #(> % 5) #{1 3 6 8})
+  ;;=> ([false 1] [true 6] [false 3] [true 8])
+  ; Second iteration.
+  (def P63 (fn [f xs]
+             (let [items (map (fn [x] [(f x) x]) xs)]
+               (reduce (fn [acc [k v]]
+                         (let [myv (acc k)]
+                           (if (nil? myv)
+                             (assoc acc k [v])
+                             (assoc acc k (conj myv v))))) {} items))))
+  (P63 #(> % 5) #{1 3 6 8})
+  ;;=> {false [1 3], true [6 8]}
+  
+  (= (P63 #(> % 5) #{1 3 6 8}) {false [1 3], true [6 8]})
+
+  ; Other developers' solutions.
+  ; This is something to tell in my blog: Know the standard library! 
+  ; merge-with does exactly what we need here.
+  ; If you know the standard library, you don't have to invent the wheel again.
+  (def P63b (fn [f coll]
+              (reduce (fn [acc x] (merge-with concat acc {(f x) [x]})) {} coll))) 
+  (P63b #(> % 5) #{1 3 6 8})
+  
+  ; I forgot update-in
+  (def P63c (fn [f s]
+              (reduce
+               (fn [m n]
+                 (update-in m [(f n)] concat [n]))
+               {} s)))
+  
+  (P63c #(> % 5) #{1 3 6 8})
+  
+  )
+
+
+
+(comment
 
   (take 5 (iterate #(* 2 %) 1))
   ;;=> (1 2 4 8 16)
@@ -90,17 +162,28 @@
   (take 5 (P62 #(* 2 %) 1))
   ;;=> (1 2 4 8 16)
   
+  ; Let's iterate a bit more. We can get rid of g and use f closure.
+  ; Someone told me this in Koodiklinikka slack.
+  (def P62 (fn [f n]
+             (letfn [(iter [m]
+                       (cons m (lazy-seq (iter (f m)))))]
+               (iter n))))
+  
+  (take 5 (P62 #(* 2 %) 1))
+  ;;=> (1 2 4 8 16)
+  
+
   ; Other developers' solutions, what the heck is this?
   (def P62c (fn [f x]
               (reductions #(%2 %1) x (repeat f))))
-  
+
   (take 5 (P62c #(* 2 %) 1))
   ;;=> (1 2 4 8 16)
   
   ; Let's try to make it more understandable by eliminating the #() macro.
   (def P62d (fn [f x]
               (reductions (fn [n g] (g n)) x (repeat f))))
-  
+
   (take 5 (P62d #(* 2 %) 1))
   ;;=> (1 2 4 8 16)
   
@@ -109,8 +192,8 @@
   (reductions + [1 2 3])
   ;;=> (1 3 6)
   
-  
-  
+
+
   )
 
 (comment
