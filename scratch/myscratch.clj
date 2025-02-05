@@ -3,7 +3,8 @@
   (:require [clojure.test :refer [deftest use-fixtures is testing]]
             [hashp.core]
             [clojure.string :as s]
-            [clojure.repl :as repl]))
+            [clojure.repl :as repl]
+            [clojure.set :as se]))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; A bigger scratch area for experimentation.
@@ -42,6 +43,39 @@
 
 
 ; Easy solutions.
+
+(comment
+  
+  (require '[clojure.set :as se])
+  
+  (se/intersection #{0 1 2 3} #{2 3 4 5})
+  ;;=> #{3 2}
+  
+  (def P81 (fn [xs ys]
+             (->> ys
+                  (map (fn [x]
+                         (xs x)))
+                  (remove nil?)
+                  set)))
+  
+  (P81 #{0 1 2 3} #{2 3 4 5})
+  ;;=> #{3 2}
+  
+  (= (P81 #{0 1 2 3} #{2 3 4 5}) #{2 3})
+  
+  ; Other developers' solutions. What the heck? Let's try to understand this.
+  (def P81 (comp set filter))
+  
+  ((comp set filter) #{0 1 2 3} #{2 3 4 5})
+  ((comp str +) 8 8 8)
+  ;;=> "24"
+  (str (apply + [ 8 8 8]))
+  ;;=> "24"
+  (set (apply filter [#{0 1 2 3} #{2 3 4 5}]))
+  ;;=> #{3 2}
+  ; So: filter-function uses the first set as function, and the second set as argument.
+  
+  )
 
 (comment
   

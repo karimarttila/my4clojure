@@ -618,6 +618,15 @@
 
 
 ; P81
+; New 2025-02-05
+(def P81 (fn [xs ys]
+           (->> ys
+                (map (fn [x]
+                       (xs x)))
+                (remove nil?)
+                set)))
+; Wow, wow. My old solution uses infamous loop/recur.
+; Old.
 (def P81 (fn [set1 set2] (loop [acc #{} xs set1]
                            (if (empty? xs)
                              acc
