@@ -1,7 +1,8 @@
 (ns easy-solutions
     ; Turn off, since I provide many different solutions using the same def.
   {:clj-kondo/config '{:linters {:redefined-var {:level :off}}}}
-  (:require [hashp.core]))
+  (:require [hashp.core] 
+            [clojure.set]))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -646,6 +647,10 @@
 (filter #{0 1 2 3} #{2 3 4 5}) ; => (3 2)
 
 ; P83
+; New 2025-02-06
+(def P83 (fn [& args]
+           (true? (and (some true? args) (some false? args)))))
+; Old.
 (def P83 (fn [& lst] (boolean (and (some true? lst) (not-every? true? lst)))))
 ; Other developers' solutions
 ; Eli pitää olla kumpaakin, sekä true että false.
@@ -671,6 +676,11 @@
 (apply = (list false false false))
 
 ; P88
+; New 2025-02-06
+(def P88 (fn [s1 s2]
+           (let [both (clojure.set/intersection s1 s2)]
+             (set (concat (remove both s1) (remove both s2))))))
+; Old.
 (def P88 (fn [set1 set2] (let [both (clojure.set/intersection set1 set2)
                                all (clojure.set/union set1 set2)]
                            (set (remove both all)))))
@@ -692,6 +702,13 @@
 
 
 ; P90
+; New 2025-02-06
+(def P90 (fn [s1 s2]
+           (set (for [a s1
+                      b s2]
+                  [a b]))))
+; Exactly the same as old one.
+; Old.
 (def P90 (fn [set1 set2] (set (for [x1 set1 x2 set2] [x1 x2]))))
 (P90 #{1 2 3} #{4 5})
 (= (P90 #{"ace" "king" "queen"} #{"♠" "♥" "♦" "♣"})
@@ -705,6 +722,21 @@
 
 
 ; P95
+; New 2025-02-06
+(def P95 (fn [t]
+           (letfn [(leaf? [item] (not (coll? item)))
+                   (tree? [cand]
+                     (if (leaf? cand)
+                       (nil? cand)
+                       (if (= (count cand) 3)
+                         (let [[_ l r] cand]
+                           (and (tree? l)
+                                (tree? r)))
+                         false)))]
+             (tree? t))))
+; WTF? My old solution is an abomination. 
+; I think that my new solution is rather beautifull, you can see the idea from the code.
+; Old. 
 ; Mieti ratkaisua: Pitää tarkistaa, että binary-treen jokainen lehti on nil tai binary-tree.
 (def P95 (fn [x] (or (nil? x) ; Ollaan lehdessä, jonka on oltava nil, tai... pitää olla
                      (and (sequential? x) ; ... sequence, jonka
@@ -716,6 +748,7 @@
 ; Other developers' solutions
 (def P95 (fn t [x]
            (or (nil? x) (and (sequential? x) (= 3 (count x)) (t (second x)) (t (nth x 2))) false)))
+; This is pretty beautifull.
 (def P95 (fn bin-tree? [s]
            (or (nil? s)
                (and (coll? s)

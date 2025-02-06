@@ -45,6 +45,191 @@
 ; Easy solutions.
 
 (comment
+
+  (def P95 (fn [t]
+             (letfn [(node? [item] (not (coll? item)))
+                     (tree? [cand]
+                       (if (= (count cand) 3)
+                         (let [[l m r] cand
+                               _ #p l
+                               _ #p m
+                               _ #p r]
+                           (and (or (node? l) (tree? l))
+                                (or (node? m) (tree? m))
+                                (or (node? r) (tree? r))))
+                         false))]
+               (tree? t))))
+
+  ; Power of hashp.
+  (P95 '(:a (:b nil nil) nil))
+  ; #p[myscratch/P95:54] l => :a
+  ; #p[myscratch/P95:54] m => (:b nil nil)
+  ; #p[myscratch/P95:54] r => nil
+  ; #p[myscratch/P95:54] l => :b
+  ; #p[myscratch/P95:54] m => nil
+  ; #p[myscratch/P95:54] r => nil
+  true
+  
+  ; Without hashp.
+  (def P95 (fn [t]
+             (letfn [(node? [item] (not (coll? item)))
+                     (tree? [cand]
+                       (if (= (count cand) 3)
+                         (let [[l m r] cand]
+                           (and (or (node? l) (tree? l))
+                                (or (node? m) (tree? m))
+                                (or (node? r) (tree? r))))
+                         false))]
+               (tree? t))))
+
+  (= (P95 '(:a (:b nil nil) nil)) true)
+  
+  ; Hm. All tests passed, except this one:
+  
+  (= (P95 [1 [2 [3 [4 false nil] nil] nil] nil]) false)
+  
+  ; Let's debug.
+  ; Hm. I get it now. The spec is: [value, left, right]. 
+  ; left and right is either a tree or a value.
+  ; Let's try again.
+  
+  ; Ok. New trial as spec: [value, left, right]
+  ; If leaf, then it has to be nil, or it is false.
+  (def P95 (fn [t]
+             (letfn [(leaf? [item] (not (coll? item)))
+                     (tree? [cand]
+                       (let [_ #p cand]
+                         (if (leaf? cand)
+                           (or (nil? cand) false)
+                           (if (= (count cand) 3)
+                             (let [[v l r] cand
+                                   _ #p v
+                                   _ #p l
+                                   _ #p r]
+                               (and (tree? l)
+                                    (tree? r)))
+                             false))))]
+               (tree? t))))
+  
+  (P95 [1 [2 [3 [4 false nil] nil] nil] nil])
+  ;;=> false
+  (= (P95 '(:a (:b nil nil) nil)) true)
+  ;;=> true
+  
+  (def P95 (fn [t]
+             (letfn [(leaf? [item] (not (coll? item)))
+                     (tree? [cand]
+                       (if (leaf? cand)
+                         (nil? cand)
+                         (if (= (count cand) 3)
+                           (let [[_ l r] cand]
+                             (and (tree? l)
+                                  (tree? r)))
+                           false)))]
+               (tree? t))))
+  
+  ; Beautifull. All tests passed this time.
+  
+  )
+
+
+(comment
+  
+  (for [a #{1 2 3}
+        b #{4 5}]
+    [a b])
+  
+  (def P90 (fn [s1 s2]
+             (set (for [a s1
+                        b s2]
+                    [a b]))))
+  
+  (P90 #{1 2 3} #{4 5})
+  (= (P90 #{1 2 3} #{4 5}) #{[1 4] [2 4] [3 4] [1 5] [2 5] [3 5]})
+  )
+
+
+
+(comment
+
+  (require '[clojure.set :as se])
+  
+  (def both (se/intersection #{1 2 3 4 5 6} #{1 3 5 7}))
+  both
+  ;;=> #{1 3 5}
+  (remove both #{1 2 3 4 5 6})
+  ;;=> (4 6 2)
+  (remove both #{1 3 5 7})
+  ;;=> (7)
+  (set (concat '(4 6 2) '(7)))
+  ;;=> #{7 4 6 2}
+  
+  (def P88 (fn [s1 s2]
+             (let [both ( clojure.set/intersection s1 s2)]
+               (set (concat (remove both s1) (remove both s2))))))
+  
+  (P88 #{1 2 3 4 5 6} #{1 3 5 7})
+
+  (= (P88 #{1 2 3 4 5 6} #{1 3 5 7}) #{2 4 6 7})
+
+  )
+
+
+(comment
+
+  (identity true)
+  ;;=> true
+  (identity false)
+  ;;=> false
+  (every? identity [true false])
+  ;;=> false
+  (every? identity [true true])
+  ;;=> true
+  (every? identity [false false])
+  ;;=> false
+  (some identity [true false])
+  ;;=> true
+  (some identity [true true])
+  ;;=> true
+  (some identity [false false])
+  ;;=> nil
+  (some false? [true false])
+  ;;=> true
+  (some false? [false false])
+  ;;=> true
+  (some true? [true false])
+  ;;=> true
+  (some true? [false false])
+  ;;=> nil
+
+  (= false nil)
+  ;;=> false
+  (false? false)
+  ;;=> true
+  (false? nil)
+  ;;=> false
+  (and nil true)
+  (true? nil)
+  ;;=> nil
+
+  (def P83 (fn [& args]
+             (true? (and (some true? args) (some false? args)))))
+
+  (P83 false false)
+  ;;=> false
+  (P83 false true)
+  ;;=> true
+  (P83 true true)
+  ;;=> false
+
+  (= false (P83 false false))
+
+  ; NOTE: This exercise was a good example on how to solve problems using REPL in Clojure.
+
+
+  )
+
+(comment 
   
   (require '[clojure.set :as se])
   
@@ -74,6 +259,9 @@
   (set (apply filter [#{0 1 2 3} #{2 3 4 5}]))
   ;;=> #{3 2}
   ; So: filter-function uses the first set as function, and the second set as argument.
+  ; This other develop's solution clarifies the idea.
+  (def P81 #(set (filter % %2)))
+  (P81 #{0 1 2 3} #{2 3 4 5})
   
   )
 
