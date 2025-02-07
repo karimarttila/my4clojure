@@ -4,7 +4,8 @@
             [hashp.core]
             [clojure.string :as s]
             [clojure.repl :as repl]
-            [clojure.set :as se]))
+            [clojure.set :as se]
+            [clojure.walk :as walk]))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; A bigger scratch area for experimentation.
@@ -46,6 +47,189 @@
 
 (comment
 
+  ; For P96, see P95 solution!
+  
+  (= '(:b nil nil) '(:b nil nil))
+  ;;=> true
+  (= [:b nil nil] '(:b nil nil))
+  ;;=> true
+  
+
+  (defn third [l] (first (drop 2 l)))
+  (first [1 2 3])
+  (first '(1 2 3))
+  (second [1 2 3])
+  (second '(1 2 3))
+  (third [1 2 3])
+  (third '(1 2 3))
+
+
+
+  ; Let's use our P95 solution as a base solution, and elaborate it.
+  (def P96 (fn [t]
+             (letfn [(third [li] (first (drop 2 li)))
+                     (same? [l r]
+                       (let [_ #p l
+                             _ #p r
+                             av (first l)
+                             al (second l)
+                             ar (third l)
+                             bv (first r)
+                             bl (second r)
+                             br (second r)
+                             _ #p av
+                             _ #p al
+                             _ #p ar
+                             _ #p bv
+                             _ #p bl
+                             _ #p br]
+                         (and (= av bv)
+                              (or (and (= al bl) (= ar br))
+                                  (and (= al br) (= ar bl))))))
+                     (leaf? [item] (not (coll? item)))
+                     (tree? [cand]
+                       (if (leaf? cand)
+                         (nil? cand)
+                         (if (= (count cand) 3)
+                           (let [[_ l r] cand]
+                             (and (tree? l)
+                                  (tree? r)
+                                  (same? l r)))
+                           false)))]
+               (tree? t))))
+
+  ; Symmetric.
+  (P96 '(:a (:b nil nil) (:b nil nil)))
+  ; Not symmetric.
+  (P96 '(:a (:b nil nil) nil))
+
+  (= (P96 '(:a (:b nil nil) (:b nil nil))) true)
+  (= (P96 '(:a (:b nil nil) nil)) false)
+
+  ; All tests passed, except this one:
+  (= (P96 [1 [2 nil [3 [4 [5 nil nil] [6 nil nil]] nil]]
+           [2 [3 nil [4 [6 nil nil] [5 nil nil]]] nil]])
+     true)
+
+  (P96 [1 [2 nil [3 [4 [5 nil nil] [6 nil nil]] nil]]
+        [2 [3 nil [4 [6 nil nil] [5 nil nil]]] nil]])
+  ;;=> false
+  ; Let's examine it a bit further.
+  (P96 [1
+        [2
+         nil
+         [3
+          [4
+           [5 nil nil]
+           [6 nil nil]]
+          nil]]
+        [2
+         [3
+          nil
+          [4
+           [6 nil nil]
+           [5 nil nil]]]
+         nil]])
+  ; So just the ordering is different.
+  
+  (= [3 [4 [5 nil nil] [6 nil nil]] nil]
+     [3 nil [4 [6 nil nil] [5 nil nil]]])
+  ;;=> false
+  
+  ; Let's examine also: https://clojuredocs.org/clojure.walk
+  (require '[clojure.walk :as walk])
+  (def tree [1 [2] [3 [4]]])
+  (walk/prewalk-demo tree)
+  (walk/prewalk-demo '(:a (:b nil nil) (:b nil nil)))
+
+  ((into #{} (keys (ns-publics *ns*))) 'tree)
+  (ns-resolve *ns* 'tree)
+  (ns-unmap *ns* 'tree)
+
+  ; I draw this binary tree. And realized: If you swap every branch of the other main level branch,
+  ; then the main level branches should be identical, if it is a symmetrical tree.
+  ; So, how to mirror this subtree? 
+  [2 nil [3 [4 [5 nil nil] [6 nil nil]] nil]]
+  (defn simple-mirror [[v l r]]
+    [v r l])
+  ; Ok. Now we can mirror the main level:
+  (simple-mirror [2 nil [3 [4 [5 nil nil] [6 nil nil]] nil]])
+  ;;=> [2 [3 [4 [5 nil nil] [6 nil nil]] nil] nil]
+  
+  (defn mirror-it [tree]
+    (letfn [(leaf? [item] (not (coll? item)))
+            (mirror [t]
+              (if (leaf? t)
+                t
+                (let [[v l r] t]
+                  [v (mirror r) (mirror l)])))]
+      (mirror tree)))
+
+
+  (mirror-it [2 nil [3 [4 [5 nil nil] [6 nil nil]] nil]])
+  ;;=> [2 [3 nil [4 [6 nil nil] [5 nil nil]]] nil]
+  ; And back:
+  (mirror-it [2 [3 nil [4 [6 nil nil] [5 nil nil]]] nil])
+  ;;=> [2 nil [3 [4 [5 nil nil] [6 nil nil]] nil]]
+  (def test-tree [2 nil [3 [4 [5 nil nil] [6 nil nil]] nil]])
+  (= test-tree test-tree)
+  ;;=> true
+  (= test-tree (mirror-it test-tree))
+  ;;=> false
+  (= (mirror-it test-tree) (mirror-it test-tree))
+  ;;=> true
+  
+  ; Ok. Now we have to check:
+  ; 1. It is a valid tree.
+  ; 2. It is symmetric.
+  
+  (def P96 (fn [t]
+             (letfn [(leaf? [item] (not (coll? item)))
+                     ; Mirror all branches.
+                     (mirror [t]
+                       (if (leaf? t)
+                         t
+                         (let [[v l r] t]
+                           [v (mirror r) (mirror l)])))
+                     (tree? [cand]
+                       (if (leaf? cand)
+                         (nil? cand)
+                         (if (= (count cand) 3)
+                           (let [[_ l r] cand]
+                             (and (tree? l)
+                                  (tree? r)))
+                           false)))]
+               ; 1. Valid tree, 2. Left branch mirrored is the same as right branch.
+               (and (tree? t)
+                    (let [[_ l r] t]
+                      (= (mirror l) r))))))
+  
+  (= (P96 [1 [2 nil [3 [4 [5 nil nil] [6 nil nil]] nil]]
+           [2 [3 nil [4 [6 nil nil] [5 nil nil]]] nil]])
+     true)
+  ;;=> true
+  
+  ; My previous solution.
+  (def P96 (fn [x] (letfn [(tr1 [x] (if (nil? x) [x] (concat [(first x)] (tr1 (second x)) (tr1 (nth x 2)))))
+                           (tr2 [x] (if (nil? x) [x] (concat [(first x)] (tr2 (nth x 2)) (tr2 (second x)))))]
+                     (= (tr1 x) (tr2 x)))))
+
+  (defn tr1 [x] (if (nil? x) [x] (concat [(first x)] (tr1 (second x)) (tr1 (nth x 2)))))
+  (defn tr2 [x] (if (nil? x) [x] (concat [(first x)] (tr2 (nth x 2)) (tr2 (second x)))))
+  (tr1 [1 [2 nil [3 [4 [5 nil nil] [6 nil nil]] nil]]
+        [2 [3 nil [4 [6 nil nil] [5 nil nil]]] nil]])
+  ;;=> (1 2 nil 3 4 5 nil nil 6 nil nil nil 2 3 nil 4 6 nil nil 5 nil nil nil)
+  (tr2 [1 [2 nil [3 [4 [5 nil nil] [6 nil nil]] nil]]
+        [2 [3 nil [4 [6 nil nil] [5 nil nil]]] nil]])
+  ;;=> (1 2 nil 3 4 5 nil nil 6 nil nil nil 2 3 nil 4 6 nil nil 5 nil nil nil)
+  
+  )
+
+
+
+
+(comment
+
   (def P95 (fn [t]
              (letfn [(node? [item] (not (coll? item)))
                      (tree? [cand]
@@ -69,7 +253,7 @@
   ; #p[myscratch/P95:54] m => nil
   ; #p[myscratch/P95:54] r => nil
   true
-  
+
   ; Without hashp.
   (def P95 (fn [t]
              (letfn [(node? [item] (not (coll? item)))
@@ -83,16 +267,16 @@
                (tree? t))))
 
   (= (P95 '(:a (:b nil nil) nil)) true)
-  
+
   ; Hm. All tests passed, except this one:
-  
+
   (= (P95 [1 [2 [3 [4 false nil] nil] nil] nil]) false)
-  
+
   ; Let's debug.
   ; Hm. I get it now. The spec is: [value, left, right]. 
   ; left and right is either a tree or a value.
   ; Let's try again.
-  
+
   ; Ok. New trial as spec: [value, left, right]
   ; If leaf, then it has to be nil, or it is false.
   (def P95 (fn [t]
@@ -110,12 +294,12 @@
                                     (tree? r)))
                              false))))]
                (tree? t))))
-  
+
   (P95 [1 [2 [3 [4 false nil] nil] nil] nil])
   ;;=> false
   (= (P95 '(:a (:b nil nil) nil)) true)
   ;;=> true
-  
+
   (def P95 (fn [t]
              (letfn [(leaf? [item] (not (coll? item)))
                      (tree? [cand]
@@ -127,33 +311,31 @@
                                   (tree? r)))
                            false)))]
                (tree? t))))
-  
+
   ; Beautifull. All tests passed this time.
-  
   )
 
 
 (comment
-  
+
   (for [a #{1 2 3}
         b #{4 5}]
     [a b])
-  
+
   (def P90 (fn [s1 s2]
              (set (for [a s1
                         b s2]
                     [a b]))))
-  
+
   (P90 #{1 2 3} #{4 5})
-  (= (P90 #{1 2 3} #{4 5}) #{[1 4] [2 4] [3 4] [1 5] [2 5] [3 5]})
-  )
+  (= (P90 #{1 2 3} #{4 5}) #{[1 4] [2 4] [3 4] [1 5] [2 5] [3 5]}))
 
 
 
 (comment
 
   (require '[clojure.set :as se])
-  
+
   (def both (se/intersection #{1 2 3 4 5 6} #{1 3 5 7}))
   both
   ;;=> #{1 3 5}
@@ -163,16 +345,14 @@
   ;;=> (7)
   (set (concat '(4 6 2) '(7)))
   ;;=> #{7 4 6 2}
-  
+
   (def P88 (fn [s1 s2]
-             (let [both ( clojure.set/intersection s1 s2)]
+             (let [both (clojure.set/intersection s1 s2)]
                (set (concat (remove both s1) (remove both s2))))))
-  
+
   (P88 #{1 2 3 4 5 6} #{1 3 5 7})
 
-  (= (P88 #{1 2 3 4 5 6} #{1 3 5 7}) #{2 4 6 7})
-
-  )
+  (= (P88 #{1 2 3 4 5 6} #{1 3 5 7}) #{2 4 6 7}))
 
 
 (comment
@@ -225,48 +405,44 @@
   (= false (P83 false false))
 
   ; NOTE: This exercise was a good example on how to solve problems using REPL in Clojure.
-
-
   )
 
-(comment 
-  
+(comment
+
   (require '[clojure.set :as se])
-  
+
   (se/intersection #{0 1 2 3} #{2 3 4 5})
   ;;=> #{3 2}
-  
+
   (def P81 (fn [xs ys]
              (->> ys
                   (map (fn [x]
                          (xs x)))
                   (remove nil?)
                   set)))
-  
+
   (P81 #{0 1 2 3} #{2 3 4 5})
   ;;=> #{3 2}
-  
+
   (= (P81 #{0 1 2 3} #{2 3 4 5}) #{2 3})
-  
+
   ; Other developers' solutions. What the heck? Let's try to understand this.
   (def P81 (comp set filter))
-  
+
   ((comp set filter) #{0 1 2 3} #{2 3 4 5})
   ((comp str +) 8 8 8)
   ;;=> "24"
-  (str (apply + [ 8 8 8]))
+  (str (apply + [8 8 8]))
   ;;=> "24"
   (set (apply filter [#{0 1 2 3} #{2 3 4 5}]))
   ;;=> #{3 2}
   ; So: filter-function uses the first set as function, and the second set as argument.
   ; This other develop's solution clarifies the idea.
   (def P81 #(set (filter % %2)))
-  (P81 #{0 1 2 3} #{2 3 4 5})
-  
-  )
+  (P81 #{0 1 2 3} #{2 3 4 5}))
 
 (comment
-  
+
   ; Brute force. Just try each candidate in turn.
   ; In real life we should stop when finding the first match.
   (def P66 (fn [x y]
@@ -280,10 +456,8 @@
                              nil)))
                     (remove nil?)
                     first))))
-  
-  (= (P66 2 4) 2)
-  
-  )
+
+  (= (P66 2 4) 2))
 
 
 (comment
@@ -292,10 +466,10 @@
   ;;=> 1
   ({:a 1} :b)
   ;;=> nil
-  
+
   (group-by #(> % 5) #{1 3 6 8})
   ;;=> {false [1 3], true [6 8]}
-  
+
   ; Let's show the iterative workflow using Clojure.
   ; First, lets map them and get the keys and values.  
   (def P63 (fn [f xs]
@@ -313,7 +487,7 @@
                              (assoc acc k (conj myv v))))) {} items))))
   (P63 #(> % 5) #{1 3 6 8})
   ;;=> {false [1 3], true [6 8]}
-  
+
   (= (P63 #(> % 5) #{1 3 6 8}) {false [1 3], true [6 8]})
 
   ; Other developers' solutions.
@@ -321,19 +495,17 @@
   ; merge-with does exactly what we need here.
   ; If you know the standard library, you don't have to invent the wheel again.
   (def P63b (fn [f coll]
-              (reduce (fn [acc x] (merge-with concat acc {(f x) [x]})) {} coll))) 
+              (reduce (fn [acc x] (merge-with concat acc {(f x) [x]})) {} coll)))
   (P63b #(> % 5) #{1 3 6 8})
-  
+
   ; I forgot update-in
   (def P63c (fn [f s]
               (reduce
                (fn [m n]
                  (update-in m [(f n)] concat [n]))
                {} s)))
-  
-  (P63c #(> % 5) #{1 3 6 8})
-  
-  )
+
+  (P63c #(> % 5) #{1 3 6 8}))
 
 
 
@@ -341,21 +513,21 @@
 
   (take 5 (iterate #(* 2 %) 1))
   ;;=> (1 2 4 8 16)
-  
+
   (defn positive-numbers
     ([] (positive-numbers 1))
     ([n] (lazy-seq (cons n (positive-numbers (inc n))))))
 
   (take 5 (positive-numbers))
   ;;=> (1 2 3 4 5)
-  
+
   (defn iter [f n]
     (lazy-seq (cons n (iter f (f n)))))
 
   (take 5 (iter #(* 2 %) 1))
   ;;=> (1 2 4 8 16)
   ; Damn it. It was so easy using an example.
-  
+
   (def P62 (fn [f n]
              (letfn [(iter [g m]
                        (lazy-seq (cons m (iter g (g m)))))]
@@ -363,7 +535,7 @@
 
   (take 5 (P62 #(* 2 %) 1))
   ;;=> (1 2 4 8 16)
-  
+
   ; Other developers' solutions
   ; Did not remember that you can give name for a function using the fn macro.
   ; And also, it would be better to have the lazy-seq for the part of adding x.
@@ -383,17 +555,17 @@
 
   (take 5 (P62 #(* 2 %) 1))
   ;;=> (1 2 4 8 16)
-  
+
   ; Let's iterate a bit more. We can get rid of g and use f closure.
   ; Someone told me this in Koodiklinikka slack.
   (def P62 (fn [f n]
              (letfn [(iter [m]
                        (cons m (lazy-seq (iter (f m)))))]
                (iter n))))
-  
+
   (take 5 (P62 #(* 2 %) 1))
   ;;=> (1 2 4 8 16)
-  
+
 
   ; Other developers' solutions, what the heck is this?
   (def P62c (fn [f x]
@@ -401,21 +573,18 @@
 
   (take 5 (P62c #(* 2 %) 1))
   ;;=> (1 2 4 8 16)
-  
+
   ; Let's try to make it more understandable by eliminating the #() macro.
   (def P62d (fn [f x]
               (reductions (fn [n g] (g n)) x (repeat f))))
 
   (take 5 (P62d #(* 2 %) 1))
   ;;=> (1 2 4 8 16)
-  
+
   ; Ok. I got it now. Reductions takes a function, and creates a lazy seq by applying it like reduce.
   ; See: https://clojuredocs.org/clojure.core/reductions
   (reductions + [1 2 3])
   ;;=> (1 3 6)
-  
-
-
   )
 
 (comment

@@ -777,6 +777,34 @@
 
 
 ; P96
+; New 2025-02-07
+; We re-use most of the P95 solution regarding checking if it is a binary tree.
+; It is a binary symmetric tree, if:
+; 1. It is a valid tree.
+; 2. Every branch is symmetric.
+; We mirror the left side main branch, then it should be identical to the right side main branch.
+(def P96 (fn [t]
+           (letfn [(leaf? [item] (not (coll? item)))
+                     ; Mirror all branches.
+                   (mirror [t]
+                     (if (leaf? t)
+                       t
+                       (let [[v l r] t]
+                         [v (mirror r) (mirror l)])))
+                   (tree? [cand]
+                     (if (leaf? cand)
+                       (nil? cand)
+                       (if (= (count cand) 3)
+                         (let [[_ l r] cand]
+                           (and (tree? l)
+                                (tree? r)))
+                         false)))]
+               ; 1. Valid tree, 2. Left branch mirrored is the same as right branch.
+             (and (tree? t)
+                  (let [[_ l r] t]
+                    (= (mirror l) r))))))
+; Strange. My new solution is nothing like the previous solution.
+; Old.
 ; Eli tehdään kaksi traversal-funktiota: tr1 kulkee vasenta puolta, tr2 oikeaa puolta.
 ; Kummankin pitää palauttaa samat alkiot samassa järjestyksessä, jos puut ovat symmetrisiä.
 ; HUOM: On tärkeää, että jos nil, niin palautetaan [x] eikä x, koska näin nähdään,
