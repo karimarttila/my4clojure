@@ -1,5 +1,12 @@
 # My 4Clojure Exercises  <!-- omit in toc -->
 
+- [Babashka as a Task Runner](#babashka-as-a-task-runner)
+- [Clojure REPL](#clojure-repl)
+- [Clojurescript REPL](#clojurescript-repl)
+- [Check the REPL in VSCode](#check-the-repl-in-vscode)
+- [REPL Connect Sequences](#repl-connect-sequences)
+
+
 My solutions to [4ever-clojure](https://4clojure.oxal.org/) exercises. Also scratch for experimentations and copy-pasted best other developers' solutions and examined them using REPL. 
 
 I have been doing these exercises for learning purposes. I'm no Clojure guru but I'm a productive Clojure full stack developer. While doing these exercises I realized that after my own solution it is really important to study other developers' solutions. While studying other developers' solutions I often noticed that there is a one-liner solution which just applies one or two Clojure standard library functions. So, studying other developers' solutions provides two great learning purposes:
@@ -52,30 +59,39 @@ The [4ever-clojure](https://4clojure.oxal.org/) site uses four categories and I 
 
 There is blog post regarding this exercise: [4Clojure Exercises Part 1](https://www.karimarttila.fi/clojure/2022/03/29/4clojure-exercises-part-1.html)
 
-### Calva Instructions
+## Babashka as a Task Runner
 
-#### Clojure REPL
+I have recently switched from [Just](https://github.com/casey/just) to [babashka](https://github.com/babashka/babashka) as a task runner. 
+
+See available babashka tasks:
+
+```bash
+bb tasks
+```
+
+
+## Clojure REPL
 
 See also chapter [REPL Connect Sequences](#repl-connect-sequences) below => there you can find the actual instructions how to do the REPL connection with Calva.
 
-Start backend repl with Calva dependencies: `just backend-calva`.
+Start backend repl with Calva dependencies: `bb backend-calva`.
 In VSCode: command: `Connect to a running REPL server in the project`. Choose `deps.edn` and then accept the port (you can check that the port is the same as in file `.nrepl-port`). You are good to go. In Clojure files remember to `alt-n` - change namespace to use that of the file.
 
-#### Clojurescript REPL
+## Clojurescript REPL
 
 See also chapter [REPL Connect Sequences](#repl-connect-sequences) below => there you can find the actual instructions how to do the REPL connection with Calva.
 
-First run: `just shadow-node` ... and wait till you see `Build completed`.
-Then run: `just run-node`.
+First run: `bb shadow-node` ... and wait till you see `Build completed`.
+Then in another terminal run: `bb run-node`.
 Then in VSCode: command: `Connect to a running REPL server in the project`, then choose: `Clojurescript nRepl server`, then check the port number in file `.shadow-cljs/nrepl.port` and give that port number in VSCode.
 Then in the `cljs` file: evaluate: `(shadow.cljs.devtools.api/repl :app)`.
 You are good to go.
 
-#### Check the REPL in VSCode
+## Check the REPL in VSCode
 
 Calva automatically uses the right REPL based on whether the file is `clj` (Clojure) or `cljs` (Clojurescript). You can see at the bottom of the VSCode window the status bar, which says `REPL ⚡ clj` (if your focus is in a `clj` file) or `REPL ⚡ cljs` (if your focus is in a `cljs` file).
 
-#### REPL Connect Sequences
+## REPL Connect Sequences
 
 NOTE: You can have only one REPL connection in one VSCode window (read more in [Configuring VSCode/Calva for Clojure programming - Part 3](https://www.karimarttila.fi/clojure/2022/10/18/clojure-calva-part3.html).)
 
@@ -113,8 +129,8 @@ I created the following [Calva REPL Connect Sequences](https://calva.io/connect-
 
 So, first, start `shadow-cljs` process and `node process` (in two different terminals):
 
-- `just shadow-node` (wait until you see: `[watch:cljs] [:app] Build completed.`)
-- `just run-node` (you should see something like: `shadow-cljs - #3 ready!` )
+- `bb shadow-node` (wait until you see: `[watch:cljs] [:app] Build completed.`)
+- `bb run-node` (you should see something like: `shadow-cljs - #3 ready!` )
 
 Then use VSCode command `Calva: Connect to a Running REPL Server in the Project` => Choose `backend + frontend`, next for the suggested `host:port` press `Enter`.
 

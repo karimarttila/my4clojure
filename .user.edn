@@ -1,0 +1,16 @@
+{:backend-repl ["clojure -M:dev:test:common:backend:kari -m nrepl.cmdline --middleware \"[com.gfredericks.debug-repl/wrap-debug-repl]\""]
+ :backend-calva-repl ["clojure -M:dev:test:common:backend:calva-backend:kari"]
+ ;; Clean node.
+ :clean-node ["rm -rf .cpcache/*; rm -rf .shadow-cljs/*; rm -rf target/*; rm -rf out/*; npm install"]
+ ;; Init node packages.
+ :init-node ["mkdir -p target; mkdir -p classes; npm install"] 
+ ;; Node compilation (1/2) .
+ :shadow-node ["npm run dev"]
+ ;; Start node process (2/2) .
+ :run-node ["node target/main.js"]
+ }
+
+
+
+
+  

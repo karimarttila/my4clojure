@@ -751,7 +751,7 @@
                      ["grape" "red" "hot"])))
 
 
-(comment.
+(comment
 
  (def P38 (fn [n & r]
             (last (sort (flatten (list n r))))))
