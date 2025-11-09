@@ -74,7 +74,7 @@ bb tasks
 
 See also chapter [REPL Connect Sequences](#repl-connect-sequences) below => there you can find the actual instructions how to do the REPL connection with Calva.
 
-Start backend repl with Calva dependencies: `bb backend-calva`.
+Start backend repl with Calva dependencies: `bb backend-calva-repl`.
 In VSCode: command: `Connect to a running REPL server in the project`. Choose `deps.edn` and then accept the port (you can check that the port is the same as in file `.nrepl-port`). You are good to go. In Clojure files remember to `alt-n` - change namespace to use that of the file.
 
 ## Clojurescript REPL
