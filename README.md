@@ -1,11 +1,14 @@
 # My 4Clojure Exercises  <!-- omit in toc -->
 
+## Table of Contents  <!-- omit in toc -->
+- [Introduction](#introduction)
 - [Babashka as a Task Runner](#babashka-as-a-task-runner)
 - [Clojure REPL](#clojure-repl)
 - [Clojurescript REPL](#clojurescript-repl)
 - [Check the REPL in VSCode](#check-the-repl-in-vscode)
 - [REPL Connect Sequences](#repl-connect-sequences)
 
+## Introduction
 
 My solutions to [4ever-clojure](https://4clojure.oxal.org/) exercises. Also scratch for experimentations and copy-pasted best other developers' solutions and examined them using REPL. 
 
