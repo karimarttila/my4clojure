@@ -7,6 +7,7 @@
 - [Clojurescript REPL](#clojurescript-repl)
 - [Check the REPL in VSCode](#check-the-repl-in-vscode)
 - [REPL Connect Sequences](#repl-connect-sequences)
+- [Keeping Statistics Regarding the Progress](#keeping-statistics-regarding-the-progress)
 
 ## Introduction
 
@@ -156,3 +157,8 @@ Test:
 
 - Open file [misc1.clj](scratch/misc1.clj): evaluate and you should see `REPL clj` at the bottom of the VSCode info bar.
 - Open file [nodesolutions1.cljs](src/cljs/nodesolutions1.cljs) evaluate and you should see `REPL cljs` at the bottom of the VSCode info bar.
+
+
+## Keeping Statistics Regarding the Progress
+
+I created a simple markdown file [Problems.md](./Problems.md) to keep up with the statistics regarding my progress.
